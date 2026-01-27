@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { AnimatedSection } from '../components/ui/AnimatedSection';
 import { OptimizedImage } from '../components/ui/OptimizedImage';
+import { ImageSkeleton } from '../components/ui/Skeleton';
 import {
   services,
   transformations,
@@ -53,6 +54,13 @@ export const Home: React.FC = () => {
   const location = useLocation();
   const [activeTransformation, setActiveTransformation] = useState(0);
   const [resultsIndex, setResultsIndex] = useState(0);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+
+  // Simulate initial image load
+  useEffect(() => {
+    const timer = setTimeout(() => setImagesLoaded(true), 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);

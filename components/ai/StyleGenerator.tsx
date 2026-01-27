@@ -363,6 +363,16 @@ export const StyleGenerator: React.FC = () => {
                   </button>
                 ))}
               </div>
+              
+              {/* Scroll indicator - only show if preset is selected */}
+              {selectedPreset && (
+                <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center gap-2 pb-4 animate-bounce">
+                  <div className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">More options below</div>
+                  <svg className="w-5 h-5 text-divine-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              )}
             </div>
 
             <div>
