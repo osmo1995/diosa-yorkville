@@ -15,7 +15,16 @@ export async function overlayDiosaWordmark(params) {
     scale = 0.16,
   } = params;
 
-  if (!logoPath || !fs.existsSync(logoPath)) {
+  // Prefer a deterministic PNG wordmark if present to avoid font rendering differences.
+  const pngFallback = logoPath?.endsWith('.svg')
+    ? logoPath.replace(/\.svg$/i, '.png')
+    : null;
+
+  const resolvedLogo =
+    (pngFallback && fs.existsSync(pngFallback) ? pngFallback : null) ||
+    (logoPath && fs.existsSync(logoPath) ? logoPath : null);
+
+  if (!resolvedLogo) {
     throw new Error(`Logo file not found: ${logoPath}`);
   }
 
@@ -27,7 +36,7 @@ export async function overlayDiosaWordmark(params) {
 
   const logoTargetW = Math.round(w * scale);
 
-  const logoBuf = await sharp(logoPath)
+  const logoBuf = await sharp(resolvedLogo)
     .resize({ width: logoTargetW })
     .png()
     .toBuffer();

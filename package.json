@@ -18,7 +18,9 @@
     "gemini:style-previews:3pro": "node scripts/generateStylePreviews.mjs --model=models/gemini-3-pro-image-preview",
     "gemini:style-previews:force": "node scripts/generateStylePreviews.mjs --force",
     "gemini:style-previews:3pro:force": "node scripts/generateStylePreviews.mjs --model=models/gemini-3-pro-image-preview --force",
-    "gemini:regen:all:3pro:force": "npm run gemini:images:3pro:force && npm run gemini:style-previews:3pro:force"
+    "gemini:regen:all:3pro:force": "npm run gemini:images:3pro:force && npm run gemini:style-previews:3pro:force",
+    "gemini:logo": "node scripts/generateDiosaLogo.mjs --model=models/gemini-3-pro-image-preview",
+    "gemini:logo:force": "node scripts/generateDiosaLogo.mjs --model=models/gemini-3-pro-image-preview --force"
   },
   "dependencies": {
     "@iconify-json/fluent": "^1.2.37",
