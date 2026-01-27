@@ -42,6 +42,7 @@ export const Home: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTransformation, setActiveTransformation] = useState(0);
+  const [resultsIndex, setResultsIndex] = useState(0);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -93,6 +94,10 @@ export const Home: React.FC = () => {
   const active = transformations[activeTransformation];
   const beforeAsset = generatedImages.transformations[`${active.id}_before`];
   const afterAsset = generatedImages.transformations[`${active.id}_after`];
+
+  const resultsActive = transformations[resultsIndex] || active;
+  const resultsBeforeAsset = generatedImages.transformations[`${resultsActive.id}_before`];
+  const resultsAfterAsset = generatedImages.transformations[`${resultsActive.id}_after`];
 
   return (
     <div className="overflow-x-hidden">
@@ -269,25 +274,80 @@ export const Home: React.FC = () => {
               </div>
               <div className="aspect-[3/4] overflow-hidden bg-gray-100">
                 <BeforeAfterSlider
-                  before={{ src: beforeAsset?.src || active.before, srcSet: beforeAsset?.srcSet, alt: 'Before' }}
-                  after={{ src: afterAsset?.src || active.after, srcSet: afterAsset?.srcSet, alt: 'After' }}
+                  before={{
+                    src: resultsBeforeAsset?.src || resultsActive.before,
+                    srcSet: resultsBeforeAsset?.srcSet,
+                    alt: 'Before',
+                  }}
+                  after={{
+                    src: resultsAfterAsset?.src || resultsActive.after,
+                    srcSet: resultsAfterAsset?.srcSet,
+                    alt: 'After',
+                  }}
                   className="h-full w-full"
                   initialRatio={0.5}
-                  onUserInteract={() => setAutoRotatePaused(true)}
                 />
               </div>
             </div>
 
             <div className="flex items-center justify-between mt-6">
-              <button onClick={prevTransformation} className="p-3 border border-gray-200 hover:border-divine-gold transition-colors" aria-label="Previous transformation">
+              <button
+                onClick={() => {
+                  setResultsIndex((prev) => (prev - 1 + transformations.length) % transformations.length);
+                }}
+                className="p-3 border border-gray-200 hover:border-divine-gold transition-colors"
+                aria-label="Previous result"
+              >
                 <Icon icon="fluent:chevron-left-24-regular" size={22} tone="charcoal" />
               </button>
               <div className="text-center">
-                <div className="text-sm text-gray-700 font-serif uppercase tracking-widest">{active.method}</div>
+                <div className="text-sm text-gray-700 font-serif uppercase tracking-widest">{resultsActive.method}</div>
+                <div className="mt-1 text-[10px] uppercase tracking-widest font-bold text-gray-400">
+                  {resultsIndex + 1}/{transformations.length}
+                </div>
               </div>
-              <button onClick={nextTransformation} className="p-3 border border-gray-200 hover:border-divine-gold transition-colors" aria-label="Next transformation">
+              <button
+                onClick={() => {
+                  setResultsIndex((prev) => (prev + 1) % transformations.length);
+                }}
+                className="p-3 border border-gray-200 hover:border-divine-gold transition-colors"
+                aria-label="Next result"
+              >
                 <Icon icon="fluent:chevron-right-24-regular" size={22} tone="charcoal" />
               </button>
+            </div>
+
+            {/* Thumbnail strip (best for quickly seeing all 10 variations) */}
+            <div className="mt-8 flex gap-3 overflow-x-auto pb-2">
+              {transformations.map((t, idx) => {
+                const thumb = generatedImages.transformations[`${t.id}_after`];
+                const isActive = idx === resultsIndex;
+
+                return (
+                  <button
+                    key={t.id}
+                    type="button"
+                    className={`relative h-20 w-16 flex-shrink-0 overflow-hidden border transition-colors ${isActive ? 'border-divine-gold' : 'border-gray-200 hover:border-divine-gold/60'}`}
+                    aria-label={`Show result ${idx + 1}: ${t.method}`}
+                    onClick={() => {
+                      setResultsIndex(idx);
+                      // Keep hero in sync for cohesion.
+                      setActiveTransformation(idx);
+                      setAutoRotatePaused(true);
+                    }}
+                  >
+                    <img
+                      src={thumb?.src || t.after}
+                      srcSet={thumb?.srcSet}
+                      sizes="80px"
+                      alt={t.method}
+                      className="h-full w-full object-cover"
+                      draggable={false}
+                    />
+                    {isActive && <div className="absolute inset-0 ring-2 ring-divine-gold" />}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
