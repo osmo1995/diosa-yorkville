@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Instagram, Facebook, MapPin, Phone, Mail } from 'lucide-react';
+import { Icon } from '../ui/Icon';
 
 export const Footer: React.FC = () => {
   return (
@@ -19,10 +19,10 @@ export const Footer: React.FC = () => {
             </p>
             <div className="flex space-x-4">
               <Link to="/booking" className="hover:text-divine-gold transition-colors" aria-label="Book a consultation">
-                <Instagram size={20} />
+                <Icon icon="fluent-emoji:camera" size={20} />
               </Link>
               <Link to="/booking" className="hover:text-divine-gold transition-colors" aria-label="Book a consultation">
-                <Facebook size={20} />
+                <Icon icon="fluent-emoji:blue-book" size={20} />
               </Link>
             </div>
           </div>
@@ -44,15 +44,15 @@ export const Footer: React.FC = () => {
             <h4 className="text-sm font-sans font-bold uppercase tracking-widest text-divine-gold mb-6">Connect</h4>
             <ul className="space-y-4 text-sm text-soft-champagne/80">
               <li className="flex items-start space-x-3">
-                <MapPin size={18} className="text-divine-gold mt-1 shrink-0" />
+                <Icon icon="fluent-emoji:round-pushpin" size={18} />
                 <span>2 Bloor St E<br />Toronto, ON M4W 3E2<br />Canada</span>
               </li>
               <li className="flex items-center space-x-3">
-                <Phone size={18} className="text-divine-gold shrink-0" />
+                <Icon icon="fluent-emoji:telephone" size={18} />
                 <a href="tel:+14379292563" className="hover:text-white transition-colors">437-929-2563</a>
               </li>
               <li className="flex items-center space-x-3">
-                <Mail size={18} className="text-divine-gold shrink-0" />
+                <Icon icon="fluent-emoji:e-mail" size={18} />
                 <span>hello@diosayorkville.com</span>
               </li>
             </ul>

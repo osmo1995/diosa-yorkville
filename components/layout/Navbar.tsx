@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, Instagram, Facebook } from 'lucide-react';
+import { Icon } from '../ui/Icon';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '../ui/Button';
 
@@ -78,11 +78,12 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Mobile Toggle */}
-          <button 
+          <button
             className="lg:hidden"
             onClick={() => setIsOpen(true)}
+            aria-label="Open menu"
           >
-            <Menu className={isScrolled ? 'text-deep-charcoal' : 'text-white'} size={28} />
+            <Icon icon="fluent:navigation-24-regular" size={28} tone={isScrolled ? 'charcoal' : 'white'} />
           </button>
         </div>
       </nav>
@@ -97,11 +98,12 @@ export const Navbar: React.FC = () => {
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             className="fixed inset-0 bg-deep-charcoal z-[100] flex flex-col items-center justify-center p-8"
           >
-            <button 
+            <button
               className="absolute top-8 right-8 text-white hover:text-divine-gold transition-colors"
               onClick={() => setIsOpen(false)}
+              aria-label="Close menu"
             >
-              <X size={32} />
+              <Icon icon="fluent:dismiss-32-regular" size={32} tone="white" />
             </button>
 
             <div className="flex flex-col items-center space-y-8 mb-12">
@@ -135,8 +137,8 @@ export const Navbar: React.FC = () => {
                 <Button fullWidth variant="primary" size="lg">Book Consultation</Button>
               </Link>
               <div className="flex space-x-6 text-white">
-                <Instagram size={24} />
-                <Facebook size={24} />
+                <Icon icon="fluent-emoji:camera" size={24} />
+                <Icon icon="fluent-emoji:blue-book" size={24} />
               </div>
             </motion.div>
           </motion.div>

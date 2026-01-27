@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight, Plus } from 'lucide-react';
+import { Icon } from '../components/ui/Icon';
 import { AnimatedSection } from '../components/ui/AnimatedSection';
 import { galleryItems } from '../data/salonContent';
 import { OptimizedImage } from '../components/ui/OptimizedImage';
@@ -81,7 +81,7 @@ export const Gallery: React.FC = () => {
                 />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col items-center justify-center text-white p-8">
                   <div className="w-12 h-12 rounded-full border border-white flex items-center justify-center mb-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                    <Plus size={24} />
+                    <Icon icon="fluent:add-24-regular" size={24} tone="white" />
                   </div>
                   <p className="text-xs uppercase tracking-[0.2em] text-divine-gold font-bold mb-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">{item.category}</p>
                   <h3 className="text-xl font-serif text-center translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100">{item.title}</h3>
@@ -101,16 +101,16 @@ export const Gallery: React.FC = () => {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 md:p-12"
           >
-            <button onClick={closeLightbox} className="absolute top-8 right-8 text-white hover:text-divine-gold transition-colors">
-              <X size={32} />
+            <button onClick={closeLightbox} className="absolute top-8 right-8 text-white hover:text-divine-gold transition-colors" aria-label="Close">
+              <Icon icon="fluent:dismiss-32-regular" size={32} tone="white" />
             </button>
             
-            <button onClick={prevImage} className="absolute left-4 md:left-8 text-white hover:text-divine-gold transition-colors">
-              <ChevronLeft size={48} />
+            <button onClick={prevImage} className="absolute left-4 md:left-8 text-white hover:text-divine-gold transition-colors" aria-label="Previous">
+              <Icon icon="fluent:chevron-left-48-regular" size={48} tone="white" />
             </button>
             
-            <button onClick={nextImage} className="absolute right-4 md:right-8 text-white hover:text-divine-gold transition-colors">
-              <ChevronRight size={48} />
+            <button onClick={nextImage} className="absolute right-4 md:right-8 text-white hover:text-divine-gold transition-colors" aria-label="Next">
+              <Icon icon="fluent:chevron-right-48-regular" size={48} tone="white" />
             </button>
 
             <motion.div 

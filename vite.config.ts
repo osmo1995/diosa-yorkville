@@ -29,7 +29,7 @@ export default defineConfig(({ mode }) => {
           // Improve long-term caching and reduce the main chunk by splitting vendors.
           manualChunks: {
             'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-            icons: ['lucide-react'],
+            icons: ['@iconify/react'],
             motion: ['framer-motion'],
             'three-core': ['three'],
             'three-r3f': ['@react-three/fiber'],

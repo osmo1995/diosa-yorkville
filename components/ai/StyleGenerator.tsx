@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, Wand2, Lock, AlertCircle, Loader2, Download, Link2 } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { Icon } from '../ui/Icon';
 import { OptimizedImage } from '../ui/OptimizedImage';
 import { stylePreviews } from '../../data/stylePreviews';
 
@@ -233,12 +233,12 @@ export const StyleGenerator: React.FC = () => {
               We keep these looks separate: extensions presets do not change colour, and colour presets do not add length/density.
             </p>
             <div className="flex items-center gap-2 text-[11px] text-gray-500 mt-4">
-              <Lock size={14} className="text-divine-gold" />
+              <Icon icon="fluent:lock-closed-16-regular" size={14} tone="gold" />
               <span>Privacy-first: your photo is processed in-memory and not stored.</span>
             </div>
           </div>
           <div className="hidden md:flex items-center gap-2 text-divine-gold">
-            <Wand2 size={22} />
+            <Icon icon="fluent-emoji:magic-wand" size={22} />
           </div>
         </div>
 
@@ -249,7 +249,7 @@ export const StyleGenerator: React.FC = () => {
               <div className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-3">Headshot</div>
               <div className="flex flex-col sm:flex-row gap-4 items-start">
                 <Button variant="secondary" onClick={() => fileRef.current?.click()} className="inline-flex items-center gap-2">
-                  <Upload size={16} />
+                  <Icon icon="fluent:arrow-upload-20-regular" size={16} tone="gold" />
                   Upload photo
                 </Button>
                 <input
@@ -462,7 +462,7 @@ export const StyleGenerator: React.FC = () => {
 
             {error && (
               <div className="flex items-start gap-3 p-4 border border-red-100 bg-red-50 text-red-700">
-                <AlertCircle size={18} className="mt-0.5" />
+                <Icon icon="fluent:warning-20-regular" size={18} tone="gold" className="mt-0.5" />
                 <div className="text-sm">{error}</div>
               </div>
             )}
@@ -470,7 +470,7 @@ export const StyleGenerator: React.FC = () => {
             <Button variant="primary" disabled={!file || isLoading} onClick={onGenerate} className="w-full flex items-center justify-center gap-2">
               {isLoading ? (
                 <>
-                  <Loader2 size={18} className="animate-spin" />
+                  <Icon icon="fluent:spinner-ios-20-regular" size={18} tone="gold" className="animate-spin" />
                   {loadingPhase === 'removing' ? 'Removing background…' : 'Generating…'}
                 </>
               ) : (
@@ -524,7 +524,7 @@ export const StyleGenerator: React.FC = () => {
               <div className="mt-6 flex flex-col sm:flex-row gap-3">
                 <a href={resultUrl} download={`diosa-preview-${resultMeta?.styleId || styleId}.png`} className="flex-1">
                   <Button variant="secondary" className="w-full inline-flex items-center justify-center gap-2">
-                    <Download size={16} />
+                    <Icon icon="fluent:arrow-download-20-regular" size={16} tone="gold" />
                     Download
                   </Button>
                 </a>
@@ -537,7 +537,7 @@ export const StyleGenerator: React.FC = () => {
                     await navigator.clipboard.writeText(url);
                   }}
                 >
-                  <Link2 size={16} />
+                  <Icon icon="fluent:link-20-regular" size={16} tone="gold" />
                   Copy booking link
                 </Button>
 

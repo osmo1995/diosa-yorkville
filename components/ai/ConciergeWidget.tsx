@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { emitAnalytics } from '../analytics/emit';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquareText, Send, Sparkles, X, Calendar } from 'lucide-react';
+import { Icon } from '../ui/Icon';
 
 type NextStep = { label: string; action: 'BOOK' | 'SERVICES' | 'STYLE_GENERATOR'; href?: string };
 
@@ -173,7 +173,7 @@ export const ConciergeWidget: React.FC = () => {
         className="w-14 h-14 rounded-full bg-deep-charcoal text-white shadow-xl flex items-center justify-center border border-white/10 hover:bg-divine-gold transition-colors"
         aria-label={open ? 'Close concierge' : 'Open concierge'}
       >
-        {open ? <X size={20} /> : <MessageSquareText size={20} />}
+        {open ? <Icon icon="fluent:dismiss-20-regular" size={20} tone="white" /> : <Icon icon="fluent:chat-20-regular" size={20} tone="white" />}
       </button>
 
       <AnimatePresence>
@@ -187,14 +187,14 @@ export const ConciergeWidget: React.FC = () => {
           >
             <div className="p-4 border-b border-gray-100 flex items-center justify-between">
               <div className="flex items-center gap-2 text-divine-gold">
-                <Sparkles size={16} />
+                <Icon icon="fluent-emoji:sparkles" size={16} />
                 <div className="text-[10px] uppercase tracking-widest font-bold">AI Concierge</div>
               </div>
               <a
                 href="/booking"
                 className="inline-flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-divine-gold hover:opacity-80"
               >
-                <Calendar size={14} />
+                <Icon icon="fluent:calendar-20-regular" size={14} tone="gold" />
                 Book
               </a>
             </div>
@@ -341,7 +341,7 @@ export const ConciergeWidget: React.FC = () => {
                   className="px-4 bg-deep-charcoal text-white border border-white/10 hover:bg-divine-gold disabled:opacity-50"
                   aria-label="Send"
                 >
-                  <Send size={16} />
+                  <Icon icon="fluent:send-20-regular" size={16} tone="white" />
                 </button>
               </div>
 

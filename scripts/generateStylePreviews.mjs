@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
+import { buildPrompt } from './_geminiPromptQuality.mjs';
 
 const PROJECT_ROOT = process.cwd();
 
@@ -155,7 +156,7 @@ async function generateImage(prompt) {
       },
     ],
     generationConfig: {
-      temperature: 0.7,
+      temperature: 0.35,
       responseModalities: ['IMAGE', 'TEXT'],
     },
   };
@@ -228,7 +229,19 @@ async function writeVariants({ presetId, prompt }) {
     };
   }
 
-  const { buf } = await generateImage(prompt);
+  // Retry a few times to get a clean, artifact-free render.
+  let lastErr;
+  let buf;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      ({ buf } = await generateImage(prompt));
+      break;
+    } catch (e) {
+      lastErr = e;
+      console.warn(`Retry ${attempt}/3 failed for ${presetId}: ${e?.message || e}`);
+      if (attempt === 3) throw lastErr;
+    }
+  }
 
   const baseDir = path.join(OUT_DIR, presetId);
   ensureDir(baseDir);
@@ -273,7 +286,10 @@ async function main() {
 
   // First generate requested subset.
   for (const p of list) {
-    const prompt = `High-end beauty editorial, luxury salon portrait. ${p.prompt}`;
+    const prompt = buildPrompt(
+      `High-end beauty editorial portrait. ${p.prompt} Ensure the full hairstyle is visible and not cropped. Face centered, hair fully in frame.`,
+      'Square thumbnail safety: subject centered, hair fully visible, no cut-off at top/bottom.'
+    );
     map[p.id] = await writeVariants({ presetId: p.id, prompt });
   }
 

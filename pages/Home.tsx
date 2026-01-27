@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Star, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Icon } from '../components/ui/Icon';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { AnimatedSection } from '../components/ui/AnimatedSection';
@@ -218,7 +218,7 @@ export const Home: React.FC = () => {
                       className="text-divine-gold text-xs uppercase tracking-widest font-bold inline-flex items-center gap-2"
                       onClick={() => navigate(`/services#${service.id}`)}
                     >
-                      View <ArrowRight size={14} />
+                      View <Icon icon="fluent:chevron-right-16-regular" size={14} tone="gold" />
                     </button>
                   </div>
                 </div>
@@ -288,14 +288,14 @@ export const Home: React.FC = () => {
             </div>
 
             <div className="flex items-center justify-between mt-6">
-              <button onClick={prevTransformation} className="p-3 border border-gray-200 hover:border-divine-gold transition-colors">
-                <ChevronLeft />
+              <button onClick={prevTransformation} className="p-3 border border-gray-200 hover:border-divine-gold transition-colors" aria-label="Previous transformation">
+                <Icon icon="fluent:chevron-left-24-regular" size={22} tone="charcoal" />
               </button>
               <div className="text-center">
                 <div className="text-sm text-gray-700 font-serif uppercase tracking-widest">{active.method}</div>
               </div>
-              <button onClick={nextTransformation} className="p-3 border border-gray-200 hover:border-divine-gold transition-colors">
-                <ChevronRight />
+              <button onClick={nextTransformation} className="p-3 border border-gray-200 hover:border-divine-gold transition-colors" aria-label="Next transformation">
+                <Icon icon="fluent:chevron-right-24-regular" size={22} tone="charcoal" />
               </button>
             </div>
           </div>
@@ -315,7 +315,7 @@ export const Home: React.FC = () => {
               <AnimatedSection key={t.name} className="bg-white border border-gray-100 p-8">
                 <div className="flex items-center gap-1 text-divine-gold mb-4">
                   {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star key={i} size={14} />
+                    <Icon key={i} icon="fluent-emoji:glowing-star" size={14} />
                   ))}
                 </div>
                 <p className="text-gray-700 leading-relaxed">{t.content}</p>

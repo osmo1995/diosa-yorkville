@@ -17,14 +17,17 @@
     "gemini:style-previews": "node scripts/generateStylePreviews.mjs",
     "gemini:style-previews:3pro": "node scripts/generateStylePreviews.mjs --model=models/gemini-3-pro-image-preview",
     "gemini:style-previews:force": "node scripts/generateStylePreviews.mjs --force",
-    "gemini:style-previews:3pro:force": "node scripts/generateStylePreviews.mjs --model=models/gemini-3-pro-image-preview --force"
+    "gemini:style-previews:3pro:force": "node scripts/generateStylePreviews.mjs --model=models/gemini-3-pro-image-preview --force",
+    "gemini:regen:all:3pro:force": "npm run gemini:images:3pro:force && npm run gemini:style-previews:3pro:force"
   },
   "dependencies": {
+    "@iconify-json/fluent": "^1.2.37",
+    "@iconify-json/fluent-emoji": "^1.2.7",
+    "@iconify/react": "^6.0.2",
     "@react-three/fiber": "^9.5.0",
     "express": "^4.21.2",
     "formidable": "^3.5.2",
     "framer-motion": "^12.29.2",
-    "lucide-react": "^0.563.0",
     "nodemailer": "7.0.12",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",

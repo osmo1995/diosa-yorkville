@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
+import { buildPrompt } from './_geminiPromptQuality.mjs';
 
 const PROJECT_ROOT = process.cwd();
 
@@ -68,7 +69,8 @@ async function generateImage(prompt) {
     ],
     // For image-capable Gemini models, request IMAGE output explicitly.
     generationConfig: {
-      temperature: 0.9,
+      // Lower temperature improves realism/consistency.
+      temperature: 0.35,
       responseModalities: ['IMAGE', 'TEXT'],
     },
   };
@@ -137,7 +139,19 @@ async function writeVariants({ key, prompt }) {
 
   console.log(`Generating: ${key}`);
 
-  const { buf } = await generateImage(prompt);
+  // Retry a few times to get a clean, artifact-free render.
+  let lastErr;
+  let buf;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      ({ buf } = await generateImage(prompt));
+      break;
+    } catch (e) {
+      lastErr = e;
+      console.warn(`Retry ${attempt}/3 failed for ${key}: ${e?.message || e}`);
+      if (attempt === 3) throw lastErr;
+    }
+  }
 
   const baseDir = path.join(OUT_DIR, key);
   ensureDir(baseDir);
@@ -174,73 +188,78 @@ async function writeVariants({ key, prompt }) {
 async function main() {
   ensureDir(OUT_DIR);
 
-  // Photorealistic, luxury Yorkville hair extension brand prompts.
-  const baseStyle = `photorealistic, high-end luxury editorial, warm champagne and gold tones, soft natural light, ultra-detailed, realistic hair texture, no text, no logos, 35mm photography look`;
+  // High-fidelity prompt wrapper (8K photorealistic) + strict negative constraints.
+  // NOTE: final outputs are web-optimized sizes; we target "8K" quality through prompt specificity.
+  const wrap = (p, extras = '') => buildPrompt(p, extras);
+
+  // For interiors, prefer a wider lens reference.
+  const interiorExtras = 'Interior shot: 24–35mm lens look, clean geometry, premium materials, realistic reflections.';
+  const portraitExtras = 'Portrait shot: 85mm lens look, flattering perspective, natural skin texture, hair fully visible.';
 
   const plan = {
     hero: {
       key: 'hero',
-      prompt: `Luxury Toronto Yorkville hair extension salon interior, elegant minimalist design, marble, brass accents, warm beige palette, ${baseStyle}`,
+      prompt: wrap('Luxury Toronto Yorkville hair extension salon interior, elegant minimalist design, marble, brass accents, warm beige palette. No people.', interiorExtras),
     },
     cta: {
       key: 'cta',
-      prompt: `Back view of a woman with long glossy hair extensions, subtle waves, luxury salon vibe, ${baseStyle}`,
+      prompt: wrap('Back view beauty editorial portrait of a woman with long glossy hair extensions, subtle soft waves, seamless blend, healthy ends, premium salon finish. Neutral background.', portraitExtras),
     },
     quiz: {
       key: 'quiz',
-      prompt: `Hair extension consultation in a luxury salon, stylist hands analyzing hair, premium experience, ${baseStyle}`,
+      prompt: wrap('Luxury hair consultation moment: stylist hands analyzing hair sections in a high-end salon. Clean background. No visible branding, no text.', portraitExtras),
     },
     services: {
       'tape-in': {
         key: 'services/tape-in',
-        prompt: `Close-up photorealistic tape-in hair extensions being applied by a professional stylist, clean premium salon environment, ${baseStyle}`,
+        prompt: wrap('Close-up macro photo of tape-in hair extensions being applied by a professional stylist. Clean sectioning, realistic strands, premium salon background blur. No text.', 'Macro shot: 90–105mm macro look, crisp detail, shallow depth of field.'),
       },
       'keratin-bond': {
         key: 'services/keratin-bond',
-        prompt: `Close-up photorealistic keratin bond (k-tip) hair extensions application, precise sectioning, premium salon, ${baseStyle}`,
+        prompt: wrap('Close-up macro photo of keratin bond (k-tip) hair extensions application. Precise sectioning, realistic bonds, premium salon background blur. No text.', 'Macro shot: 90–105mm macro look, crisp detail, shallow depth of field.'),
       },
       'hand-tied': {
         key: 'services/hand-tied',
-        prompt: `Close-up photorealistic hand-tied weft hair extension installation with beads, luxury salon, ${baseStyle}`,
+        prompt: wrap('Close-up macro photo of hand-tied weft hair extensions installation with beads. Clean parting, realistic strands, luxury salon background blur. No text.', 'Macro shot: 90–105mm macro look, crisp detail, shallow depth of field.'),
       },
       'sew-in': {
         key: 'services/sew-in',
-        prompt: `Close-up photorealistic sew-in hair extension technique, stylist hands sewing weft, luxury salon, ${baseStyle}`,
+        prompt: wrap('Close-up macro photo of sew-in hair extension technique: stylist hands sewing weft with needle/thread. Clean parting, realistic strands, luxury salon background blur. No text.', 'Macro shot: 90–105mm macro look, crisp detail, shallow depth of field.'),
       },
     },
     transformations: {
       t1_before: {
         key: 'transformations/t1_before',
-        prompt: `Back view natural medium-length brunette hair, before hair extension transformation, luxury salon lighting, ${baseStyle}`,
+        prompt: wrap('Back view portrait of natural medium-length brunette hair BEFORE extension transformation. Neutral background, salon lighting, realistic hair texture.', portraitExtras),
       },
       t1_after: {
         key: 'transformations/t1_after',
-        prompt: `Back view long glossy brunette hair extensions result, after transformation, luxury salon lighting, ${baseStyle}`,
+        prompt: wrap('Back view portrait of long glossy brunette hair extensions AFTER transformation. Seamless blend, healthy ends, premium shine. Neutral background.', portraitExtras),
       },
       t2_before: {
         key: 'transformations/t2_before',
-        prompt: `Back view shoulder-length hair before balayage and extensions, subtle, luxury salon, ${baseStyle}`,
+        prompt: wrap('Back view portrait of shoulder-length hair BEFORE subtle balayage and extensions. Neutral background, realistic hair texture.', portraitExtras),
       },
       t2_after: {
         key: 'transformations/t2_after',
-        prompt: `Back view long champagne blonde balayage hair extensions result, after transformation, luxury salon, ${baseStyle}`,
+        prompt: wrap('Back view portrait of long champagne blonde balayage + extensions AFTER transformation. Dimensional ribbons, root melt, seamless blend, healthy shine. Neutral background.', portraitExtras),
       },
     },
     gallery: {
       Blonde: [
-        { key: 'gallery/blonde_1', prompt: `Back view icy platinum blonde hair extensions, seamless blend, luxury editorial, ${baseStyle}` },
-        { key: 'gallery/blonde_2', prompt: `Back view champagne blonde balayage hair extensions, luxury salon, ${baseStyle}` },
-        { key: 'gallery/blonde_3', prompt: `Back view warm honey blonde hair extensions, soft waves, ${baseStyle}` },
+        { key: 'gallery/blonde_1', prompt: wrap('Back view portrait: icy platinum blonde hair extensions, seamless blend, premium shine, soft movement. Neutral background.', portraitExtras) },
+        { key: 'gallery/blonde_2', prompt: wrap('Back view portrait: champagne blonde balayage hair extensions, dimensional ribbons, natural root melt, premium shine. Neutral background.', portraitExtras) },
+        { key: 'gallery/blonde_3', prompt: wrap('Back view portrait: warm honey blonde hair extensions, soft waves, seamless blend, premium shine. Neutral background.', portraitExtras) },
       ],
       Volume: [
-        { key: 'gallery/volume_1', prompt: `Back view voluminous hair extensions, thick waves, luxury editorial, ${baseStyle}` },
-        { key: 'gallery/volume_2', prompt: `Back view blowout volume hair extensions, glossy texture, ${baseStyle}` },
-        { key: 'gallery/volume_3', prompt: `Back view dense hair extensions, editorial waves, ${baseStyle}` },
+        { key: 'gallery/volume_1', prompt: wrap('Back view portrait: voluminous hair extensions, thick luxury waves, high density but believable hairline, premium shine. Neutral background.', portraitExtras) },
+        { key: 'gallery/volume_2', prompt: wrap('Back view portrait: blowout volume hair extensions, glossy texture, smooth movement, premium finish. Neutral background.', portraitExtras) },
+        { key: 'gallery/volume_3', prompt: wrap('Back view portrait: dense hair extensions with editorial waves, seamless blend, premium shine. Neutral background.', portraitExtras) },
       ],
       Length: [
-        { key: 'gallery/length_1', prompt: `Back view extra long hair extensions, sleek glossy finish, ${baseStyle}` },
-        { key: 'gallery/length_2', prompt: `Back view very long hair extensions with soft curls, ${baseStyle}` },
-        { key: 'gallery/length_3', prompt: `Back view mermaid length hair extensions, luxury salon lighting, ${baseStyle}` },
+        { key: 'gallery/length_1', prompt: wrap('Back view portrait: extra long hair extensions, sleek glossy finish, seamless blend, healthy ends. Neutral background.', portraitExtras) },
+        { key: 'gallery/length_2', prompt: wrap('Back view portrait: very long hair extensions with soft curls, seamless blend, premium shine. Neutral background.', portraitExtras) },
+        { key: 'gallery/length_3', prompt: wrap('Back view portrait: mermaid length hair extensions, luxury salon lighting, seamless blend, premium shine. Neutral background.', portraitExtras) },
       ],
     },
   };

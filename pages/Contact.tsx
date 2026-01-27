@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, User, Mail, Scissors, Sparkles, CheckCircle2, Loader2 } from 'lucide-react';
+import { Icon } from '../components/ui/Icon';
 import { emitAnalytics } from '../components/analytics/emit';
 import { Button } from '../components/ui/Button';
 import { AnimatedSection } from '../components/ui/AnimatedSection';
@@ -143,7 +143,7 @@ const AIIntake: React.FC<{ bookingContact: { name: string; email: string; phone:
         <Button variant="primary" onClick={onGenerate} disabled={loading} className="inline-flex items-center gap-2">
           {loading ? (
             <>
-              <Loader2 size={16} className="animate-spin" />
+              <Icon icon="fluent:spinner-ios-20-regular" size={16} tone="gold" className="animate-spin" />
               Generating notes…
             </>
           ) : (
@@ -335,7 +335,7 @@ export const Contact: React.FC = () => {
 
           <div className="mt-10 border border-gray-100 bg-white p-6 md:p-8 text-left">
             <div className="flex items-center gap-2 text-divine-gold font-bold text-[10px] uppercase tracking-widest mb-3">
-              <Sparkles size={14} />
+              <Icon icon="fluent-emoji:sparkles" size={14} />
               AI Intake Assistant
             </div>
             <p className="text-sm text-gray-700 leading-relaxed mb-6">

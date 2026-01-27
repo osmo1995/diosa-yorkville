@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
-import { Sparkles, Wand2, ShieldCheck, Clock, Send, MessageSquareText } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { Icon } from '../ui/Icon';
 import type { Service } from '../../types';
 
 export type ConciergeAnswers = {
@@ -147,7 +147,7 @@ export const ConciergeAssistant: React.FC<{ services: Service[]; onBook?: (servi
             </p>
           </div>
           <div className="hidden md:flex items-center gap-2 text-divine-gold">
-            <Sparkles size={22} />
+            <Icon icon="fluent-emoji:sparkles" size={22} />
           </div>
         </div>
 
@@ -205,7 +205,7 @@ export const ConciergeAssistant: React.FC<{ services: Service[]; onBook?: (servi
 
             <div className="bg-goddess-white border border-gray-100 p-8 md:p-10">
               <div className="flex items-center gap-3 text-divine-gold mb-4">
-                <Wand2 size={18} />
+                <Icon icon="fluent-emoji:magic-wand" size={18} />
                 <p className="text-[10px] uppercase tracking-widest font-bold">Recommended method</p>
               </div>
 
@@ -214,11 +214,11 @@ export const ConciergeAssistant: React.FC<{ services: Service[]; onBook?: (servi
 
               <div className="grid grid-cols-2 gap-4 text-[11px] uppercase tracking-widest text-gray-500 mb-10">
                 <div className="flex items-center gap-2">
-                  <ShieldCheck size={16} className="text-divine-gold" />
+                  <Icon icon="fluent:shield-checkmark-20-regular" size={16} tone="gold" />
                   <span>Integrity-first</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Clock size={16} className="text-divine-gold" />
+                  <Icon icon="fluent:clock-20-regular" size={16} tone="gold" />
                   <span>{rec.bestService.longevity}</span>
                 </div>
               </div>
@@ -241,7 +241,7 @@ export const ConciergeAssistant: React.FC<{ services: Service[]; onBook?: (servi
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             <div className="border border-gray-100 bg-white p-6 md:p-8">
               <div className="flex items-center gap-2 text-divine-gold mb-4">
-                <MessageSquareText size={18} />
+                <Icon icon="fluent:chat-24-regular" size={18} tone="gold" />
                 <div className="text-[10px] uppercase tracking-widest font-bold">Ask a question</div>
               </div>
 
@@ -266,7 +266,7 @@ export const ConciergeAssistant: React.FC<{ services: Service[]; onBook?: (servi
                   }}
                   className="inline-flex items-center gap-2"
                 >
-                  <Send size={16} />
+                  <Icon icon="fluent:send-20-regular" size={16} tone="white" />
                   Send
                 </Button>
               </div>
