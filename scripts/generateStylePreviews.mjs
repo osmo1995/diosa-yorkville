@@ -41,13 +41,11 @@ function loadDotEnvLocal() {
 loadDotEnvLocal();
 
 const API_KEY = process.env.GEMINI_API_KEY;
-if (!API_KEY) {
-  console.error('Missing GEMINI_API_KEY in .env.local');
-  process.exit(1);
-}
+const HF_TOKEN = process.env.HF_TOKEN || process.env.HUGGINGFACE_TOKEN;
 
 const args = process.argv.slice(2);
-const MODEL = args.find((a) => a.startsWith('--model='))?.split('=')[1] || 'models/gemini-3-pro-image-preview';
+const PROVIDER = args.find((a) => a.startsWith('--provider='))?.split('=')[1] || 'gemini';
+const MODEL = args.find((a) => a.startsWith('--model='))?.split('=')[1] || (PROVIDER === 'hf' ? 'black-forest-labs/FLUX.1-schnell' : 'models/gemini-3-pro-image-preview');
 const FORCE = args.includes('--force');
 const CATEGORY = args.find((a) => a.startsWith('--category='))?.split('=')[1] || 'all';
 const LIMIT = Number(args.find((a) => a.startsWith('--limit='))?.split('=')[1] || '0');
@@ -56,6 +54,15 @@ const PRESETS = args.find((a) => a.startsWith('--presets='))?.split('=')[1] || '
 const COLORS = args.find((a) => a.startsWith('--colors='))?.split('=')[1] || '';
 const LENGTHS = args.find((a) => a.startsWith('--lengths='))?.split('=')[1] || '';
 const DRY_RUN = args.includes('--dry-run');
+
+if (PROVIDER === 'gemini' && !API_KEY) {
+  console.error('Missing GEMINI_API_KEY in .env.local');
+  process.exit(1);
+}
+if (PROVIDER === 'hf' && !HF_TOKEN) {
+  console.error('Missing HF_TOKEN or HUGGINGFACE_TOKEN in .env.local or as environment variable');
+  process.exit(1);
+}
 
 function parseCsvFlag(raw) {
   return raw
@@ -191,7 +198,7 @@ const PRESET_PREVIEWS = [
   },
 ];
 
-async function generateImage(prompt) {
+async function generateImageGemini(prompt) {
   const url = `https://generativelanguage.googleapis.com/v1beta/${MODEL}:generateContent?key=${encodeURIComponent(API_KEY)}`;
 
   const body = {
@@ -230,6 +237,40 @@ async function generateImage(prompt) {
   return { buf, mimeType };
 }
 
+async function generateImageHuggingFace(prompt) {
+  const url = `https://router.huggingface.co/v1/models/${MODEL}`;
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${HF_TOKEN}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      inputs: prompt,
+      parameters: {
+        guidance_scale: 3.5, // Flux.1-schnell works best with low guidance
+        num_inference_steps: 4, // schnell is optimized for 1-4 steps
+      },
+    }),
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`HuggingFace inference failed ${res.status}: ${text}`);
+  }
+
+  const buf = Buffer.from(await res.arrayBuffer());
+  return { buf, mimeType: 'image/png' };
+}
+
+async function generateImage(prompt) {
+  if (PROVIDER === 'hf') {
+    return generateImageHuggingFace(prompt);
+  }
+  return generateImageGemini(prompt);
+}
+
 function existingVariants(presetId) {
   // If --force is set, always regenerate.
   if (FORCE) return null;
@@ -241,10 +282,11 @@ function existingVariants(presetId) {
 
   const srcSetEntries = files.map((f, idx) => `${toPublicPath(f)} ${SIZES[idx]}w`);
   const mainSrc = toPublicPath(path.join(baseDir, '1000.webp'));
+  const attribution = PROVIDER === 'hf' ? 'Generated with HuggingFace Flux' : 'Generated with Google Gemini';
   return {
     src: mainSrc,
     srcSet: srcSetEntries.join(', '),
-    photographer: 'Generated with Google Gemini',
+    photographer: attribution,
     photographerUrl: '',
     pexelsUrl: '',
     avgColor: '',
@@ -268,10 +310,11 @@ async function writeVariants({ presetId, prompt, outKey = presetId }) {
   if (DRY_RUN) {
     console.log(`[dry-run] would call Gemini and write variants to ${path.relative(PROJECT_ROOT, path.join(OUT_DIR, outKey))}`);
     // Return a placeholder mapping (no files written)
+    const attribution = PROVIDER === 'hf' ? 'Generated with HuggingFace Flux' : 'Generated with Google Gemini';
     return {
       src: toPublicPath(path.join(OUT_DIR, outKey, '1000.webp')),
       srcSet: SIZES.map((w) => `${toPublicPath(path.join(OUT_DIR, outKey, `${w}.webp`))} ${w}w`).join(', '),
-      photographer: 'Generated with Google Gemini',
+      photographer: attribution,
       photographerUrl: '',
       pexelsUrl: '',
       avgColor: '',
@@ -307,10 +350,11 @@ async function writeVariants({ presetId, prompt, outKey = presetId }) {
   }
 
   const srcSetEntries = SIZES.map((w) => `${toPublicPath(path.join(baseDir, `${w}.webp`))} ${w}w`);
+  const attribution = PROVIDER === 'hf' ? 'Generated with HuggingFace Flux' : 'Generated with Google Gemini';
   return {
     src: toPublicPath(path.join(baseDir, '1000.webp')),
     srcSet: srcSetEntries.join(', '),
-    photographer: 'Generated with Google Gemini',
+    photographer: attribution,
     photographerUrl: '',
     pexelsUrl: '',
     avgColor: '',
