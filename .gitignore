@@ -25,3 +25,7 @@ dist-ssr
 
 .vercel
 .env*.local
+
+# Generator temp artifacts
+*.tmp.webp
+*.tmp_overlay

@@ -73,6 +73,8 @@ export const Home: React.FC = () => {
   const [autoRotatePaused, setAutoRotatePaused] = useState(false);
 
   useEffect(() => {
+    const prefersReduced = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+    if (prefersReduced) return;
     if (autoRotatePaused) return;
     if (transformations.length <= 1) return;
 
@@ -318,7 +320,7 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Thumbnail strip (best for quickly seeing all 10 variations) */}
-            <div className="mt-8 flex gap-3 overflow-x-auto pb-2">
+            <div className="mt-8 flex gap-3 overflow-x-auto pb-2" aria-label="Results thumbnails">
               {transformations.map((t, idx) => {
                 const thumb = generatedImages.transformations[`${t.id}_after`];
                 const isActive = idx === resultsIndex;
@@ -341,6 +343,7 @@ export const Home: React.FC = () => {
                       srcSet={thumb?.srcSet}
                       sizes="80px"
                       alt={t.method}
+                      loading="lazy"
                       className="h-full w-full object-cover"
                       draggable={false}
                     />

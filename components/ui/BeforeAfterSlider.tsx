@@ -52,6 +52,8 @@ export const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
   }, [hasInteracted, onUserInteract]);
 
   useEffect(() => {
+    const prefersReduced = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+    if (prefersReduced) return;
     if (!autoSweep || hasInteracted) return;
     let raf = 0;
     const start = performance.now();

@@ -413,6 +413,27 @@ async function main() {
     2
   )} as const;\n`;
 
+  // Best-effort cleanup sweep for any lingering temp artifacts.
+  try {
+    const sweep = (dir) => {
+      if (!fs.existsSync(dir)) return;
+      for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+        const p = path.join(dir, entry.name);
+        if (entry.isDirectory()) sweep(p);
+        else if (p.endsWith('.tmp.webp') || p.endsWith('.tmp_overlay')) {
+          try {
+            fs.unlinkSync(p);
+          } catch {
+            // ignore
+          }
+        }
+      }
+    };
+    sweep(OUT_DIR);
+  } catch {
+    // ignore
+  }
+
   fs.writeFileSync(MAP_FILE, out, 'utf8');
   console.log(`Wrote ${path.relative(PROJECT_ROOT, MAP_FILE)}`);
 }
