@@ -17,7 +17,6 @@ import {
   seasonalOffers,
 } from '../data/salonContent';
 import { generatedImages } from '../data/generatedImages';
-import { BeforeAfterSlider } from '../components/ui/BeforeAfterSlider';
 
 // Lazy load heavier AI components to reduce initial bundle weight.
 const ConciergeAssistant = React.lazy(() =>
@@ -52,15 +51,6 @@ function useNearViewport(offsetPx = 200) {
 export const Home: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeTransformation, setActiveTransformation] = useState(0);
-  const [resultsIndex, setResultsIndex] = useState(0);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
-
-  // Simulate initial image load
-  useEffect(() => {
-    const timer = setTimeout(() => setImagesLoaded(true), 1000);
-    return () => clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -75,72 +65,22 @@ export const Home: React.FC = () => {
   // Load concierge late (after main content).
   const loadConcierge = useNearViewport(800);
 
-  const nextTransformation = () => {
-    setActiveTransformation((prev) => (prev + 1) % transformations.length);
-  };
-
-  const prevTransformation = () => {
-    setActiveTransformation((prev) => (prev - 1 + transformations.length) % transformations.length);
-  };
-
-  const setTransformation = (idx: number) => {
-    setActiveTransformation(((idx % transformations.length) + transformations.length) % transformations.length);
-  };
-
-  // Auto-rotate every 10 seconds; pause on interaction and when tab is hidden.
-  const [autoRotatePaused, setAutoRotatePaused] = useState(false);
-
-  useEffect(() => {
-    const prefersReduced = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
-    if (prefersReduced) return;
-    if (autoRotatePaused) return;
-    if (transformations.length <= 1) return;
-
-    const onVis = () => {
-      if (document.hidden) setAutoRotatePaused(true);
-    };
-    document.addEventListener('visibilitychange', onVis);
-
-    const t = window.setInterval(() => {
-      setActiveTransformation((prev) => (prev + 1) % transformations.length);
-    }, 10_000);
-
-    return () => {
-      document.removeEventListener('visibilitychange', onVis);
-      window.clearInterval(t);
-    };
-  }, [autoRotatePaused]);
-
-  const active = transformations[activeTransformation];
-  const beforeAsset = generatedImages.transformations[`${active.id}_before`];
-  const afterAsset = generatedImages.transformations[`${active.id}_after`];
-
-  const resultsActive = transformations[resultsIndex] || active;
-  const resultsBeforeAsset = generatedImages.transformations[`${resultsActive.id}_before`];
-  const resultsAfterAsset = generatedImages.transformations[`${resultsActive.id}_after`];
-
   return (
     <div className="overflow-x-hidden">
       {/* Hero Section */}
       <section
         className="relative h-screen w-full flex items-center justify-center overflow-hidden"
-        onMouseEnter={() => setAutoRotatePaused(true)}
-        onFocusCapture={() => setAutoRotatePaused(true)}
-        onMouseLeave={() => setAutoRotatePaused(false)}
       >
+        {/* Simple hero image background */}
         <div className="absolute inset-0 z-0">
-          <BeforeAfterSlider
-            before={{ src: beforeAsset?.src || active.before, srcSet: beforeAsset?.srcSet, alt: 'Before result' }}
-            after={{ src: afterAsset?.src || active.after, srcSet: afterAsset?.srcSet, alt: 'After result' }}
-            className="h-full w-full"
-            initialRatio={0.42}
-            autoSweep
-            onUserInteract={() => setAutoRotatePaused(true)}
+          <OptimizedImage
+            src={generatedImages.hero?.src || '/generated/hero/1000.webp'}
+            srcSet={generatedImages.hero?.srcSet}
+            sizes="100vw"
+            alt="Luxury hair extensions by Diosa Studio"
+            className="w-full h-full object-cover"
           />
         </div>
-
-        {/* Keep 3D disabled in the new hero to prioritize photoreal transformations + performance.
-            (We can re-introduce as a subtle layer later if desired.) */}
 
         <div className="absolute inset-0 bg-deep-charcoal/45 z-10" />
 
@@ -164,38 +104,6 @@ export const Home: React.FC = () => {
               </Link>
             </div>
 
-            <div className="mt-8 text-white/70 text-[10px] uppercase tracking-widest font-bold">
-              <div className="inline-flex flex-wrap items-center gap-3 border border-white/20 px-3 py-2">
-                <span>
-                  Real results • {active.method} • {activeTransformation + 1}/{transformations.length}
-                </span>
-                <button
-                  type="button"
-                  className="text-white/80 hover:text-divine-gold transition-colors"
-                  onClick={() => {
-                    setAutoRotatePaused((p) => !p);
-                  }}
-                >
-                  {autoRotatePaused ? 'Play' : 'Pause'}
-                </button>
-              </div>
-
-              {/* Dots navigation (shows all 10 variations clearly) */}
-              <div className="mt-3 flex flex-wrap items-center gap-2">
-                {transformations.map((t, idx) => (
-                  <button
-                    key={t.id}
-                    type="button"
-                    aria-label={`Show result ${idx + 1}: ${t.method}`}
-                    className={`h-2.5 w-2.5 rounded-full border transition-colors ${idx === activeTransformation ? 'bg-divine-gold border-divine-gold' : 'bg-transparent border-white/30 hover:border-divine-gold/80'}`}
-                    onClick={() => {
-                      setAutoRotatePaused(true);
-                      setTransformation(idx);
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
           </AnimatedSection>
         </div>
       </section>
@@ -343,90 +251,27 @@ export const Home: React.FC = () => {
             <h2 className="text-4xl md:text-5xl font-serif uppercase tracking-widest mb-6">Before & After</h2>
           </AnimatedSection>
 
-          <div className="max-w-5xl mx-auto">
-            <div className="border border-gray-100 bg-goddess-white p-6">
-              <div className="flex items-center justify-between mb-3">
-                <div className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Drag to compare</div>
-                <div className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Before / After</div>
-              </div>
-              <div className="aspect-[3/4] overflow-hidden bg-gray-100">
-                <BeforeAfterSlider
-                  before={{
-                    src: resultsBeforeAsset?.src || resultsActive.before,
-                    srcSet: resultsBeforeAsset?.srcSet,
-                    alt: 'Before',
-                  }}
-                  after={{
-                    src: resultsAfterAsset?.src || resultsActive.after,
-                    srcSet: resultsAfterAsset?.srcSet,
-                    alt: 'After',
-                  }}
-                  className="h-full w-full"
-                  initialRatio={0.5}
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between mt-6">
-              <button
-                onClick={() => {
-                  setResultsIndex((prev) => (prev - 1 + transformations.length) % transformations.length);
-                }}
-                className="p-3 border border-gray-200 hover:border-divine-gold transition-colors"
-                aria-label="Previous result"
-              >
-                <Icon icon="fluent:chevron-left-24-regular" size={22} tone="charcoal" />
-              </button>
-              <div className="text-center">
-                <div className="text-sm text-gray-700 font-serif uppercase tracking-widest">{resultsActive.method}</div>
-                <div className="mt-1 text-[10px] uppercase tracking-widest font-bold text-gray-400">
-                  {resultsIndex + 1}/{transformations.length}
-                </div>
-              </div>
-              <button
-                onClick={() => {
-                  setResultsIndex((prev) => (prev + 1) % transformations.length);
-                }}
-                className="p-3 border border-gray-200 hover:border-divine-gold transition-colors"
-                aria-label="Next result"
-              >
-                <Icon icon="fluent:chevron-right-24-regular" size={22} tone="charcoal" />
-              </button>
-            </div>
-
-            {/* Thumbnail strip (best for quickly seeing all 10 variations) */}
-            <div className="mt-8 flex gap-3 overflow-x-auto pb-2" aria-label="Results thumbnails">
-              {transformations.map((t, idx) => {
-                const thumb = generatedImages.transformations[`${t.id}_after`];
-                const isActive = idx === resultsIndex;
-
-                return (
-                  <button
-                    key={t.id}
-                    type="button"
-                    className={`relative h-20 w-16 flex-shrink-0 overflow-hidden border transition-colors ${isActive ? 'border-divine-gold' : 'border-gray-200 hover:border-divine-gold/60'}`}
-                    aria-label={`Show result ${idx + 1}: ${t.method}`}
-                    onClick={() => {
-                      setResultsIndex(idx);
-                      // Keep hero in sync for cohesion.
-                      setActiveTransformation(idx);
-                      setAutoRotatePaused(true);
-                    }}
-                  >
-                    <img
-                      src={thumb?.src || t.after}
-                      srcSet={thumb?.srcSet}
-                      sizes="80px"
-                      alt={t.method}
-                      loading="lazy"
-                      className="h-full w-full object-cover"
-                      draggable={false}
-                    />
-                    {isActive && <div className="absolute inset-0 ring-2 ring-divine-gold" />}
-                  </button>
-                );
-              })}
-            </div>
+          {/* Simple grid of transformation results */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {transformations.map((t) => {
+              const afterImg = generatedImages.transformations[`${t.id}_after`];
+              return (
+                <AnimatedSection key={t.id} className="group relative aspect-[3/4] overflow-hidden bg-gray-100 border border-gray-200 hover:border-divine-gold transition-colors">
+                  <OptimizedImage
+                    src={afterImg?.src || t.after}
+                    srcSet={afterImg?.srcSet}
+                    sizes="(min-width: 1024px) 20vw, (min-width: 768px) 33vw, 50vw"
+                    alt={t.method}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-deep-charcoal/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                      <p className="text-white text-xs font-sans uppercase tracking-wider">{t.method}</p>
+                    </div>
+                  </div>
+                </AnimatedSection>
+              );
+            })}
           </div>
         </div>
       </section>
