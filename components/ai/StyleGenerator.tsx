@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '../ui/Button';
 import { Icon } from '../ui/Icon';
 import { OptimizedImage } from '../ui/OptimizedImage';
-import { stylePreviews } from '../../data/stylePreviews';
+import { stylePreviews, extensionStylePreviews } from '../../data/stylePreviews';
+import { extensionColorOptionsFull, extensionLengthOptions, extensionPreviewColorIds } from '../../data/brandInsights';
 
 type Category = 'extensions' | 'color';
 
@@ -52,6 +53,18 @@ const PRESETS: StylePreset[] = [
     name: 'Soft Waves + Extensions',
     description: 'Soft S-waves with blended length and natural movement.',
   },
+  {
+    id: 'extensions-glam-waves',
+    category: 'extensions',
+    name: 'Glam Waves + Extensions',
+    description: 'Defined, luxurious waves with a high-end, camera-ready finish.',
+  },
+  {
+    id: 'extensions-bouncy-blowout',
+    category: 'extensions',
+    name: 'Bouncy Blowout + Extensions',
+    description: 'A voluminous blowout look with soft bend and premium shine.',
+  },
 
   // COLOR
   {
@@ -96,11 +109,10 @@ const EXTENSION_PRESETS = PRESETS.filter((p) => p.category === 'extensions');
 const COLOR_PRESETS = PRESETS.filter((p) => p.category === 'color');
 
 // Extensions controls
-const EXT_LENGTH = ['subtle', 'medium', 'major'] as const;
 const EXT_DENSITY = ['natural', 'full', 'glam'] as const;
 const EXT_FINISH = ['straight', 'soft-waves', 'glam-waves'] as const;
 
-type ExtLength = (typeof EXT_LENGTH)[number];
+type ExtInches = (typeof extensionLengthOptions)[number]['id'];
 type ExtDensity = (typeof EXT_DENSITY)[number];
 type ExtFinish = (typeof EXT_FINISH)[number];
 
@@ -132,7 +144,8 @@ export const StyleGenerator: React.FC = () => {
   const [intensity, setIntensity] = useState(0.6);
 
   // Extensions options
-  const [extLength, setExtLength] = useState<ExtLength>('medium');
+  const [extInches, setExtInches] = useState<ExtInches>('18');
+  const [extColorId, setExtColorId] = useState<string>('keep-natural');
   const [extDensity, setExtDensity] = useState<ExtDensity>('full');
   const [extFinish, setExtFinish] = useState<ExtFinish>('soft-waves');
 
@@ -192,10 +205,11 @@ export const StyleGenerator: React.FC = () => {
       fd.append('category', category);
 
       if (category === 'extensions') {
-        fd.append('extLength', extLength);
+        fd.append('extInches', extInches);
+        fd.append('extColorId', extColorId);
         fd.append('extDensity', extDensity);
         fd.append('extFinish', extFinish);
-      } else {
+      } else { 
         fd.append('colorTone', colorTone);
         fd.append('colorBrightness', colorBrightness);
         fd.append('colorDimension', colorDimension);
@@ -320,18 +334,26 @@ export const StyleGenerator: React.FC = () => {
                   >
                     <div className="flex items-start gap-3">
                       <div className="w-14 h-14 bg-gray-100 overflow-hidden shrink-0">
-                        {stylePreviews[p.id]?.src ? (
-                          <OptimizedImage
-                            alt={`${p.name} preview`}
-                            src={stylePreviews[p.id].src}
-                            srcSet={stylePreviews[p.id].srcSet}
-                            sizes="56px"
-                            loading="lazy"
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-[10px] text-gray-400">Preview</div>
-                        )}
+                        {(() => {
+                          const isExtensions = p.category === 'extensions';
+                          const variant = isExtensions
+                            ? extensionStylePreviews?.[p.id]?.[extColorId]?.[extInches]
+                            : null;
+                          const fallback = stylePreviews[p.id];
+                          const asset = variant || fallback;
+                          return asset?.src ? (
+                            <OptimizedImage
+                              alt={`${p.name} preview`}
+                              src={asset.src}
+                              srcSet={asset.srcSet}
+                              sizes="56px"
+                              loading="lazy"
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-[10px] text-gray-400">Preview</div>
+                          );
+                        })()}
                       </div>
                       <div>
                         <div className="text-[11px] uppercase tracking-widest font-bold">{p.name}</div>
@@ -366,12 +388,54 @@ export const StyleGenerator: React.FC = () => {
                 <div className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-4">Extensions customization</div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="sm:col-span-3">
+                    <div className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-2">Colour match</div>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                      <button
+                        type="button"
+                        className={`border px-3 py-2 text-xs text-left ${extColorId === 'keep-natural' ? 'border-divine-gold bg-divine-gold/10' : 'border-gray-200 hover:border-divine-gold/60'}`}
+                        onClick={() => setExtColorId('keep-natural')}
+                      >
+                        <div className="font-semibold">Keep Natural</div>
+                        <div className="text-[10px] text-gray-500">Best realism</div>
+                      </button>
+                      {extensionColorOptionsFull.map((c) => {
+                        const previewable = (extensionPreviewColorIds as readonly string[]).includes(c.id);
+                        const active = extColorId === c.id;
+                        return (
+                          <button
+                            key={c.id}
+                            type="button"
+                            className={`border px-3 py-2 text-xs text-left ${active ? 'border-divine-gold bg-divine-gold/10' : 'border-gray-200 hover:border-divine-gold/60'}`}
+                            onClick={() => setExtColorId(c.id)}
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="h-3 w-3 rounded-full border" style={{ background: c.hex || '#eee' }} />
+                              <span className="font-semibold">{c.label}</span>
+                            </div>
+                            {previewable ? (
+                              <div className="mt-1 text-[10px] text-gray-500">Instant preview</div>
+                            ) : (
+                              <div className="mt-1 text-[10px] text-gray-400">Applied on generate</div>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <div className="mt-2 text-[11px] text-gray-500 leading-relaxed">
+                      Choose a shade to preview. Only popular shades show instant previews; any shade can be used for your final generation.
+                    </div>
+                  </div>
                   <div>
-                    <div className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-2">Added length</div>
-                    <select value={extLength} onChange={(e) => setExtLength(e.target.value as ExtLength)} className="w-full border border-gray-200 bg-white px-3 py-2 text-sm">
-                      {EXT_LENGTH.map((v) => (
-                        <option key={v} value={v}>
-                          {humanize(v)}
+                    <div className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-2">Length (inches)</div>
+                    <select
+                      value={extInches}
+                      onChange={(e) => setExtInches(e.target.value as ExtInches)}
+                      className="w-full border border-gray-200 bg-white px-3 py-2 text-sm"
+                    >
+                      {extensionLengthOptions.map((opt) => (
+                        <option key={opt.id} value={opt.id}>
+                          {opt.label}
                         </option>
                       ))}
                     </select>

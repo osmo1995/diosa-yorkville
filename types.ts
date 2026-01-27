@@ -11,6 +11,7 @@ export interface Service {
 }
 
 export type ImageAsset = {
+
   /** Pexels photo id for stable curation/debugging */
   photoId?: number;
   /** Primary src used when srcSet is not supported */
@@ -30,6 +31,30 @@ export type PexelsImageMap = {
   services: Record<string, ImageAsset>;
   transformations: Record<string, ImageAsset>;
   gallery: Record<'Blonde' | 'Volume' | 'Length', ImageAsset[]>;
+};
+
+export type ExtensionLengthId = '14' | '18' | '22' | '24';
+
+export type ExtensionColorFamily = 'blonde' | 'bronde' | 'brunette' | 'red' | 'black';
+
+export type ExtensionColorOption = {
+  id: string;
+  label: string;
+  family: ExtensionColorFamily;
+  /** Optional representative swatch */
+  hex?: string;
+  /** Prompt descriptor used by the generator (salon-realistic language). */
+  promptDescriptor: string;
+  /** If true, allow as an instant preview option (pre-rendered thumbnails exist). */
+  previewable?: boolean;
+};
+
+export type ExtensionLengthOption = {
+  id: ExtensionLengthId;
+  inches: number;
+  label: string;
+  /** Prompt descriptor used by the generator */
+  promptDescriptor: string;
 };
 
 export interface Transformation {

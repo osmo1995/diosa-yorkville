@@ -62,7 +62,9 @@ A floating AI concierge widget appears site-wide (lazy-loaded after idle) to hel
   - `intensity` (0–1)
 
   Extensions-only optional fields (used when `category=extensions`):
-  - `extLength` (`subtle` | `medium` | `major`)
+  - `extInches` (`14` | `18` | `22` | `24`) (recommended)
+  - `extColorId` (named salon shade id, e.g., `champagne`, `ash`, `old-money`, `espresso`, `copper`, or `keep-natural`)
+  - `extLength` (`subtle` | `medium` | `major`) (legacy fallback)
   - `extDensity` (`natural` | `full` | `glam`)
   - `extFinish` (`straight` | `soft-waves` | `glam-waves`)
 
@@ -113,6 +115,9 @@ Local dev note:
    - Ensure `GEMINI_API_KEY` is set in `.env.local`
    - Run (full generation):
      `npm run gemini:style-previews:3pro:force`
+
+Extension preview variants (8 styles × 12 colours × 4 lengths):
+     `npm run gemini:style-previews:extensions:top:force`
 
    Output:
    - Images: `public/generated/style-previews/<presetId>/{400,700,1000,2000}.webp`

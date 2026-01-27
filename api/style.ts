@@ -10,7 +10,8 @@ import fs from 'node:fs';
  * - Step 2: generate either an EXTENSIONS preview or a COLOUR preview.
  *
  * IMPORTANT: We keep services separate:
- * - Extensions presets do NOT change colour.
+ * - Extensions presets primarily change length/density/finish.
+ * - Extensions may optionally apply a realistic colour match on the added hair (root shadow blend) when requested.
  * - Colour presets do NOT add length/density beyond natural hair.
  */
 
@@ -32,9 +33,28 @@ const MAX_FILE_BYTES = Number(process.env.MAX_UPLOAD_BYTES || DEFAULT_MAX_FILE_B
 const ALLOWED_MIME = new Set(['image/jpeg', 'image/png', 'image/webp']);
 
 // EXTENSIONS controls (whitelisted)
-const EXT_LENGTH = new Set(['subtle', 'medium', 'major']);
+const EXT_LENGTH = new Set(['subtle', 'medium', 'major']); // legacy
+const EXT_INCHES = new Set(['14', '18', '22', '24']);
 const EXT_DENSITY = new Set(['natural', 'full', 'glam']);
 const EXT_FINISH = new Set(['straight', 'soft-waves', 'glam-waves']);
+
+// Named-only shade IDs (must match data/brandInsights.ts)
+const EXT_COLOR_IDS = new Set([
+  'keep-natural',
+  'platinum-icy',
+  'champagne',
+  'beige',
+  'ash',
+  'old-money',
+  'creme-brulee',
+  'honey',
+  'caramel',
+  'bronde',
+  'espresso',
+  'expensive-brunette',
+  'copper',
+  'soft-black',
+]);
 
 // COLOUR controls (whitelisted)
 const COLOR_TONE = new Set(['cool', 'neutral', 'warm']);
@@ -78,7 +98,19 @@ const PRESETS: Record<string, StylePreset> = {
     category: 'extensions',
     name: 'Soft Waves + Extensions',
     prompt:
-      'Add seamless extensions and style into soft S-waves with movement. Preserve natural color exactly. Keep volume realistic and blend consistent.',
+      'Add seamless extensions and style into soft S-waves with movement. Preserve natural color unless a colour match is explicitly requested. Keep volume realistic and blend consistent.',
+  },
+  'extensions-glam-waves': {
+    category: 'extensions',
+    name: 'Glam Waves + Extensions',
+    prompt:
+      'Add seamless extensions and style into defined, glamorous waves with a luxury finish. Preserve natural color unless a colour match is explicitly requested. Keep the result photorealistic and avoid an artificial wig-like look.',
+  },
+  'extensions-bouncy-blowout': {
+    category: 'extensions',
+    name: 'Bouncy Blowout + Extensions',
+    prompt:
+      'Add seamless extensions and style into a voluminous bouncy blowout with soft bend and premium shine. Preserve natural color unless a colour match is explicitly requested. Keep the hairline and part believable.',
   },
 
   // COLOUR
@@ -237,17 +269,49 @@ async function removeBackground(params: {
   return { mimeType: cutout.mimeType || 'image/png', data: cutout.data };
 }
 
-function extensionsOptionsSnippet(params: { extLength: string; extDensity: string; extFinish: string }): string {
+const EXT_COLOR_DESCRIPTORS: Record<string, string> = {
+  'platinum-icy': 'icy platinum blonde, cool-toned, pearly silver undertone, salon-toned',
+  champagne: 'champagne blonde, neutral-beige with soft gold reflect, rooted blend',
+  beige: 'beige blonde, neutral lived-in blonde, natural dimension',
+  ash: 'ash blonde, cool smoky undertone, soft shadow root',
+  'old-money': 'old money blonde, ultra-soft neutral blonde, expensive blend, subtle root melt',
+  'creme-brulee': 'crème brûlée blonde, warm-neutral creamy blonde with caramel ribbons, rooted dimension',
+  honey: 'honey blonde, warm golden blonde with soft glow, salon finish',
+  caramel: 'caramel blonde, deeper golden blonde, rich dimension',
+  bronde: 'bronde (brown-blonde blend), seamless rooted transition, lived-in dimension',
+  espresso: 'espresso brunette, deep rich brown with glossy finish',
+  'expensive-brunette': 'expensive brunette, multi-dimensional chocolate-espresso tones, glassy gloss',
+  copper: 'rich salon copper, soft auburn dimension, glossy',
+  'soft-black': 'soft natural black, not blue-black, healthy shine',
+};
+
+function extensionsOptionsSnippet(params: {
+  extLength?: string;
+  extInches?: string;
+  extColorId?: string;
+  extDensity: string;
+  extFinish: string;
+}): string {
   const length = params.extLength;
+  const inches = params.extInches;
   const density = params.extDensity;
   const finish = params.extFinish;
+  const colorDesc = params.extColorId && params.extColorId !== 'keep-natural' ? EXT_COLOR_DESCRIPTORS[params.extColorId] : undefined;
 
   const lengthText =
-    length === 'subtle'
-      ? 'Add subtle length only (very natural).'
-      : length === 'major'
-        ? 'Add noticeable length while staying photorealistic and believable.'
-        : 'Add moderate length with a seamless blend.';
+    inches === '14'
+      ? 'Target ~14-inch length (collarbone).'
+      : inches === '22'
+        ? 'Target ~22-inch length (bottom of ribcage).'
+        : inches === '24'
+          ? 'Target ~24-inch length (just above hips).'
+          : inches === '18'
+            ? 'Target ~18-inch length (below bra strap).'
+            : length === 'subtle'
+              ? 'Add subtle length only (very natural).'
+              : length === 'major'
+                ? 'Add noticeable length while staying photorealistic and believable.'
+                : 'Add moderate length with a seamless blend.';
 
   const densityText =
     density === 'natural'
@@ -263,7 +327,11 @@ function extensionsOptionsSnippet(params: { extLength: string; extDensity: strin
         ? 'Style finish: glam waves (smooth, defined, high-end).'
         : 'Style finish: soft waves with movement.';
 
-  return `${lengthText} ${densityText} ${finishText}`;
+  const colorText = colorDesc
+    ? `Colour match: ${colorDesc}. Blend extensions into natural hair with a realistic root shadow/root melt so the match is seamless.`
+    : 'Colour: keep the person\'s natural hair color unless a colour match is specified.';
+
+  return `${lengthText} ${densityText} ${finishText} ${colorText}`;
 }
 
 function colorOptionsSnippet(params: {
@@ -314,6 +382,8 @@ async function generateLook(params: {
   category: Category;
   // extensions
   extLength?: string;
+  extInches?: string;
+  extColorId?: string;
   extDensity?: string;
   extFinish?: string;
   // color
@@ -338,8 +408,8 @@ Core rules:
     params.category === 'extensions'
       ? `
 Service separation:
-- EXTENSIONS PREVIEW: Do NOT change hair color or tone. Color must remain exactly as in the original.
-- You MAY change length/density/finish via extensions.
+- EXTENSIONS PREVIEW: You MAY add extensions to change length/density/finish.
+- Colour behavior: if a colour match is specified, blend the extensions with a realistic rooted shadow so the result looks like a professional match. If no colour is specified, preserve the person’s natural hair color.
 `
       : `
 Service separation:
@@ -351,6 +421,8 @@ Service separation:
     params.category === 'extensions'
       ? extensionsOptionsSnippet({
           extLength: params.extLength || 'medium',
+          extInches: params.extInches,
+          extColorId: params.extColorId,
           extDensity: params.extDensity || 'full',
           extFinish: params.extFinish || 'soft-waves',
         })
@@ -538,7 +610,9 @@ export default async function handler(req: any, res: any) {
     }
 
     // Whitelisted options with defaults.
-    const extLength = allowOrDefault(fields.extLength, EXT_LENGTH, 'medium');
+    const extLength = allowOrDefault(fields.extLength, EXT_LENGTH, 'medium'); // legacy
+    const extInches = allowOrDefault(fields.extInches, EXT_INCHES, '18');
+    const extColorId = allowOrDefault(fields.extColorId, EXT_COLOR_IDS, 'keep-natural');
     const extDensity = allowOrDefault(fields.extDensity, EXT_DENSITY, 'full');
     const extFinish = allowOrDefault(fields.extFinish, EXT_FINISH, 'soft-waves');
 
@@ -556,6 +630,8 @@ export default async function handler(req: any, res: any) {
       timeoutMs,
       category,
       extLength,
+      extInches,
+      extColorId,
       extDensity,
       extFinish,
       colorTone,

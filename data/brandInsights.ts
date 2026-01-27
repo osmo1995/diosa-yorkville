@@ -62,6 +62,56 @@ export const brandSources: BrandSource[] = [
   },
 ];
 
+export const extensionLengthOptions = [
+  { id: '14', inches: 14, label: '14 in (collarbone)', promptDescriptor: '14-inch length (collarbone)' },
+  { id: '18', inches: 18, label: '18 in (below bra strap)', promptDescriptor: '18-inch length (below bra strap)' },
+  { id: '22', inches: 22, label: '22 in (bottom of ribcage)', promptDescriptor: '22-inch length (bottom of ribcage)' },
+  { id: '24', inches: 24, label: '24 in (above hips)', promptDescriptor: '24-inch length (just above hips)' },
+] as const;
+
+// Full selectable salon shade library (named-only for consistent, safe prompting).
+// Users can pick any of these for their generation; only a curated subset is pre-rendered for instant previews.
+export const extensionColorOptionsFull = [
+  // BLONDES (wide spectrum)
+  { id: 'platinum-icy', label: 'Icy Platinum', family: 'blonde', hex: '#EDE7DF', promptDescriptor: 'icy platinum blonde, cool-toned, pearly silver undertone, salon-toned' },
+  { id: 'champagne', label: 'Champagne Blonde', family: 'blonde', hex: '#E7D6B3', promptDescriptor: 'champagne blonde, neutral-beige with soft gold reflect, rooted blend' },
+  { id: 'beige', label: 'Beige Blonde', family: 'blonde', hex: '#E2CFB1', promptDescriptor: 'beige blonde, neutral lived-in blonde, natural dimension' },
+  { id: 'ash', label: 'Ash Blonde', family: 'blonde', hex: '#D7CAB4', promptDescriptor: 'ash blonde, cool smoky undertone, soft shadow root' },
+  { id: 'old-money', label: 'Old Money Blonde', family: 'blonde', hex: '#E6D5B8', promptDescriptor: 'old money blonde, ultra-soft neutral blonde, expensive blend, subtle root melt' },
+  { id: 'creme-brulee', label: 'Crème Brûlée Blonde', family: 'blonde', hex: '#E6C08E', promptDescriptor: 'crème brûlée blonde, warm-neutral creamy blonde with caramel ribbons, rooted dimension' },
+  { id: 'honey', label: 'Honey Blonde', family: 'blonde', hex: '#D9B277', promptDescriptor: 'honey blonde, warm golden blonde with soft glow, salon finish' },
+  { id: 'caramel', label: 'Caramel Blonde', family: 'blonde', hex: '#C79A63', promptDescriptor: 'caramel blonde, deeper golden blonde, rich dimension' },
+
+  // BRONDES
+  { id: 'bronde', label: 'Bronde Blend', family: 'bronde', hex: '#B28A64', promptDescriptor: 'bronde (brown-blonde blend), seamless rooted transition, lived-in dimension' },
+
+  // BRUNETTES
+  { id: 'espresso', label: 'Espresso Brunette', family: 'brunette', hex: '#2B1F1B', promptDescriptor: 'espresso brunette, deep rich brown with glossy finish' },
+  { id: 'expensive-brunette', label: 'Expensive Brunette', family: 'brunette', hex: '#4A3328', promptDescriptor: 'expensive brunette, multi-dimensional chocolate-espresso tones, glassy gloss' },
+
+  // REDS
+  { id: 'copper', label: 'Copper Glow', family: 'red', hex: '#B65A3A', promptDescriptor: 'rich salon copper, soft auburn dimension, glossy' },
+
+  // BLACKS
+  { id: 'soft-black', label: 'Soft Black', family: 'black', hex: '#1A1412', promptDescriptor: 'soft natural black, not blue-black, healthy shine' },
+] as const;
+
+// The 12 shades we will pre-render for instant extension previews.
+export const extensionPreviewColorIds = [
+  'platinum-icy',
+  'champagne',
+  'beige',
+  'ash',
+  'old-money',
+  'creme-brulee',
+  'honey',
+  'caramel',
+  'bronde',
+  'espresso',
+  'expensive-brunette',
+  'copper',
+] as const;
+
 export const highConvertingPatterns: Pattern[] = [
   {
     id: 'hero-value-prop',

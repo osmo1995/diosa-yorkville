@@ -3,6 +3,23 @@ import fs from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
 import { buildPrompt } from './_geminiPromptQuality.mjs';
+// Extension preview variants are generated for a curated subset of colours/lengths.
+// (Keep this list in sync with data/brandInsights.ts)
+const EXT_PREVIEW_COLOR_IDS = [
+  'platinum-icy',
+  'champagne',
+  'beige',
+  'ash',
+  'old-money',
+  'creme-brulee',
+  'honey',
+  'caramel',
+  'bronde',
+  'espresso',
+  'expensive-brunette',
+  'copper',
+];
+const EXT_LENGTH_IDS = ['14', '18', '22', '24'];
 
 const PROJECT_ROOT = process.cwd();
 
@@ -32,6 +49,7 @@ if (!API_KEY) {
 const args = process.argv.slice(2);
 const MODEL = args.find((a) => a.startsWith('--model='))?.split('=')[1] || 'models/gemini-3-pro-image-preview';
 const FORCE = args.includes('--force');
+const CATEGORY = args.find((a) => a.startsWith('--category='))?.split('=')[1] || 'all';
 const LIMIT = Number(args.find((a) => a.startsWith('--limit='))?.split('=')[1] || '0');
 const PRESET = args.find((a) => a.startsWith('--preset='))?.split('=')[1] || '';
 const DRY_RUN = args.includes('--dry-run');
@@ -98,6 +116,20 @@ const PRESET_PREVIEWS = [
     name: 'Soft Waves + Extensions',
     prompt:
       'Photorealistic studio portrait with soft S-waves and luxury hair extensions: blended length and density, natural movement, glossy healthy hair. Neutral background, soft lighting. No text.',
+  },
+  {
+    id: 'extensions-glam-waves',
+    category: 'extensions',
+    name: 'Glam Waves + Extensions',
+    prompt:
+      'Photorealistic studio portrait with defined glam waves and luxury hair extensions: premium shine, smooth wave pattern, seamless blend, high-end salon finish. Neutral background, soft lighting. No text.',
+  },
+  {
+    id: 'extensions-bouncy-blowout',
+    category: 'extensions',
+    name: 'Bouncy Blowout + Extensions',
+    prompt:
+      'Photorealistic studio portrait with a bouncy blowout and luxury hair extensions: voluminous movement, soft bend, glossy finish, seamless blend. Neutral background, soft lighting. No text.',
   },
 
   // COLOR
@@ -205,8 +237,8 @@ function existingVariants(presetId) {
   };
 }
 
-async function writeVariants({ presetId, prompt }) {
-  const cached = existingVariants(presetId);
+async function writeVariants({ presetId, prompt, outKey = presetId }) {
+  const cached = existingVariants(outKey);
   if (cached) {
     console.log(`Reusing existing: ${presetId}`);
     return cached;
@@ -214,17 +246,17 @@ async function writeVariants({ presetId, prompt }) {
 
   if (!FORCE) {
     throw new Error(
-      `Missing preview variants for "${presetId}". Re-run with --force to generate (e.g., npm run gemini:style-previews:force).`
+      `Missing preview variants for "${outKey}". Re-run with --force to generate (e.g., npm run gemini:style-previews:force).`
     );
   }
 
-  console.log(`Generating preview: ${presetId}`);
+  console.log(`Generating preview: ${outKey}`);
   if (DRY_RUN) {
-    console.log(`[dry-run] would call Gemini and write variants to ${path.relative(PROJECT_ROOT, path.join(OUT_DIR, presetId))}`);
+    console.log(`[dry-run] would call Gemini and write variants to ${path.relative(PROJECT_ROOT, path.join(OUT_DIR, outKey))}`);
     // Return a placeholder mapping (no files written)
     return {
-      src: toPublicPath(path.join(OUT_DIR, presetId, '1000.webp')),
-      srcSet: SIZES.map((w) => `${toPublicPath(path.join(OUT_DIR, presetId, `${w}.webp`))} ${w}w`).join(', '),
+      src: toPublicPath(path.join(OUT_DIR, outKey, '1000.webp')),
+      srcSet: SIZES.map((w) => `${toPublicPath(path.join(OUT_DIR, outKey, `${w}.webp`))} ${w}w`).join(', '),
       photographer: 'Generated with Google Gemini',
       photographerUrl: '',
       pexelsUrl: '',
@@ -246,7 +278,7 @@ async function writeVariants({ presetId, prompt }) {
     }
   }
 
-  const baseDir = path.join(OUT_DIR, presetId);
+  const baseDir = path.join(OUT_DIR, outKey);
   ensureDir(baseDir);
 
   // Normalize to consistent square thumbnails (center crop), then output responsive variants.
@@ -276,24 +308,52 @@ async function main() {
 
   // Decide which presets we are actively generating.
   let list = PRESET_PREVIEWS;
+  if (CATEGORY === 'extensions') list = list.filter((p) => p.category === 'extensions');
+  if (CATEGORY === 'color') list = list.filter((p) => p.category === 'color');
+
   if (PRESET) {
-    list = PRESET_PREVIEWS.filter((p) => p.id === PRESET);
+    list = list.filter((p) => p.id === PRESET);
     if (list.length === 0) throw new Error(`Unknown preset id: ${PRESET}`);
   } else if (LIMIT > 0) {
-    list = PRESET_PREVIEWS.slice(0, LIMIT);
+    list = list.slice(0, LIMIT);
   }
 
   // Build a full mapping for all presets by reusing existing files when present.
   // This way the UI can always show all thumbnails that exist, even after partial runs.
   const map = {};
+  const extensionStylePreviews = {};
 
   // First generate requested subset.
   for (const p of list) {
-    const prompt = buildPrompt(
-      `High-end beauty editorial portrait. ${p.prompt} Ensure the full hairstyle is visible and not cropped. Face centered, hair fully in frame.`,
-      'Square thumbnail safety: subject centered, hair fully visible, no cut-off at top/bottom.'
-    );
-    map[p.id] = await writeVariants({ presetId: p.id, prompt });
+    // For extension presets, optionally generate colour×length variants under a dedicated subfolder.
+    if (CATEGORY === 'extensions' && p.category === 'extensions') {
+      for (const colorId of EXT_PREVIEW_COLOR_IDS) {
+        for (const lenId of EXT_LENGTH_IDS) {
+          const variantKey = `extensions/${p.id}/${colorId}/${lenId}`;
+          const prompt = buildPrompt(
+            `High-end beauty editorial portrait. ${p.prompt} Colour match: ${colorId}. Target length: ${lenId} inches. Rooted blend / root shadow for realism. Ensure full hairstyle is visible and not cropped. Face centered, hair fully in frame.`,
+            'Square thumbnail safety: subject centered, hair fully visible, no cut-off at top/bottom.'
+          );
+          const asset = await writeVariants({ presetId: p.id, prompt, outKey: variantKey });
+          extensionStylePreviews[p.id] ||= {};
+          extensionStylePreviews[p.id][colorId] ||= {};
+          extensionStylePreviews[p.id][colorId][lenId] = asset;
+        }
+      }
+
+      // Also ensure a base thumbnail exists for the preset itself.
+      const basePrompt = buildPrompt(
+        `High-end beauty editorial portrait. ${p.prompt} Ensure the full hairstyle is visible and not cropped. Face centered, hair fully in frame.`,
+        'Square thumbnail safety: subject centered, hair fully visible, no cut-off at top/bottom.'
+      );
+      map[p.id] = await writeVariants({ presetId: p.id, prompt: basePrompt, outKey: p.id });
+    } else {
+      const prompt = buildPrompt(
+        `High-end beauty editorial portrait. ${p.prompt} Ensure the full hairstyle is visible and not cropped. Face centered, hair fully in frame.`,
+        'Square thumbnail safety: subject centered, hair fully visible, no cut-off at top/bottom.'
+      );
+      map[p.id] = await writeVariants({ presetId: p.id, prompt, outKey: p.id });
+    }
   }
 
   // Then fill in the rest from disk (or leave missing if not yet generated).
@@ -307,10 +367,17 @@ async function main() {
     map,
     null,
     2
-  )} as const;\n`;
+  )} as const;\n\nexport const extensionStylePreviews: Record<string, Record<string, Record<string, ImageAsset>>> = ${JSON.stringify(
+    extensionStylePreviews,
+    null,
+    2
+  )};\n`;
 
   fs.writeFileSync(MAP_FILE, out, 'utf8');
   console.log(`Wrote mapping: ${path.relative(PROJECT_ROOT, MAP_FILE)}`);
+  if (CATEGORY === 'extensions') {
+    console.log('Note: extensions variants written under /generated/style-previews/extensions/<presetId>/<colorId>/<lengthId>/');
+  }
   if (DRY_RUN) console.log('Dry run complete. No images were generated.');
 }
 
