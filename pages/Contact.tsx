@@ -481,7 +481,7 @@ export const Contact: React.FC = () => {
                         type="text"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full p-4 bg-white border border-gray-100 outline-none focus:border-divine-gold"
+                        className="w-full p-4 bg-white border border-gray-100 outline-none focus:border-divine-gold text-base"
                         required
                         aria-required="true"
                       />
@@ -493,7 +493,7 @@ export const Contact: React.FC = () => {
                         type="email"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full p-4 bg-white border border-gray-100 outline-none focus:border-divine-gold"
+                        className="w-full p-4 bg-white border border-gray-100 outline-none focus:border-divine-gold text-base"
                         required
                         aria-required="true"
                       />
@@ -505,7 +505,7 @@ export const Contact: React.FC = () => {
                         type="tel"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full p-4 bg-white border border-gray-100 outline-none focus:border-divine-gold"
+                        className="w-full p-4 bg-white border border-gray-100 outline-none focus:border-divine-gold text-base"
                         required
                         aria-required="true"
                       />
