@@ -62,8 +62,9 @@ const App: React.FC = () => {
                 <Route path="/services" element={<Services />} />
                 <Route path="/gallery" element={<Gallery />} />
                 <Route path="/style-generator" element={<StyleGeneratorPage />} />
-                <Route path="/booking" element={<Contact />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/booking" element={<Contact />} />
               </Routes>
             </Suspense>
           </AnimatePresence>

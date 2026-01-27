@@ -62,15 +62,17 @@ export const Gallery: React.FC = () => {
         >
           <AnimatePresence mode='popLayout'>
             {filteredItems.map((item, idx) => (
-              <motion.div
+              <motion.button
                 layout
                 key={item.id}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.4 }}
-                className="group relative h-[500px] overflow-hidden bg-gray-200 cursor-pointer"
+                className="group relative h-[500px] overflow-hidden bg-gray-200 cursor-pointer text-left"
                 onClick={() => openLightbox(idx)}
+                type="button"
+                aria-label={`View ${item.title} in lightbox`}
               >
                 <OptimizedImage
                   src={item.asset?.src || item.url}
@@ -86,7 +88,7 @@ export const Gallery: React.FC = () => {
                   <p className="text-xs uppercase tracking-[0.2em] text-divine-gold font-bold mb-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">{item.category}</p>
                   <h3 className="text-xl font-serif text-center translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100">{item.title}</h3>
                 </div>
-              </motion.div>
+              </motion.button>
             ))}
           </AnimatePresence>
         </motion.div>

@@ -284,6 +284,19 @@ export const Contact: React.FC = () => {
     email: '',
     phone: ''
   });
+  
+  const stepContainerRef = React.useRef<HTMLDivElement>(null);
+
+  // Focus management: keep focus within the current step
+  useEffect(() => {
+    if (stepContainerRef.current && step < 5) {
+      // Focus the first interactive element in the current step
+      const firstInput = stepContainerRef.current.querySelector('input, button, select, textarea') as HTMLElement;
+      if (firstInput) {
+        setTimeout(() => firstInput.focus(), 100);
+      }
+    }
+  }, [step]);
 
   useEffect(() => {
     const s = searchParams.get('serviceId') || searchParams.get('service');
@@ -379,7 +392,7 @@ export const Contact: React.FC = () => {
             })}
           </div>
 
-          <div className="bg-goddess-white p-8 md:p-12 shadow-xl border border-gray-100 min-h-[500px] flex flex-col">
+          <div ref={stepContainerRef} className="bg-goddess-white p-8 md:p-12 shadow-xl border border-gray-100 min-h-[500px] flex flex-col">
             <AnimatePresence mode="wait">
               {step === 1 && (
                 <motion.div 
@@ -437,11 +450,17 @@ export const Contact: React.FC = () => {
                   className="space-y-8 flex-1"
                 >
                   <h2 className="text-2xl font-serif text-deep-charcoal mb-8">When would you like to visit?</h2>
-                  <input 
-                    type="date" 
-                    className="w-full p-4 border-2 border-transparent bg-white focus:border-divine-gold outline-none font-sans"
-                    onChange={(e) => setFormData({...formData, date: e.target.value})}
-                  />
+                  <div className="space-y-2">
+                    <label htmlFor="visit-date" className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Preferred Date</label>
+                    <input 
+                      id="visit-date"
+                      type="date" 
+                      value={formData.date}
+                      className="w-full p-4 border-2 border-transparent bg-white focus:border-divine-gold outline-none font-sans"
+                      onChange={(e) => setFormData({...formData, date: e.target.value})}
+                      aria-label="Select your preferred visit date"
+                    />
+                  </div>
                 </motion.div>
               )}
 
@@ -456,30 +475,39 @@ export const Contact: React.FC = () => {
                   <h2 className="text-2xl font-serif text-deep-charcoal mb-8">Contact Information</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Full Name</label>
+                      <label htmlFor="contact-name" className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Full Name *</label>
                       <input
+                        id="contact-name"
                         type="text"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         className="w-full p-4 bg-white border border-gray-100 outline-none focus:border-divine-gold"
+                        required
+                        aria-required="true"
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Email Address</label>
+                      <label htmlFor="contact-email" className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Email Address *</label>
                       <input
+                        id="contact-email"
                         type="email"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         className="w-full p-4 bg-white border border-gray-100 outline-none focus:border-divine-gold"
+                        required
+                        aria-required="true"
                       />
                     </div>
                     <div className="space-y-2 md:col-span-2">
-                      <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Phone Number</label>
+                      <label htmlFor="contact-phone" className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Phone Number *</label>
                       <input
+                        id="contact-phone"
                         type="tel"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         className="w-full p-4 bg-white border border-gray-100 outline-none focus:border-divine-gold"
+                        required
+                        aria-required="true"
                       />
                     </div>
                   </div>
@@ -516,7 +544,11 @@ export const Contact: React.FC = () => {
                 <Button 
                   variant="primary" 
                   onClick={nextStep}
-                  disabled={step === 1 && !formData.service || step === 2 && !formData.length}
+                  disabled={
+                    (step === 1 && !formData.service) || 
+                    (step === 2 && !formData.length) ||
+                    (step === 4 && (!formData.name || !formData.email || !formData.phone))
+                  }
                 >
                   {step === 4 ? 'Confirm Reservation' : 'Continue'}
                 </Button>
