@@ -9,54 +9,36 @@ export const stylePreviews: Record<string, ImageAsset> = {
     "photographerUrl": "",
     "pexelsUrl": "",
     "avgColor": ""
+  },
+  "extensions-volume-set": {
+    "src": "/generated/style-previews/extensions-volume-set/1000.webp",
+    "srcSet": "/generated/style-previews/extensions-volume-set/400.webp 400w, /generated/style-previews/extensions-volume-set/700.webp 700w, /generated/style-previews/extensions-volume-set/1000.webp 1000w, /generated/style-previews/extensions-volume-set/2000.webp 2000w",
+    "photographer": "Generated with Google Gemini",
+    "photographerUrl": "",
+    "pexelsUrl": "",
+    "avgColor": ""
+  },
+  "extensions-length-set": {
+    "src": "/generated/style-previews/extensions-length-set/1000.webp",
+    "srcSet": "/generated/style-previews/extensions-length-set/400.webp 400w, /generated/style-previews/extensions-length-set/700.webp 700w, /generated/style-previews/extensions-length-set/1000.webp 1000w, /generated/style-previews/extensions-length-set/2000.webp 2000w",
+    "photographer": "Generated with Google Gemini",
+    "photographerUrl": "",
+    "pexelsUrl": "",
+    "avgColor": ""
+  },
+  "extensions-soft-waves": {
+    "src": "/generated/style-previews/extensions-soft-waves/1000.webp",
+    "srcSet": "/generated/style-previews/extensions-soft-waves/400.webp 400w, /generated/style-previews/extensions-soft-waves/700.webp 700w, /generated/style-previews/extensions-soft-waves/1000.webp 1000w, /generated/style-previews/extensions-soft-waves/2000.webp 2000w",
+    "photographer": "Generated with Google Gemini",
+    "photographerUrl": "",
+    "pexelsUrl": "",
+    "avgColor": ""
   }
 } as const;
 
 export const extensionStylePreviews: Record<string, Record<string, Record<string, ImageAsset>>> = {
   "extensions-natural-blend": {
-    "platinum-icy": {
-      "14": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/platinum-icy/14/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/platinum-icy/14/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/platinum-icy/14/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/platinum-icy/14/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/platinum-icy/14/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      },
-      "18": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/platinum-icy/18/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/platinum-icy/18/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/platinum-icy/18/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/platinum-icy/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/platinum-icy/18/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      },
-      "22": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/platinum-icy/22/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/platinum-icy/22/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/platinum-icy/22/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/platinum-icy/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/platinum-icy/22/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      },
-      "24": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/platinum-icy/24/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/platinum-icy/24/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/platinum-icy/24/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/platinum-icy/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/platinum-icy/24/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      }
-    },
     "champagne": {
-      "14": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/champagne/14/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/champagne/14/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/champagne/14/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/champagne/14/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/champagne/14/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      },
       "18": {
         "src": "/generated/style-previews/extensions/extensions-natural-blend/champagne/18/1000.webp",
         "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/champagne/18/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/champagne/18/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/champagne/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/champagne/18/2000.webp 2000w",
@@ -83,14 +65,6 @@ export const extensionStylePreviews: Record<string, Record<string, Record<string
       }
     },
     "beige": {
-      "14": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/beige/14/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/beige/14/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/beige/14/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/beige/14/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/beige/14/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      },
       "18": {
         "src": "/generated/style-previews/extensions/extensions-natural-blend/beige/18/1000.webp",
         "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/beige/18/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/beige/18/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/beige/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/beige/18/2000.webp 2000w",
@@ -117,14 +91,6 @@ export const extensionStylePreviews: Record<string, Record<string, Record<string
       }
     },
     "ash": {
-      "14": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/ash/14/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/ash/14/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/ash/14/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/ash/14/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/ash/14/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      },
       "18": {
         "src": "/generated/style-previews/extensions/extensions-natural-blend/ash/18/1000.webp",
         "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/ash/18/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/ash/18/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/ash/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/ash/18/2000.webp 2000w",
@@ -151,14 +117,6 @@ export const extensionStylePreviews: Record<string, Record<string, Record<string
       }
     },
     "old-money": {
-      "14": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/old-money/14/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/old-money/14/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/old-money/14/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/old-money/14/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/old-money/14/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      },
       "18": {
         "src": "/generated/style-previews/extensions/extensions-natural-blend/old-money/18/1000.webp",
         "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/old-money/18/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/old-money/18/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/old-money/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/old-money/18/2000.webp 2000w",
@@ -184,49 +142,7 @@ export const extensionStylePreviews: Record<string, Record<string, Record<string
         "avgColor": ""
       }
     },
-    "creme-brulee": {
-      "14": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/creme-brulee/14/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/creme-brulee/14/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/creme-brulee/14/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/creme-brulee/14/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/creme-brulee/14/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      },
-      "18": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/creme-brulee/18/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/creme-brulee/18/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/creme-brulee/18/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/creme-brulee/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/creme-brulee/18/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      },
-      "22": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/creme-brulee/22/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/creme-brulee/22/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/creme-brulee/22/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/creme-brulee/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/creme-brulee/22/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      },
-      "24": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/creme-brulee/24/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/creme-brulee/24/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/creme-brulee/24/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/creme-brulee/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/creme-brulee/24/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      }
-    },
     "honey": {
-      "14": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/honey/14/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/honey/14/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/honey/14/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/honey/14/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/honey/14/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      },
       "18": {
         "src": "/generated/style-previews/extensions/extensions-natural-blend/honey/18/1000.webp",
         "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/honey/18/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/honey/18/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/honey/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/honey/18/2000.webp 2000w",
@@ -252,83 +168,7 @@ export const extensionStylePreviews: Record<string, Record<string, Record<string
         "avgColor": ""
       }
     },
-    "caramel": {
-      "14": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/caramel/14/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/caramel/14/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/caramel/14/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/caramel/14/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/caramel/14/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      },
-      "18": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/caramel/18/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/caramel/18/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/caramel/18/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/caramel/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/caramel/18/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      },
-      "22": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/caramel/22/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/caramel/22/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/caramel/22/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/caramel/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/caramel/22/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      },
-      "24": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/caramel/24/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/caramel/24/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/caramel/24/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/caramel/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/caramel/24/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      }
-    },
-    "bronde": {
-      "14": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/bronde/14/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/bronde/14/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/bronde/14/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/bronde/14/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/bronde/14/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      },
-      "18": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/bronde/18/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/bronde/18/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/bronde/18/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/bronde/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/bronde/18/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      },
-      "22": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/bronde/22/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/bronde/22/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/bronde/22/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/bronde/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/bronde/22/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      },
-      "24": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/bronde/24/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/bronde/24/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/bronde/24/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/bronde/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/bronde/24/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      }
-    },
     "espresso": {
-      "14": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/espresso/14/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/espresso/14/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/espresso/14/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/espresso/14/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/espresso/14/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      },
       "18": {
         "src": "/generated/style-previews/extensions/extensions-natural-blend/espresso/18/1000.webp",
         "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/espresso/18/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/espresso/18/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/espresso/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/espresso/18/2000.webp 2000w",
@@ -353,69 +193,475 @@ export const extensionStylePreviews: Record<string, Record<string, Record<string
         "pexelsUrl": "",
         "avgColor": ""
       }
-    },
-    "expensive-brunette": {
-      "14": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/expensive-brunette/14/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/expensive-brunette/14/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/expensive-brunette/14/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/expensive-brunette/14/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/expensive-brunette/14/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      },
+    }
+  },
+  "extensions-volume-set": {
+    "champagne": {
       "18": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/expensive-brunette/18/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/expensive-brunette/18/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/expensive-brunette/18/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/expensive-brunette/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/expensive-brunette/18/2000.webp 2000w",
+        "src": "/generated/style-previews/extensions/extensions-volume-set/champagne/18/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-volume-set/champagne/18/400.webp 400w, /generated/style-previews/extensions/extensions-volume-set/champagne/18/700.webp 700w, /generated/style-previews/extensions/extensions-volume-set/champagne/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-volume-set/champagne/18/2000.webp 2000w",
         "photographer": "Generated with Google Gemini",
         "photographerUrl": "",
         "pexelsUrl": "",
         "avgColor": ""
       },
       "22": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/expensive-brunette/22/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/expensive-brunette/22/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/expensive-brunette/22/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/expensive-brunette/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/expensive-brunette/22/2000.webp 2000w",
+        "src": "/generated/style-previews/extensions/extensions-volume-set/champagne/22/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-volume-set/champagne/22/400.webp 400w, /generated/style-previews/extensions/extensions-volume-set/champagne/22/700.webp 700w, /generated/style-previews/extensions/extensions-volume-set/champagne/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-volume-set/champagne/22/2000.webp 2000w",
         "photographer": "Generated with Google Gemini",
         "photographerUrl": "",
         "pexelsUrl": "",
         "avgColor": ""
       },
       "24": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/expensive-brunette/24/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/expensive-brunette/24/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/expensive-brunette/24/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/expensive-brunette/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/expensive-brunette/24/2000.webp 2000w",
+        "src": "/generated/style-previews/extensions/extensions-volume-set/champagne/24/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-volume-set/champagne/24/400.webp 400w, /generated/style-previews/extensions/extensions-volume-set/champagne/24/700.webp 700w, /generated/style-previews/extensions/extensions-volume-set/champagne/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-volume-set/champagne/24/2000.webp 2000w",
         "photographer": "Generated with Google Gemini",
         "photographerUrl": "",
         "pexelsUrl": "",
         "avgColor": ""
       }
     },
-    "copper": {
-      "14": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/copper/14/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/copper/14/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/copper/14/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/copper/14/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/copper/14/2000.webp 2000w",
-        "photographer": "Generated with Google Gemini",
-        "photographerUrl": "",
-        "pexelsUrl": "",
-        "avgColor": ""
-      },
+    "beige": {
       "18": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/copper/18/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/copper/18/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/copper/18/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/copper/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/copper/18/2000.webp 2000w",
+        "src": "/generated/style-previews/extensions/extensions-volume-set/beige/18/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-volume-set/beige/18/400.webp 400w, /generated/style-previews/extensions/extensions-volume-set/beige/18/700.webp 700w, /generated/style-previews/extensions/extensions-volume-set/beige/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-volume-set/beige/18/2000.webp 2000w",
         "photographer": "Generated with Google Gemini",
         "photographerUrl": "",
         "pexelsUrl": "",
         "avgColor": ""
       },
       "22": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/copper/22/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/copper/22/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/copper/22/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/copper/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/copper/22/2000.webp 2000w",
+        "src": "/generated/style-previews/extensions/extensions-volume-set/beige/22/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-volume-set/beige/22/400.webp 400w, /generated/style-previews/extensions/extensions-volume-set/beige/22/700.webp 700w, /generated/style-previews/extensions/extensions-volume-set/beige/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-volume-set/beige/22/2000.webp 2000w",
         "photographer": "Generated with Google Gemini",
         "photographerUrl": "",
         "pexelsUrl": "",
         "avgColor": ""
       },
       "24": {
-        "src": "/generated/style-previews/extensions/extensions-natural-blend/copper/24/1000.webp",
-        "srcSet": "/generated/style-previews/extensions/extensions-natural-blend/copper/24/400.webp 400w, /generated/style-previews/extensions/extensions-natural-blend/copper/24/700.webp 700w, /generated/style-previews/extensions/extensions-natural-blend/copper/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-natural-blend/copper/24/2000.webp 2000w",
+        "src": "/generated/style-previews/extensions/extensions-volume-set/beige/24/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-volume-set/beige/24/400.webp 400w, /generated/style-previews/extensions/extensions-volume-set/beige/24/700.webp 700w, /generated/style-previews/extensions/extensions-volume-set/beige/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-volume-set/beige/24/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      }
+    },
+    "ash": {
+      "18": {
+        "src": "/generated/style-previews/extensions/extensions-volume-set/ash/18/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-volume-set/ash/18/400.webp 400w, /generated/style-previews/extensions/extensions-volume-set/ash/18/700.webp 700w, /generated/style-previews/extensions/extensions-volume-set/ash/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-volume-set/ash/18/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "22": {
+        "src": "/generated/style-previews/extensions/extensions-volume-set/ash/22/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-volume-set/ash/22/400.webp 400w, /generated/style-previews/extensions/extensions-volume-set/ash/22/700.webp 700w, /generated/style-previews/extensions/extensions-volume-set/ash/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-volume-set/ash/22/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "24": {
+        "src": "/generated/style-previews/extensions/extensions-volume-set/ash/24/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-volume-set/ash/24/400.webp 400w, /generated/style-previews/extensions/extensions-volume-set/ash/24/700.webp 700w, /generated/style-previews/extensions/extensions-volume-set/ash/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-volume-set/ash/24/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      }
+    },
+    "old-money": {
+      "18": {
+        "src": "/generated/style-previews/extensions/extensions-volume-set/old-money/18/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-volume-set/old-money/18/400.webp 400w, /generated/style-previews/extensions/extensions-volume-set/old-money/18/700.webp 700w, /generated/style-previews/extensions/extensions-volume-set/old-money/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-volume-set/old-money/18/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "22": {
+        "src": "/generated/style-previews/extensions/extensions-volume-set/old-money/22/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-volume-set/old-money/22/400.webp 400w, /generated/style-previews/extensions/extensions-volume-set/old-money/22/700.webp 700w, /generated/style-previews/extensions/extensions-volume-set/old-money/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-volume-set/old-money/22/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "24": {
+        "src": "/generated/style-previews/extensions/extensions-volume-set/old-money/24/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-volume-set/old-money/24/400.webp 400w, /generated/style-previews/extensions/extensions-volume-set/old-money/24/700.webp 700w, /generated/style-previews/extensions/extensions-volume-set/old-money/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-volume-set/old-money/24/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      }
+    },
+    "honey": {
+      "18": {
+        "src": "/generated/style-previews/extensions/extensions-volume-set/honey/18/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-volume-set/honey/18/400.webp 400w, /generated/style-previews/extensions/extensions-volume-set/honey/18/700.webp 700w, /generated/style-previews/extensions/extensions-volume-set/honey/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-volume-set/honey/18/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "22": {
+        "src": "/generated/style-previews/extensions/extensions-volume-set/honey/22/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-volume-set/honey/22/400.webp 400w, /generated/style-previews/extensions/extensions-volume-set/honey/22/700.webp 700w, /generated/style-previews/extensions/extensions-volume-set/honey/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-volume-set/honey/22/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "24": {
+        "src": "/generated/style-previews/extensions/extensions-volume-set/honey/24/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-volume-set/honey/24/400.webp 400w, /generated/style-previews/extensions/extensions-volume-set/honey/24/700.webp 700w, /generated/style-previews/extensions/extensions-volume-set/honey/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-volume-set/honey/24/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      }
+    },
+    "espresso": {
+      "18": {
+        "src": "/generated/style-previews/extensions/extensions-volume-set/espresso/18/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-volume-set/espresso/18/400.webp 400w, /generated/style-previews/extensions/extensions-volume-set/espresso/18/700.webp 700w, /generated/style-previews/extensions/extensions-volume-set/espresso/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-volume-set/espresso/18/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "22": {
+        "src": "/generated/style-previews/extensions/extensions-volume-set/espresso/22/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-volume-set/espresso/22/400.webp 400w, /generated/style-previews/extensions/extensions-volume-set/espresso/22/700.webp 700w, /generated/style-previews/extensions/extensions-volume-set/espresso/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-volume-set/espresso/22/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "24": {
+        "src": "/generated/style-previews/extensions/extensions-volume-set/espresso/24/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-volume-set/espresso/24/400.webp 400w, /generated/style-previews/extensions/extensions-volume-set/espresso/24/700.webp 700w, /generated/style-previews/extensions/extensions-volume-set/espresso/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-volume-set/espresso/24/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      }
+    }
+  },
+  "extensions-length-set": {
+    "champagne": {
+      "18": {
+        "src": "/generated/style-previews/extensions/extensions-length-set/champagne/18/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-length-set/champagne/18/400.webp 400w, /generated/style-previews/extensions/extensions-length-set/champagne/18/700.webp 700w, /generated/style-previews/extensions/extensions-length-set/champagne/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-length-set/champagne/18/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "22": {
+        "src": "/generated/style-previews/extensions/extensions-length-set/champagne/22/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-length-set/champagne/22/400.webp 400w, /generated/style-previews/extensions/extensions-length-set/champagne/22/700.webp 700w, /generated/style-previews/extensions/extensions-length-set/champagne/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-length-set/champagne/22/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "24": {
+        "src": "/generated/style-previews/extensions/extensions-length-set/champagne/24/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-length-set/champagne/24/400.webp 400w, /generated/style-previews/extensions/extensions-length-set/champagne/24/700.webp 700w, /generated/style-previews/extensions/extensions-length-set/champagne/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-length-set/champagne/24/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      }
+    },
+    "beige": {
+      "18": {
+        "src": "/generated/style-previews/extensions/extensions-length-set/beige/18/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-length-set/beige/18/400.webp 400w, /generated/style-previews/extensions/extensions-length-set/beige/18/700.webp 700w, /generated/style-previews/extensions/extensions-length-set/beige/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-length-set/beige/18/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "22": {
+        "src": "/generated/style-previews/extensions/extensions-length-set/beige/22/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-length-set/beige/22/400.webp 400w, /generated/style-previews/extensions/extensions-length-set/beige/22/700.webp 700w, /generated/style-previews/extensions/extensions-length-set/beige/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-length-set/beige/22/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "24": {
+        "src": "/generated/style-previews/extensions/extensions-length-set/beige/24/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-length-set/beige/24/400.webp 400w, /generated/style-previews/extensions/extensions-length-set/beige/24/700.webp 700w, /generated/style-previews/extensions/extensions-length-set/beige/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-length-set/beige/24/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      }
+    },
+    "ash": {
+      "18": {
+        "src": "/generated/style-previews/extensions/extensions-length-set/ash/18/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-length-set/ash/18/400.webp 400w, /generated/style-previews/extensions/extensions-length-set/ash/18/700.webp 700w, /generated/style-previews/extensions/extensions-length-set/ash/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-length-set/ash/18/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "22": {
+        "src": "/generated/style-previews/extensions/extensions-length-set/ash/22/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-length-set/ash/22/400.webp 400w, /generated/style-previews/extensions/extensions-length-set/ash/22/700.webp 700w, /generated/style-previews/extensions/extensions-length-set/ash/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-length-set/ash/22/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "24": {
+        "src": "/generated/style-previews/extensions/extensions-length-set/ash/24/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-length-set/ash/24/400.webp 400w, /generated/style-previews/extensions/extensions-length-set/ash/24/700.webp 700w, /generated/style-previews/extensions/extensions-length-set/ash/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-length-set/ash/24/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      }
+    },
+    "old-money": {
+      "18": {
+        "src": "/generated/style-previews/extensions/extensions-length-set/old-money/18/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-length-set/old-money/18/400.webp 400w, /generated/style-previews/extensions/extensions-length-set/old-money/18/700.webp 700w, /generated/style-previews/extensions/extensions-length-set/old-money/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-length-set/old-money/18/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "22": {
+        "src": "/generated/style-previews/extensions/extensions-length-set/old-money/22/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-length-set/old-money/22/400.webp 400w, /generated/style-previews/extensions/extensions-length-set/old-money/22/700.webp 700w, /generated/style-previews/extensions/extensions-length-set/old-money/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-length-set/old-money/22/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "24": {
+        "src": "/generated/style-previews/extensions/extensions-length-set/old-money/24/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-length-set/old-money/24/400.webp 400w, /generated/style-previews/extensions/extensions-length-set/old-money/24/700.webp 700w, /generated/style-previews/extensions/extensions-length-set/old-money/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-length-set/old-money/24/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      }
+    },
+    "honey": {
+      "18": {
+        "src": "/generated/style-previews/extensions/extensions-length-set/honey/18/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-length-set/honey/18/400.webp 400w, /generated/style-previews/extensions/extensions-length-set/honey/18/700.webp 700w, /generated/style-previews/extensions/extensions-length-set/honey/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-length-set/honey/18/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "22": {
+        "src": "/generated/style-previews/extensions/extensions-length-set/honey/22/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-length-set/honey/22/400.webp 400w, /generated/style-previews/extensions/extensions-length-set/honey/22/700.webp 700w, /generated/style-previews/extensions/extensions-length-set/honey/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-length-set/honey/22/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "24": {
+        "src": "/generated/style-previews/extensions/extensions-length-set/honey/24/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-length-set/honey/24/400.webp 400w, /generated/style-previews/extensions/extensions-length-set/honey/24/700.webp 700w, /generated/style-previews/extensions/extensions-length-set/honey/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-length-set/honey/24/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      }
+    },
+    "espresso": {
+      "18": {
+        "src": "/generated/style-previews/extensions/extensions-length-set/espresso/18/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-length-set/espresso/18/400.webp 400w, /generated/style-previews/extensions/extensions-length-set/espresso/18/700.webp 700w, /generated/style-previews/extensions/extensions-length-set/espresso/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-length-set/espresso/18/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "22": {
+        "src": "/generated/style-previews/extensions/extensions-length-set/espresso/22/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-length-set/espresso/22/400.webp 400w, /generated/style-previews/extensions/extensions-length-set/espresso/22/700.webp 700w, /generated/style-previews/extensions/extensions-length-set/espresso/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-length-set/espresso/22/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "24": {
+        "src": "/generated/style-previews/extensions/extensions-length-set/espresso/24/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-length-set/espresso/24/400.webp 400w, /generated/style-previews/extensions/extensions-length-set/espresso/24/700.webp 700w, /generated/style-previews/extensions/extensions-length-set/espresso/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-length-set/espresso/24/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      }
+    }
+  },
+  "extensions-soft-waves": {
+    "champagne": {
+      "18": {
+        "src": "/generated/style-previews/extensions/extensions-soft-waves/champagne/18/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-soft-waves/champagne/18/400.webp 400w, /generated/style-previews/extensions/extensions-soft-waves/champagne/18/700.webp 700w, /generated/style-previews/extensions/extensions-soft-waves/champagne/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-soft-waves/champagne/18/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "22": {
+        "src": "/generated/style-previews/extensions/extensions-soft-waves/champagne/22/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-soft-waves/champagne/22/400.webp 400w, /generated/style-previews/extensions/extensions-soft-waves/champagne/22/700.webp 700w, /generated/style-previews/extensions/extensions-soft-waves/champagne/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-soft-waves/champagne/22/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "24": {
+        "src": "/generated/style-previews/extensions/extensions-soft-waves/champagne/24/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-soft-waves/champagne/24/400.webp 400w, /generated/style-previews/extensions/extensions-soft-waves/champagne/24/700.webp 700w, /generated/style-previews/extensions/extensions-soft-waves/champagne/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-soft-waves/champagne/24/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      }
+    },
+    "beige": {
+      "18": {
+        "src": "/generated/style-previews/extensions/extensions-soft-waves/beige/18/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-soft-waves/beige/18/400.webp 400w, /generated/style-previews/extensions/extensions-soft-waves/beige/18/700.webp 700w, /generated/style-previews/extensions/extensions-soft-waves/beige/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-soft-waves/beige/18/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "22": {
+        "src": "/generated/style-previews/extensions/extensions-soft-waves/beige/22/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-soft-waves/beige/22/400.webp 400w, /generated/style-previews/extensions/extensions-soft-waves/beige/22/700.webp 700w, /generated/style-previews/extensions/extensions-soft-waves/beige/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-soft-waves/beige/22/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "24": {
+        "src": "/generated/style-previews/extensions/extensions-soft-waves/beige/24/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-soft-waves/beige/24/400.webp 400w, /generated/style-previews/extensions/extensions-soft-waves/beige/24/700.webp 700w, /generated/style-previews/extensions/extensions-soft-waves/beige/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-soft-waves/beige/24/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      }
+    },
+    "ash": {
+      "18": {
+        "src": "/generated/style-previews/extensions/extensions-soft-waves/ash/18/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-soft-waves/ash/18/400.webp 400w, /generated/style-previews/extensions/extensions-soft-waves/ash/18/700.webp 700w, /generated/style-previews/extensions/extensions-soft-waves/ash/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-soft-waves/ash/18/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "22": {
+        "src": "/generated/style-previews/extensions/extensions-soft-waves/ash/22/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-soft-waves/ash/22/400.webp 400w, /generated/style-previews/extensions/extensions-soft-waves/ash/22/700.webp 700w, /generated/style-previews/extensions/extensions-soft-waves/ash/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-soft-waves/ash/22/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "24": {
+        "src": "/generated/style-previews/extensions/extensions-soft-waves/ash/24/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-soft-waves/ash/24/400.webp 400w, /generated/style-previews/extensions/extensions-soft-waves/ash/24/700.webp 700w, /generated/style-previews/extensions/extensions-soft-waves/ash/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-soft-waves/ash/24/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      }
+    },
+    "old-money": {
+      "18": {
+        "src": "/generated/style-previews/extensions/extensions-soft-waves/old-money/18/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-soft-waves/old-money/18/400.webp 400w, /generated/style-previews/extensions/extensions-soft-waves/old-money/18/700.webp 700w, /generated/style-previews/extensions/extensions-soft-waves/old-money/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-soft-waves/old-money/18/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "22": {
+        "src": "/generated/style-previews/extensions/extensions-soft-waves/old-money/22/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-soft-waves/old-money/22/400.webp 400w, /generated/style-previews/extensions/extensions-soft-waves/old-money/22/700.webp 700w, /generated/style-previews/extensions/extensions-soft-waves/old-money/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-soft-waves/old-money/22/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "24": {
+        "src": "/generated/style-previews/extensions/extensions-soft-waves/old-money/24/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-soft-waves/old-money/24/400.webp 400w, /generated/style-previews/extensions/extensions-soft-waves/old-money/24/700.webp 700w, /generated/style-previews/extensions/extensions-soft-waves/old-money/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-soft-waves/old-money/24/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      }
+    },
+    "honey": {
+      "18": {
+        "src": "/generated/style-previews/extensions/extensions-soft-waves/honey/18/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-soft-waves/honey/18/400.webp 400w, /generated/style-previews/extensions/extensions-soft-waves/honey/18/700.webp 700w, /generated/style-previews/extensions/extensions-soft-waves/honey/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-soft-waves/honey/18/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "22": {
+        "src": "/generated/style-previews/extensions/extensions-soft-waves/honey/22/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-soft-waves/honey/22/400.webp 400w, /generated/style-previews/extensions/extensions-soft-waves/honey/22/700.webp 700w, /generated/style-previews/extensions/extensions-soft-waves/honey/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-soft-waves/honey/22/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "24": {
+        "src": "/generated/style-previews/extensions/extensions-soft-waves/honey/24/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-soft-waves/honey/24/400.webp 400w, /generated/style-previews/extensions/extensions-soft-waves/honey/24/700.webp 700w, /generated/style-previews/extensions/extensions-soft-waves/honey/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-soft-waves/honey/24/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      }
+    },
+    "espresso": {
+      "18": {
+        "src": "/generated/style-previews/extensions/extensions-soft-waves/espresso/18/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-soft-waves/espresso/18/400.webp 400w, /generated/style-previews/extensions/extensions-soft-waves/espresso/18/700.webp 700w, /generated/style-previews/extensions/extensions-soft-waves/espresso/18/1000.webp 1000w, /generated/style-previews/extensions/extensions-soft-waves/espresso/18/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "22": {
+        "src": "/generated/style-previews/extensions/extensions-soft-waves/espresso/22/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-soft-waves/espresso/22/400.webp 400w, /generated/style-previews/extensions/extensions-soft-waves/espresso/22/700.webp 700w, /generated/style-previews/extensions/extensions-soft-waves/espresso/22/1000.webp 1000w, /generated/style-previews/extensions/extensions-soft-waves/espresso/22/2000.webp 2000w",
+        "photographer": "Generated with Google Gemini",
+        "photographerUrl": "",
+        "pexelsUrl": "",
+        "avgColor": ""
+      },
+      "24": {
+        "src": "/generated/style-previews/extensions/extensions-soft-waves/espresso/24/1000.webp",
+        "srcSet": "/generated/style-previews/extensions/extensions-soft-waves/espresso/24/400.webp 400w, /generated/style-previews/extensions/extensions-soft-waves/espresso/24/700.webp 700w, /generated/style-previews/extensions/extensions-soft-waves/espresso/24/1000.webp 1000w, /generated/style-previews/extensions/extensions-soft-waves/espresso/24/2000.webp 2000w",
         "photographer": "Generated with Google Gemini",
         "photographerUrl": "",
         "pexelsUrl": "",
