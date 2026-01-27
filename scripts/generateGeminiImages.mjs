@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
 import { buildPrompt } from './_geminiPromptQuality.mjs';
+import { overlayDiosaWordmark } from './_diosaLogoOverlay.mjs';
 
 const PROJECT_ROOT = process.cwd();
 
@@ -127,7 +128,7 @@ function existingVariants(key) {
   };
 }
 
-async function writeVariants({ key, prompt }) {
+async function writeVariants({ key, prompt, overlayDiosa = false }) {
   const cached = existingVariants(key);
   if (cached) {
     console.log(`Reusing existing: ${key}`);
@@ -170,6 +171,18 @@ async function writeVariants({ key, prompt }) {
       .webp({ quality: 86 })
       .toFile(outPath);
 
+    if (overlayDiosa) {
+      await overlayDiosaWordmark({
+        inputPath: outPath,
+        outputPath: outPath,
+        logoPath: path.join(PROJECT_ROOT, 'public', 'brand', 'diosa-wordmark.svg'),
+        opacity: 0.86,
+        scale: 0.14,
+        pad: 26,
+        gravity: 'southeast',
+      });
+    }
+
     const publicPath = toPublicPath(outPath);
     srcSetEntries.push(`${publicPath} ${w}w`);
 
@@ -196,9 +209,9 @@ async function main() {
   const wrap = (p, extras = '') => buildPrompt(p, extras);
 
   // For interiors, prefer a wider lens reference.
-  const interiorExtras = 'Interior shot: 24–35mm lens look, clean geometry, premium materials, realistic reflections. Real salon tools present (sectioning clips, combs, brushes) with subtle DIOSA branding only.';
-  const portraitExtras = 'Portrait shot: 85mm lens look, flattering perspective, natural skin texture, hair fully visible. Real salon accessories present (sectioning clips, tail comb) with subtle DIOSA branding only.';
-  const macroExtras = 'Macro shot: 90–105mm macro look, crisp detail, shallow depth of field. Real tools visible (tail comb, sectioning clips, extension pliers/heat tool as appropriate) with subtle DIOSA branding only.';
+  const interiorExtras = 'Interior shot: 24–35mm lens look, clean geometry, premium materials, realistic reflections. Real salon tools present (sectioning clips, combs, brushes). No text.';
+  const portraitExtras = 'Portrait shot: 85mm lens look, flattering perspective, natural skin texture, hair fully visible. Real salon accessories present (sectioning clips, tail comb). No text.';
+  const macroExtras = 'Macro shot: 90–105mm macro look, crisp detail, shallow depth of field. Real tools visible (tail comb, sectioning clips, extension pliers/heat tool as appropriate). No text.';
 
   const plan = {
     hero: {
@@ -216,19 +229,23 @@ async function main() {
     services: {
       'tape-in': {
         key: 'services/tape-in',
-        prompt: wrap('Close-up macro photo of tape-in hair extensions being applied by a professional stylist. Clean sectioning, realistic strands, premium salon background blur. Include real tape-in tabs, sectioning clips, tail comb, and a professional brush. Subtle DIOSA branding only on a tool bag or clip case.', macroExtras),
+        prompt: wrap('Close-up macro photo of tape-in hair extensions being applied by a professional stylist. Clean sectioning, realistic strands, premium salon background blur. Include real tape-in tabs, sectioning clips, tail comb, and a professional brush. No text.', macroExtras),
+        overlayDiosa: true,
       },
       'keratin-bond': {
         key: 'services/keratin-bond',
-        prompt: wrap('Close-up macro photo of keratin bond (k-tip) hair extensions application. Precise sectioning, realistic bonds, premium salon background blur. Include a keratin heat tool, sectioning clips, tail comb. Subtle DIOSA branding only on equipment.', macroExtras),
+        prompt: wrap('Close-up macro photo of keratin bond (k-tip) hair extensions application. Precise sectioning, realistic bonds, premium salon background blur. Include a keratin heat tool, sectioning clips, tail comb. No text.', macroExtras),
+        overlayDiosa: true,
       },
       'hand-tied': {
         key: 'services/hand-tied',
-        prompt: wrap('Close-up macro photo of hand-tied weft hair extensions installation with beads. Clean parting, realistic strands, luxury salon background blur. Include beads, thread/needle tools, sectioning clips, tail comb. Subtle DIOSA branding only on a tool bag or clip case.', macroExtras),
+        prompt: wrap('Close-up macro photo of hand-tied weft hair extensions installation with beads. Clean parting, realistic strands, luxury salon background blur. Include beads, thread/needle tools, sectioning clips, tail comb. No text.', macroExtras),
+        overlayDiosa: true,
       },
       'sew-in': {
         key: 'services/sew-in',
-        prompt: wrap('Close-up macro photo of sew-in hair extension technique: stylist hands sewing weft with needle/thread. Clean parting, realistic strands, luxury salon background blur. Include curved needle, thread, sectioning clips, tail comb. Subtle DIOSA branding only on equipment.', macroExtras),
+        prompt: wrap('Close-up macro photo of sew-in hair extension technique: stylist hands sewing weft with needle/thread. Clean parting, realistic strands, luxury salon background blur. Include curved needle, thread, sectioning clips, tail comb. No text.', macroExtras),
+        overlayDiosa: true,
       },
     },
     transformations: {

@@ -2,14 +2,6 @@
 import type { ImageAsset } from '../types';
 
 export const stylePreviews: Record<string, ImageAsset> = {
-  "extensions-soft-waves": {
-    "src": "/generated/style-previews/extensions-soft-waves/1000.webp",
-    "srcSet": "/generated/style-previews/extensions-soft-waves/400.webp 400w, /generated/style-previews/extensions-soft-waves/700.webp 700w, /generated/style-previews/extensions-soft-waves/1000.webp 1000w, /generated/style-previews/extensions-soft-waves/2000.webp 2000w",
-    "photographer": "Generated with Google Gemini",
-    "photographerUrl": "",
-    "pexelsUrl": "",
-    "avgColor": ""
-  },
   "extensions-natural-blend": {
     "src": "/generated/style-previews/extensions-natural-blend/1000.webp",
     "srcSet": "/generated/style-previews/extensions-natural-blend/400.webp 400w, /generated/style-previews/extensions-natural-blend/700.webp 700w, /generated/style-previews/extensions-natural-blend/1000.webp 1000w, /generated/style-previews/extensions-natural-blend/2000.webp 2000w",
@@ -45,6 +37,14 @@ export const stylePreviews: Record<string, ImageAsset> = {
   "extensions-sleek-straight": {
     "src": "/generated/style-previews/extensions-sleek-straight/1000.webp",
     "srcSet": "/generated/style-previews/extensions-sleek-straight/400.webp 400w, /generated/style-previews/extensions-sleek-straight/700.webp 700w, /generated/style-previews/extensions-sleek-straight/1000.webp 1000w, /generated/style-previews/extensions-sleek-straight/2000.webp 2000w",
+    "photographer": "Generated with Google Gemini",
+    "photographerUrl": "",
+    "pexelsUrl": "",
+    "avgColor": ""
+  },
+  "extensions-soft-waves": {
+    "src": "/generated/style-previews/extensions-soft-waves/1000.webp",
+    "srcSet": "/generated/style-previews/extensions-soft-waves/400.webp 400w, /generated/style-previews/extensions-soft-waves/700.webp 700w, /generated/style-previews/extensions-soft-waves/1000.webp 1000w, /generated/style-previews/extensions-soft-waves/2000.webp 2000w",
     "photographer": "Generated with Google Gemini",
     "photographerUrl": "",
     "pexelsUrl": "",

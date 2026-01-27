@@ -10,7 +10,7 @@ Output constraints: photorealistic only.
 
 export const NEGATIVE_PROMPT = `
 Avoid: text, captions, watermarks, logos, UI, frames.
-Exception: allow only the single word "DIOSA" as subtle equipment branding (e.g., on a brush, mirror, hair clip case, or tool bag). No other text.
+Do not include any text or logos in the generated image.
 Avoid: cartoon, CGI, 3D render, illustration, anime.
 Avoid: distorted faces, deformed hands, extra fingers, warped anatomy.
 Avoid: unnatural skin texture, over-smoothed skin, plastic skin.
