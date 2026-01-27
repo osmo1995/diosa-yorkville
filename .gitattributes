@@ -1,0 +1,2 @@
+public/generated/**/*.webp filter=lfs diff=lfs merge=lfs -text
+public/generated/**/*.png filter=lfs diff=lfs merge=lfs -text
