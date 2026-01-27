@@ -135,19 +135,19 @@ export const Home: React.FC = () => {
 
         <div className="container relative z-20 mx-auto px-6 text-center">
           <AnimatedSection>
-            <p className="font-accent text-4xl md:text-5xl text-divine-gold mb-4">Diosa Studio</p>
-            <h1 className="text-4xl md:text-7xl font-serif text-white uppercase tracking-widest mb-6">Yorkville Extension Specialists</h1>
-            <p className="text-lg md:text-xl text-soft-champagne/90 max-w-2xl mx-auto mb-10 font-sans tracking-wide">
+            <p className="font-accent text-3xl md:text-4xl text-divine-gold mb-4">Diosa Studio</p>
+            <h1 className="text-3xl md:text-5xl font-serif text-white uppercase tracking-widest mb-6">Yorkville Extension Specialists</h1>
+            <p className="text-base md:text-lg text-soft-champagne/90 max-w-2xl mx-auto mb-8 font-sans">
               Luxury hair extensions and hair colour—integrity-first methods, precision matching, and maintenance that keeps results seamless.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link to="/booking">
-                <Button size="lg" className="bg-white text-deep-charcoal hover:bg-divine-gold hover:text-white border-none">
+                <Button className="bg-white text-deep-charcoal hover:bg-divine-gold hover:text-white border-none px-8 py-3">
                   Book Your Consultation
                 </Button>
               </Link>
               <Link to="/style-generator">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-deep-charcoal">
+                <Button variant="outline" className="border-white text-white hover:bg-white hover:text-deep-charcoal px-8 py-3">
                   Try Virtual Preview
                 </Button>
               </Link>
