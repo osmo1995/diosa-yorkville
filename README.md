@@ -100,7 +100,14 @@ Local dev note:
    - Run: `npm run gemini:images`
    This writes images into `public/generated/` and a mapping file `data/generatedImages.ts`.
 
-3. Generate Style Generator preset thumbnails (Gemini 3 Pro Image):
+3. Generate DIOSA wordmark logo (Gemini 3 Pro Image):
+
+   `npm run gemini:logo:force`
+
+   This writes `public/brand/diosa-wordmark.png` (transparent background) for deterministic overlays.
+   Manual QA is required: verify spelling is exactly "DIOSA" and background is transparent.
+
+4. Generate Style Generator preset thumbnails (Gemini 3 Pro Image):
    These are **photorealistic example outcomes** used as thumbnails in the preset list (not user photos).
 
    - Ensure `GEMINI_API_KEY` is set in `.env.local`

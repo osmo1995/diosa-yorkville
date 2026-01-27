@@ -36,7 +36,13 @@ export interface Transformation {
   id: string;
   before: string;
   after: string;
+  /** Display label such as "Hand-Tied Wefts • Champagne Blonde" */
   method: string;
+  /** Optional richer title for UI overlays */
+  title?: string;
+  /** Category used for ordering/filters */
+  category?: 'extensions' | 'color';
+  tags?: string[];
 }
 
 export interface GalleryItem {

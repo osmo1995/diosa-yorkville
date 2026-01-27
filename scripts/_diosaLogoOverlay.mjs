@@ -1,5 +1,6 @@
 import sharp from 'sharp';
 import fs from 'node:fs';
+import path from 'node:path';
 
 export async function overlayDiosaWordmark(params) {
   const {
@@ -78,6 +79,9 @@ export async function overlayDiosaWordmark(params) {
     .png()
     .toBuffer();
 
+  const samePath = path.resolve(outputPath) === path.resolve(inputPath);
+  const tmpOut = samePath ? `${outputPath}.tmp_overlay` : outputPath;
+
   await sharp(inputPath)
     .composite([
       {
@@ -86,5 +90,21 @@ export async function overlayDiosaWordmark(params) {
       },
     ])
     .webp({ quality: 84 })
-    .toFile(outputPath);
+    .toFile(tmpOut);
+
+  if (samePath) {
+    // Windows can block rename-over-existing; copy+unlink is more reliable.
+    // Overwrite the destination in-place.
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        fs.copyFileSync(tmpOut, outputPath);
+        fs.unlinkSync(tmpOut);
+        break;
+      } catch (e) {
+        if (attempt === 3) throw e;
+        // brief backoff
+        await new Promise((r) => setTimeout(r, 50 * attempt));
+      }
+    }
+  }
 }

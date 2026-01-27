@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Icon } from '../components/ui/Icon';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -6,14 +6,13 @@ import { Button } from '../components/ui/Button';
 import { AnimatedSection } from '../components/ui/AnimatedSection';
 import { services, transformations, testimonials, trustBadges, processSteps, aftercareTips } from '../data/salonContent';
 import { generatedImages } from '../data/generatedImages';
-import { OptimizedImage } from '../components/ui/OptimizedImage';
+import { BeforeAfterSlider } from '../components/ui/BeforeAfterSlider';
 
 // Lazy load heavier AI components to reduce initial bundle weight.
 const ConciergeAssistant = React.lazy(() =>
   import('../components/ai/ConciergeAssistant').then((m) => ({ default: m.ConciergeAssistant }))
 );
 const StyleGenerator = React.lazy(() => import('../components/ai/StyleGenerator').then((m) => ({ default: m.StyleGenerator })));
-const HeroScene = React.lazy(() => import('../components/3d/HeroScene').then((m) => ({ default: m.HeroScene })));
 
 function useNearViewport(offsetPx = 200) {
   const [enabled, setEnabled] = useState(false);
@@ -57,45 +56,6 @@ export const Home: React.FC = () => {
   // Load concierge late (after main content).
   const loadConcierge = useNearViewport(800);
 
-  // Load 3D only on capable devices and after idle.
-  const [show3d, setShow3d] = useState(false);
-  useEffect(() => {
-    const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const isReduced = mql.matches;
-
-    const isSmall = window.matchMedia('(max-width: 767px)').matches;
-    const cores = (navigator as any).hardwareConcurrency || 4;
-    const mem = (navigator as any).deviceMemory || 4;
-    const lowPower = cores <= 4 || mem <= 4;
-
-    // Network-aware gating: don't load 3D on Save-Data or very slow connections.
-    const conn = (navigator as any).connection as undefined | { saveData?: boolean; effectiveType?: string };
-    const saveData = Boolean(conn?.saveData);
-    const effective = String(conn?.effectiveType || '');
-    const isVerySlow = effective === 'slow-2g' || effective === '2g';
-    const isSlow = isVerySlow || effective === '3g';
-
-    // User override: allow opting in/out of 3D.
-    const prefRaw = localStorage.getItem('diosa_3d_enabled');
-    const pref = prefRaw === 'true' ? true : prefRaw === 'false' ? false : null;
-
-    // Default: enable on capable devices, but disable on 3g/2g/save-data unless user explicitly opts in.
-    if (pref === false) return;
-    if (isReduced || isSmall || lowPower || saveData) return;
-    if (isSlow && pref !== true) return;
-
-    const run = () => setShow3d(true);
-    // Prefer idle time; fall back to a short delay.
-    const ric = (window as any).requestIdleCallback as undefined | ((cb: () => void, opts?: any) => number);
-    if (ric) {
-      const id = ric(run, { timeout: 2000 });
-      return () => (window as any).cancelIdleCallback?.(id);
-    }
-
-    const t = window.setTimeout(run, 1200);
-    return () => window.clearTimeout(t);
-  }, []);
-
   const nextTransformation = () => {
     setActiveTransformation((prev) => (prev + 1) % transformations.length);
   };
@@ -104,6 +64,32 @@ export const Home: React.FC = () => {
     setActiveTransformation((prev) => (prev - 1 + transformations.length) % transformations.length);
   };
 
+  const setTransformation = (idx: number) => {
+    setActiveTransformation(((idx % transformations.length) + transformations.length) % transformations.length);
+  };
+
+  // Auto-rotate every 10 seconds; pause on interaction and when tab is hidden.
+  const [autoRotatePaused, setAutoRotatePaused] = useState(false);
+
+  useEffect(() => {
+    if (autoRotatePaused) return;
+    if (transformations.length <= 1) return;
+
+    const onVis = () => {
+      if (document.hidden) setAutoRotatePaused(true);
+    };
+    document.addEventListener('visibilitychange', onVis);
+
+    const t = window.setInterval(() => {
+      setActiveTransformation((prev) => (prev + 1) % transformations.length);
+    }, 10_000);
+
+    return () => {
+      document.removeEventListener('visibilitychange', onVis);
+      window.clearInterval(t);
+    };
+  }, [autoRotatePaused]);
+
   const active = transformations[activeTransformation];
   const beforeAsset = generatedImages.transformations[`${active.id}_before`];
   const afterAsset = generatedImages.transformations[`${active.id}_after`];
@@ -111,27 +97,27 @@ export const Home: React.FC = () => {
   return (
     <div className="overflow-x-hidden">
       {/* Hero Section */}
-      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+      <section
+        className="relative h-screen w-full flex items-center justify-center overflow-hidden"
+        onMouseEnter={() => setAutoRotatePaused(true)}
+        onFocusCapture={() => setAutoRotatePaused(true)}
+        onMouseLeave={() => setAutoRotatePaused(false)}
+      >
         <div className="absolute inset-0 z-0">
-          <OptimizedImage
-            src={generatedImages.hero.src}
-            srcSet={generatedImages.hero.srcSet}
-            sizes="100vw"
-            alt="Luxury hair extensions in Yorkville"
-            className="w-full h-full object-cover"
-            loading="eager"
-            fetchPriority="high"
+          <BeforeAfterSlider
+            before={{ src: beforeAsset?.src || active.before, srcSet: beforeAsset?.srcSet, alt: 'Before result' }}
+            after={{ src: afterAsset?.src || active.after, srcSet: afterAsset?.srcSet, alt: 'After result' }}
+            className="h-full w-full"
+            initialRatio={0.42}
+            autoSweep
+            onUserInteract={() => setAutoRotatePaused(true)}
           />
         </div>
 
-        {/* Premium 3D accent layer (lazy + capability gated) */}
-        {show3d && (
-          <Suspense fallback={null}>
-            <HeroScene />
-          </Suspense>
-        )}
+        {/* Keep 3D disabled in the new hero to prioritize photoreal transformations + performance.
+            (We can re-introduce as a subtle layer later if desired.) */}
 
-        <div className="absolute inset-0 bg-deep-charcoal/40 z-10" />
+        <div className="absolute inset-0 bg-deep-charcoal/45 z-10" />
 
         <div className="container relative z-20 mx-auto px-6 text-center">
           <AnimatedSection>
@@ -154,19 +140,36 @@ export const Home: React.FC = () => {
             </div>
 
             <div className="mt-8 text-white/70 text-[10px] uppercase tracking-widest font-bold">
-              <button
-                type="button"
-                className="border border-white/20 px-3 py-2 hover:border-divine-gold hover:text-divine-gold transition-colors"
-                onClick={() => {
-                  const cur = localStorage.getItem('diosa_3d_enabled');
-                  const next = cur === 'true' ? 'false' : 'true';
-                  localStorage.setItem('diosa_3d_enabled', next);
-                  // Refresh state by reloading (simple + reliable for now)
-                  window.location.reload();
-                }}
-              >
-                Toggle 3D Hero
-              </button>
+              <div className="inline-flex flex-wrap items-center gap-3 border border-white/20 px-3 py-2">
+                <span>
+                  Real results • {active.method} • {activeTransformation + 1}/{transformations.length}
+                </span>
+                <button
+                  type="button"
+                  className="text-white/80 hover:text-divine-gold transition-colors"
+                  onClick={() => {
+                    setAutoRotatePaused((p) => !p);
+                  }}
+                >
+                  {autoRotatePaused ? 'Play' : 'Pause'}
+                </button>
+              </div>
+
+              {/* Dots navigation (shows all 10 variations clearly) */}
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                {transformations.map((t, idx) => (
+                  <button
+                    key={t.id}
+                    type="button"
+                    aria-label={`Show result ${idx + 1}: ${t.method}`}
+                    className={`h-2.5 w-2.5 rounded-full border transition-colors ${idx === activeTransformation ? 'bg-divine-gold border-divine-gold' : 'bg-transparent border-white/30 hover:border-divine-gold/80'}`}
+                    onClick={() => {
+                      setAutoRotatePaused(true);
+                      setTransformation(idx);
+                    }}
+                  />
+                ))}
+              </div>
             </div>
           </AnimatedSection>
         </div>
@@ -259,31 +262,19 @@ export const Home: React.FC = () => {
           </AnimatedSection>
 
           <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="border border-gray-100 bg-goddess-white p-6">
-                <div className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-3">Before</div>
-                <div className="aspect-[3/4] overflow-hidden bg-gray-100">
-                  <OptimizedImage
-                    src={beforeAsset?.src || active.before}
-                    srcSet={beforeAsset?.srcSet}
-                    sizes="(min-width: 768px) 45vw, 100vw"
-                    alt="Before"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+            <div className="border border-gray-100 bg-goddess-white p-6">
+              <div className="flex items-center justify-between mb-3">
+                <div className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Drag to compare</div>
+                <div className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Before / After</div>
               </div>
-
-              <div className="border border-gray-100 bg-goddess-white p-6">
-                <div className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-3">After</div>
-                <div className="aspect-[3/4] overflow-hidden bg-gray-100">
-                  <OptimizedImage
-                    src={afterAsset?.src || active.after}
-                    srcSet={afterAsset?.srcSet}
-                    sizes="(min-width: 768px) 45vw, 100vw"
-                    alt="After"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+              <div className="aspect-[3/4] overflow-hidden bg-gray-100">
+                <BeforeAfterSlider
+                  before={{ src: beforeAsset?.src || active.before, srcSet: beforeAsset?.srcSet, alt: 'Before' }}
+                  after={{ src: afterAsset?.src || active.after, srcSet: afterAsset?.srcSet, alt: 'After' }}
+                  className="h-full w-full"
+                  initialRatio={0.5}
+                  onUserInteract={() => setAutoRotatePaused(true)}
+                />
               </div>
             </div>
 

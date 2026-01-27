@@ -33,6 +33,8 @@ if (!API_KEY) {
 const args = process.argv.slice(2);
 const MODEL = args.find((a) => a.startsWith('--model='))?.split('=')[1] || 'models/gemini-3-pro-image-preview';
 const FORCE = args.includes('--force');
+const ONLY = args.find((a) => a.startsWith('--only='))?.split('=')[1] || null;
+console.log(`[mode] ONLY=${ONLY || 'none'} FORCE=${FORCE} MODEL=${MODEL}`);
 
 // Alternate image-capable models surfaced by AI Studio (try if the default doesn't return inline images)
 const FALLBACK_MODELS = ['models/gemini-2.5-flash-image', 'models/gemini-2.0-flash-exp-image-generation'];
@@ -110,7 +112,11 @@ async function generateImage(prompt) {
 function existingVariants(key) {
   // If --force is set, always regenerate.
   if (FORCE) return null;
+  return readExistingVariants(key);
+}
 
+// Read existing variants even if --force is enabled (used for --only modes).
+function readExistingVariants(key) {
   const baseDir = path.join(OUT_DIR, key);
   const files = SIZES.map((w) => path.join(baseDir, `${w}.webp`));
   const ok = files.every((f) => fs.existsSync(f));
@@ -166,14 +172,17 @@ async function writeVariants({ key, prompt, overlayDiosa = false }) {
 
   for (const w of SIZES) {
     const outPath = path.join(baseDir, `${w}.webp`);
-    await sharp(buf)
-      .resize({ width: w, withoutEnlargement: true })
-      .webp({ quality: 86 })
-      .toFile(outPath);
 
     if (overlayDiosa) {
+      // Windows-safe: write a temp file, then overlay into the final output path.
+      const tmpPath = path.join(baseDir, `${w}.tmp.webp`);
+      await sharp(buf)
+        .resize({ width: w, withoutEnlargement: true })
+        .webp({ quality: 86 })
+        .toFile(tmpPath);
+
       await overlayDiosaWordmark({
-        inputPath: outPath,
+        inputPath: tmpPath,
         outputPath: outPath,
         logoPath: path.join(PROJECT_ROOT, 'public', 'brand', 'diosa-wordmark.svg'),
         opacity: 0.86,
@@ -181,6 +190,27 @@ async function writeVariants({ key, prompt, overlayDiosa = false }) {
         pad: 26,
         gravity: 'southeast',
       });
+
+      // Windows can keep the file handle locked briefly; cleanup is best-effort.
+      // Do NOT fail the whole generation if deletion is temporarily blocked.
+      // Best-effort cleanup; never throw (Windows can hold locks briefly).
+      try {
+        for (let attempt = 1; attempt <= 10; attempt++) {
+          try {
+            fs.unlinkSync(tmpPath);
+            break;
+          } catch {
+            await new Promise((r) => setTimeout(r, 150 * attempt));
+          }
+        }
+      } catch {
+        // ignore
+      }
+    } else {
+      await sharp(buf)
+        .resize({ width: w, withoutEnlargement: true })
+        .webp({ quality: 86 })
+        .toFile(outPath);
     }
 
     const publicPath = toPublicPath(outPath);
@@ -209,9 +239,9 @@ async function main() {
   const wrap = (p, extras = '') => buildPrompt(p, extras);
 
   // For interiors, prefer a wider lens reference.
-  const interiorExtras = 'Interior shot: 24–35mm lens look, clean geometry, premium materials, realistic reflections. Real salon tools present (sectioning clips, combs, brushes). No text.';
-  const portraitExtras = 'Portrait shot: 85mm lens look, flattering perspective, natural skin texture, hair fully visible. Real salon accessories present (sectioning clips, tail comb). No text.';
-  const macroExtras = 'Macro shot: 90–105mm macro look, crisp detail, shallow depth of field. Real tools visible (tail comb, sectioning clips, extension pliers/heat tool as appropriate). No text.';
+  const interiorExtras = 'Interior shot: 24–35mm lens look, clean geometry, premium materials, realistic reflections. No readable text.';
+  const portraitExtras = 'Portrait shot: 85mm lens look, flattering perspective, natural skin texture, hair fully visible. No tools visible in-frame unless explicitly requested. No readable text.';
+  const macroExtras = 'Macro shot: 90–105mm macro look, crisp detail, shallow depth of field. Tools must be method-accurate as specified. No readable text.';
 
   const plan = {
     hero: {
@@ -229,26 +259,77 @@ async function main() {
     services: {
       'tape-in': {
         key: 'services/tape-in',
-        prompt: wrap('Close-up macro photo of tape-in hair extensions being applied by a professional stylist. Clean sectioning, realistic strands, premium salon background blur. Include real tape-in tabs, sectioning clips, tail comb, and a professional brush. No text.', macroExtras),
+        prompt: wrap('Close-up macro photo of tape-in hair extensions being applied by a professional stylist. Clean sectioning, realistic strands, premium salon background blur. Tools MUST be accurate for tape-ins: visible tape-in adhesive tabs, tail comb, sectioning clips, and a flat extension-safe brush. Absolutely NO heat tool, NO keratin bonds, NO beads/micro rings, NO needle/thread.', macroExtras),
         overlayDiosa: true,
       },
       'keratin-bond': {
         key: 'services/keratin-bond',
-        prompt: wrap('Close-up macro photo of keratin bond (k-tip) hair extensions application. Precise sectioning, realistic bonds, premium salon background blur. Include a keratin heat tool, sectioning clips, tail comb. No text.', macroExtras),
+        prompt: wrap('Close-up macro photo of keratin bond (k-tip) hair extensions application. Precise sectioning, realistic individual keratin bonds. Tools MUST be accurate for keratin bonds: visible keratin heat tool + protective finger shield, sectioning clips, tail comb. Absolutely NO tape tabs, NO beads/micro rings, NO needle/thread.', macroExtras),
         overlayDiosa: true,
       },
       'hand-tied': {
         key: 'services/hand-tied',
-        prompt: wrap('Close-up macro photo of hand-tied weft hair extensions installation with beads. Clean parting, realistic strands, luxury salon background blur. Include beads, thread/needle tools, sectioning clips, tail comb. No text.', macroExtras),
+        prompt: wrap('Close-up macro photo of hand-tied weft hair extensions installation with beads. Clean parting, realistic strand direction. Tools MUST be accurate for hand-tied wefts: silicone-lined beads/microbeads, curved needle + thread, sectioning clips, tail comb. Absolutely NO tape tabs, NO keratin heat tool.', macroExtras),
         overlayDiosa: true,
       },
       'sew-in': {
         key: 'services/sew-in',
-        prompt: wrap('Close-up macro photo of sew-in hair extension technique: stylist hands sewing weft with needle/thread. Clean parting, realistic strands, luxury salon background blur. Include curved needle, thread, sectioning clips, tail comb. No text.', macroExtras),
+        prompt: wrap('Close-up macro photo of sew-in hair extension technique: stylist hands sewing weft with needle/thread onto a braided foundation. Clean parting, realistic strands, luxury salon background blur. Tools MUST be accurate for sew-in: visible braided track/base, curved needle + thread, weft, sectioning clips, tail comb. Absolutely NO tape tabs, NO keratin heat tool, NO beads/micro rings.', macroExtras),
         overlayDiosa: true,
       },
     },
     transformations: {
+      // Highly consistent Results pairs (same scene, clothing, background; only hair changes).
+      // These IDs map to data/salonContent.ts transformations r1..r10.
+      ...(() => {
+        const sceneLock = `SCENE LOCK (must match exactly between BEFORE and AFTER):\n- One adult woman, back-of-head view only (no face).\n- Same salon background: warm beige seamless backdrop, soft shadow falloff, no decor text/logos.\n- Same clothing: matte black silk blouse, simple neckline, no patterns.\n- Same accessories: small gold hoop earrings only.\n- Same camera/framing: 85mm lens look, f/2.8, mid-back crop, centered composition, identical pose.\n- Same lighting: soft key from camera-left, subtle rim light from camera-right.\n- No text, no logos, no watermark.`;
+
+        const baseBefore = (desc) =>
+          wrap(
+            `Back view salon portrait BEFORE transformation. ${desc}\n\n${sceneLock}\n\nIMPORTANT: Do not change the model identity, clothing, background, lighting, or framing.`,
+            portraitExtras
+          );
+
+        const baseAfter = (desc) =>
+          wrap(
+            `Back view salon portrait AFTER transformation. ${desc}\n\n${sceneLock}\n\nIMPORTANT: This is the SAME exact person, pose, background, clothing, lighting, and camera framing as the BEFORE image. Only the hair should change.`,
+            portraitExtras
+          );
+
+        return {
+          r1_before: { key: 'transformations/r1_before', prompt: baseBefore('Natural medium-length brunette hair, slightly thin at ends.') },
+          r1_after: { key: 'transformations/r1_after', prompt: baseAfter('Hand-tied extensions: 22-inch length, champagne blonde rooted blend, seamless density, healthy shine, soft waves.') },
+
+          r2_before: { key: 'transformations/r2_before', prompt: baseBefore('Natural shoulder-length dark blonde/light brown hair, fine texture.') },
+          r2_after: { key: 'transformations/r2_after', prompt: baseAfter('Tape-in extensions: 18-inch length, beige blonde match with subtle root shadow, silky smooth finish.') },
+
+          r3_before: { key: 'transformations/r3_before', prompt: baseBefore('Natural collarbone-length brunette hair, low density.') },
+          r3_after: { key: 'transformations/r3_after', prompt: baseAfter('Keratin bond extensions: 22-inch length, espresso brunette gloss with dimensional lowlights, sleek glossy finish.') },
+
+          r4_before: { key: 'transformations/r4_before', prompt: baseBefore('Natural mid-length warm blonde hair, uneven ends.') },
+          r4_after: { key: 'transformations/r4_after', prompt: baseAfter('Invisible sew-in extensions: 24-inch length, warm honey blonde, soft blowout waves, thick but believable.') },
+
+          r5_before: { key: 'transformations/r5_before', prompt: baseBefore('Natural medium-length brunette hair, slightly grown-out roots.') },
+          r5_after: { key: 'transformations/r5_after', prompt: baseAfter('Hand-tied extensions: 18-inch length, bronde babylights with root melt, natural lived-in dimension, glossy.') },
+
+          r6_before: { key: 'transformations/r6_before', prompt: baseBefore('Natural dark blonde/light brown hair with slight brassiness.') },
+          r6_after: { key: 'transformations/r6_after', prompt: baseAfter('Old money blonde balayage: neutral champagne-beige ribbons, rooted shadow, ultra soft blend, healthy shine.') },
+
+          r7_before: { key: 'transformations/r7_before', prompt: baseBefore('Natural medium brown hair with dull tone and uneven shine.') },
+          r7_after: { key: 'transformations/r7_after', prompt: baseAfter('Expensive brunette: glossy multi-dimensional espresso/chocolate tones, subtle highlights, glass-like shine.') },
+
+          r8_before: { key: 'transformations/r8_before', prompt: baseBefore('Natural dark blonde hair with yellow/brassy undertone.') },
+          r8_after: { key: 'transformations/r8_after', prompt: baseAfter('Icy platinum blonde (toned): cool silver-pearlescent finish, rooted shadow, salon-smooth texture.') },
+
+          r9_before: { key: 'transformations/r9_before', prompt: baseBefore('Natural light brown hair with warm/orange undertone.') },
+          r9_after: { key: 'transformations/r9_after', prompt: baseAfter('Crème brûlée blonde: warm-neutral creamy highlights with caramel ribbons, rooted blend, soft waves.') },
+
+          r10_before: { key: 'transformations/r10_before', prompt: baseBefore('Natural medium brown hair, slightly faded colour.') },
+          r10_after: { key: 'transformations/r10_after', prompt: baseAfter('Copper glow: rich salon copper with subtle auburn dimension, glossy finish, healthy texture.') },
+        };
+      })(),
+
+      // Legacy transformations (kept for backwards compatibility / optional use)
       t1_before: {
         key: 'transformations/t1_before',
         prompt: wrap('Back view portrait of natural medium-length brunette hair BEFORE extension transformation. Neutral background, salon lighting, realistic hair texture.', portraitExtras),
@@ -287,16 +368,16 @@ async function main() {
 
   // Always try to produce a mapping file, even if some generations fail.
   /** @type {any} */
-  const hero = await writeVariants(plan.hero);
+  const hero = ONLY ? readExistingVariants(plan.hero.key) : await writeVariants(plan.hero);
   /** @type {any} */
-  const cta = await writeVariants(plan.cta);
+  const cta = ONLY ? readExistingVariants(plan.cta.key) : await writeVariants(plan.cta);
   /** @type {any} */
-  const quiz = await writeVariants(plan.quiz);
+  const quiz = ONLY ? readExistingVariants(plan.quiz.key) : await writeVariants(plan.quiz);
 
   const services = {};
   for (const [id, cfg] of Object.entries(plan.services)) {
     try {
-      services[id] = await writeVariants(cfg);
+      services[id] = ONLY && ONLY !== 'services' ? readExistingVariants(cfg.key) : await writeVariants(cfg);
     } catch (e) {
       console.error(`Failed to generate service ${id}:`, e);
       services[id] = existingVariants(cfg.key) || { src: '', srcSet: '', photographer: 'Generated with Google Gemini', photographerUrl: '', pexelsUrl: '', avgColor: '' };
@@ -306,7 +387,7 @@ async function main() {
   const transformations = {};
   for (const [id, cfg] of Object.entries(plan.transformations)) {
     try {
-      transformations[id] = await writeVariants(cfg);
+      transformations[id] = ONLY && ONLY !== 'transformations' ? readExistingVariants(cfg.key) : await writeVariants(cfg);
     } catch (e) {
       console.error(`Failed to generate transformation ${id}:`, e);
       transformations[id] = existingVariants(cfg.key) || { src: '', srcSet: '', photographer: 'Generated with Google Gemini', photographerUrl: '', pexelsUrl: '', avgColor: '' };
@@ -317,7 +398,7 @@ async function main() {
   for (const cat of Object.keys(plan.gallery)) {
     for (const cfg of plan.gallery[cat]) {
       try {
-        gallery[cat].push(await writeVariants(cfg));
+        gallery[cat].push(ONLY ? readExistingVariants(cfg.key) : await writeVariants(cfg));
       } catch (e) {
         console.error(`Failed to generate gallery ${cat} ${cfg.key}:`, e);
         const fallback = existingVariants(cfg.key);

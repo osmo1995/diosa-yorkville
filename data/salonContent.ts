@@ -50,19 +50,20 @@ export const services: Service[] = [
   }
 ];
 
+// Results pairs used for Home "Before & After" and the rotating hero.
+// Assets come from generatedImages.transformations[`${id}_before|after`].
 export const transformations: Transformation[] = [
-  {
-    id: 't1',
-    before: '',
-    after: '',
-    method: 'Hand-Tied Wefts'
-  },
-  {
-    id: 't2',
-    before: '',
-    after: '',
-    method: 'Keratin Bond'
-  }
+  { id: 'r1', before: '', after: '', method: 'Hand-Tied Wefts • 22in • Champagne Blonde', category: 'extensions' },
+  { id: 'r2', before: '', after: '', method: 'Tape-Ins • 18in • Beige Blonde', category: 'extensions' },
+  { id: 'r3', before: '', after: '', method: 'Keratin Bonds (K-Tips) • 22in • Espresso Brunette Gloss', category: 'extensions' },
+  { id: 'r4', before: '', after: '', method: 'Invisible Sew-In • 24in • Warm Honey Blonde', category: 'extensions' },
+  { id: 'r5', before: '', after: '', method: 'Hand-Tied Wefts • 18in • Bronde Babylights', category: 'extensions' },
+
+  { id: 'r6', before: '', after: '', method: 'Balayage • Old Money Blonde (rooted)', category: 'color' },
+  { id: 'r7', before: '', after: '', method: 'Gloss + Dimension • Expensive Brunette', category: 'color' },
+  { id: 'r8', before: '', after: '', method: 'Highlights • Icy Platinum (toned)', category: 'color' },
+  { id: 'r9', before: '', after: '', method: 'Balayage • Crème Brûlée Blonde', category: 'color' },
+  { id: 'r10', before: '', after: '', method: 'Colour Melt • Copper Glow', category: 'color' },
 ];
 
 const pexelsGallery = generatedImages.gallery;

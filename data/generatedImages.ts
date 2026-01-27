@@ -61,6 +61,166 @@ export const generatedImages: PexelsImageMap = {
     }
   },
   "transformations": {
+    "r1_before": {
+      "src": "/generated/transformations/r1_before/1000.webp",
+      "srcSet": "/generated/transformations/r1_before/400.webp 400w, /generated/transformations/r1_before/700.webp 700w, /generated/transformations/r1_before/1000.webp 1000w, /generated/transformations/r1_before/2000.webp 2000w",
+      "photographer": "Generated with Google Gemini",
+      "photographerUrl": "",
+      "pexelsUrl": "",
+      "avgColor": ""
+    },
+    "r1_after": {
+      "src": "/generated/transformations/r1_after/1000.webp",
+      "srcSet": "/generated/transformations/r1_after/400.webp 400w, /generated/transformations/r1_after/700.webp 700w, /generated/transformations/r1_after/1000.webp 1000w, /generated/transformations/r1_after/2000.webp 2000w",
+      "photographer": "Generated with Google Gemini",
+      "photographerUrl": "",
+      "pexelsUrl": "",
+      "avgColor": ""
+    },
+    "r2_before": {
+      "src": "/generated/transformations/r2_before/1000.webp",
+      "srcSet": "/generated/transformations/r2_before/400.webp 400w, /generated/transformations/r2_before/700.webp 700w, /generated/transformations/r2_before/1000.webp 1000w, /generated/transformations/r2_before/2000.webp 2000w",
+      "photographer": "Generated with Google Gemini",
+      "photographerUrl": "",
+      "pexelsUrl": "",
+      "avgColor": ""
+    },
+    "r2_after": {
+      "src": "/generated/transformations/r2_after/1000.webp",
+      "srcSet": "/generated/transformations/r2_after/400.webp 400w, /generated/transformations/r2_after/700.webp 700w, /generated/transformations/r2_after/1000.webp 1000w, /generated/transformations/r2_after/2000.webp 2000w",
+      "photographer": "Generated with Google Gemini",
+      "photographerUrl": "",
+      "pexelsUrl": "",
+      "avgColor": ""
+    },
+    "r3_before": {
+      "src": "/generated/transformations/r3_before/1000.webp",
+      "srcSet": "/generated/transformations/r3_before/400.webp 400w, /generated/transformations/r3_before/700.webp 700w, /generated/transformations/r3_before/1000.webp 1000w, /generated/transformations/r3_before/2000.webp 2000w",
+      "photographer": "Generated with Google Gemini",
+      "photographerUrl": "",
+      "pexelsUrl": "",
+      "avgColor": ""
+    },
+    "r3_after": {
+      "src": "/generated/transformations/r3_after/1000.webp",
+      "srcSet": "/generated/transformations/r3_after/400.webp 400w, /generated/transformations/r3_after/700.webp 700w, /generated/transformations/r3_after/1000.webp 1000w, /generated/transformations/r3_after/2000.webp 2000w",
+      "photographer": "Generated with Google Gemini",
+      "photographerUrl": "",
+      "pexelsUrl": "",
+      "avgColor": ""
+    },
+    "r4_before": {
+      "src": "/generated/transformations/r4_before/1000.webp",
+      "srcSet": "/generated/transformations/r4_before/400.webp 400w, /generated/transformations/r4_before/700.webp 700w, /generated/transformations/r4_before/1000.webp 1000w, /generated/transformations/r4_before/2000.webp 2000w",
+      "photographer": "Generated with Google Gemini",
+      "photographerUrl": "",
+      "pexelsUrl": "",
+      "avgColor": ""
+    },
+    "r4_after": {
+      "src": "/generated/transformations/r4_after/1000.webp",
+      "srcSet": "/generated/transformations/r4_after/400.webp 400w, /generated/transformations/r4_after/700.webp 700w, /generated/transformations/r4_after/1000.webp 1000w, /generated/transformations/r4_after/2000.webp 2000w",
+      "photographer": "Generated with Google Gemini",
+      "photographerUrl": "",
+      "pexelsUrl": "",
+      "avgColor": ""
+    },
+    "r5_before": {
+      "src": "/generated/transformations/r5_before/1000.webp",
+      "srcSet": "/generated/transformations/r5_before/400.webp 400w, /generated/transformations/r5_before/700.webp 700w, /generated/transformations/r5_before/1000.webp 1000w, /generated/transformations/r5_before/2000.webp 2000w",
+      "photographer": "Generated with Google Gemini",
+      "photographerUrl": "",
+      "pexelsUrl": "",
+      "avgColor": ""
+    },
+    "r5_after": {
+      "src": "/generated/transformations/r5_after/1000.webp",
+      "srcSet": "/generated/transformations/r5_after/400.webp 400w, /generated/transformations/r5_after/700.webp 700w, /generated/transformations/r5_after/1000.webp 1000w, /generated/transformations/r5_after/2000.webp 2000w",
+      "photographer": "Generated with Google Gemini",
+      "photographerUrl": "",
+      "pexelsUrl": "",
+      "avgColor": ""
+    },
+    "r6_before": {
+      "src": "/generated/transformations/r6_before/1000.webp",
+      "srcSet": "/generated/transformations/r6_before/400.webp 400w, /generated/transformations/r6_before/700.webp 700w, /generated/transformations/r6_before/1000.webp 1000w, /generated/transformations/r6_before/2000.webp 2000w",
+      "photographer": "Generated with Google Gemini",
+      "photographerUrl": "",
+      "pexelsUrl": "",
+      "avgColor": ""
+    },
+    "r6_after": {
+      "src": "/generated/transformations/r6_after/1000.webp",
+      "srcSet": "/generated/transformations/r6_after/400.webp 400w, /generated/transformations/r6_after/700.webp 700w, /generated/transformations/r6_after/1000.webp 1000w, /generated/transformations/r6_after/2000.webp 2000w",
+      "photographer": "Generated with Google Gemini",
+      "photographerUrl": "",
+      "pexelsUrl": "",
+      "avgColor": ""
+    },
+    "r7_before": {
+      "src": "/generated/transformations/r7_before/1000.webp",
+      "srcSet": "/generated/transformations/r7_before/400.webp 400w, /generated/transformations/r7_before/700.webp 700w, /generated/transformations/r7_before/1000.webp 1000w, /generated/transformations/r7_before/2000.webp 2000w",
+      "photographer": "Generated with Google Gemini",
+      "photographerUrl": "",
+      "pexelsUrl": "",
+      "avgColor": ""
+    },
+    "r7_after": {
+      "src": "/generated/transformations/r7_after/1000.webp",
+      "srcSet": "/generated/transformations/r7_after/400.webp 400w, /generated/transformations/r7_after/700.webp 700w, /generated/transformations/r7_after/1000.webp 1000w, /generated/transformations/r7_after/2000.webp 2000w",
+      "photographer": "Generated with Google Gemini",
+      "photographerUrl": "",
+      "pexelsUrl": "",
+      "avgColor": ""
+    },
+    "r8_before": {
+      "src": "/generated/transformations/r8_before/1000.webp",
+      "srcSet": "/generated/transformations/r8_before/400.webp 400w, /generated/transformations/r8_before/700.webp 700w, /generated/transformations/r8_before/1000.webp 1000w, /generated/transformations/r8_before/2000.webp 2000w",
+      "photographer": "Generated with Google Gemini",
+      "photographerUrl": "",
+      "pexelsUrl": "",
+      "avgColor": ""
+    },
+    "r8_after": {
+      "src": "/generated/transformations/r8_after/1000.webp",
+      "srcSet": "/generated/transformations/r8_after/400.webp 400w, /generated/transformations/r8_after/700.webp 700w, /generated/transformations/r8_after/1000.webp 1000w, /generated/transformations/r8_after/2000.webp 2000w",
+      "photographer": "Generated with Google Gemini",
+      "photographerUrl": "",
+      "pexelsUrl": "",
+      "avgColor": ""
+    },
+    "r9_before": {
+      "src": "/generated/transformations/r9_before/1000.webp",
+      "srcSet": "/generated/transformations/r9_before/400.webp 400w, /generated/transformations/r9_before/700.webp 700w, /generated/transformations/r9_before/1000.webp 1000w, /generated/transformations/r9_before/2000.webp 2000w",
+      "photographer": "Generated with Google Gemini",
+      "photographerUrl": "",
+      "pexelsUrl": "",
+      "avgColor": ""
+    },
+    "r9_after": {
+      "src": "/generated/transformations/r9_after/1000.webp",
+      "srcSet": "/generated/transformations/r9_after/400.webp 400w, /generated/transformations/r9_after/700.webp 700w, /generated/transformations/r9_after/1000.webp 1000w, /generated/transformations/r9_after/2000.webp 2000w",
+      "photographer": "Generated with Google Gemini",
+      "photographerUrl": "",
+      "pexelsUrl": "",
+      "avgColor": ""
+    },
+    "r10_before": {
+      "src": "/generated/transformations/r10_before/1000.webp",
+      "srcSet": "/generated/transformations/r10_before/400.webp 400w, /generated/transformations/r10_before/700.webp 700w, /generated/transformations/r10_before/1000.webp 1000w, /generated/transformations/r10_before/2000.webp 2000w",
+      "photographer": "Generated with Google Gemini",
+      "photographerUrl": "",
+      "pexelsUrl": "",
+      "avgColor": ""
+    },
+    "r10_after": {
+      "src": "/generated/transformations/r10_after/1000.webp",
+      "srcSet": "/generated/transformations/r10_after/400.webp 400w, /generated/transformations/r10_after/700.webp 700w, /generated/transformations/r10_after/1000.webp 1000w, /generated/transformations/r10_after/2000.webp 2000w",
+      "photographer": "Generated with Google Gemini",
+      "photographerUrl": "",
+      "pexelsUrl": "",
+      "avgColor": ""
+    },
     "t1_before": {
       "src": "/generated/transformations/t1_before/1000.webp",
       "srcSet": "/generated/transformations/t1_before/400.webp 400w, /generated/transformations/t1_before/700.webp 700w, /generated/transformations/t1_before/1000.webp 1000w, /generated/transformations/t1_before/2000.webp 2000w",
