@@ -1,28 +1,19 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useMemo, useState } from 'react';
+import { motion } from 'framer-motion';
 import { Icon } from '../components/ui/Icon';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { AnimatedSection } from '../components/ui/AnimatedSection';
-import { OptimizedImage } from '../components/ui/OptimizedImage';
-import { ImageSkeleton } from '../components/ui/Skeleton';
-import {
-  services,
-  transformations,
-  testimonials,
-  trustBadges,
-  processSteps,
-  aftercareTips,
-  googleReviewUrl,
-  proofStats,
-  seasonalOffers,
-} from '../data/salonContent';
+import { services, transformations, testimonials, trustBadges, processSteps, aftercareTips } from '../data/salonContent';
 import { generatedImages } from '../data/generatedImages';
+import { OptimizedImage } from '../components/ui/OptimizedImage';
 
 // Lazy load heavier AI components to reduce initial bundle weight.
 const ConciergeAssistant = React.lazy(() =>
   import('../components/ai/ConciergeAssistant').then((m) => ({ default: m.ConciergeAssistant }))
 );
 const StyleGenerator = React.lazy(() => import('../components/ai/StyleGenerator').then((m) => ({ default: m.StyleGenerator })));
+const HeroScene = React.lazy(() => import('../components/3d/HeroScene').then((m) => ({ default: m.HeroScene })));
 
 function useNearViewport(offsetPx = 200) {
   const [enabled, setEnabled] = useState(false);
@@ -51,6 +42,7 @@ function useNearViewport(offsetPx = 200) {
 export const Home: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [activeTransformation, setActiveTransformation] = useState(0);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -65,24 +57,81 @@ export const Home: React.FC = () => {
   // Load concierge late (after main content).
   const loadConcierge = useNearViewport(800);
 
+  // Load 3D only on capable devices and after idle.
+  const [show3d, setShow3d] = useState(false);
+  useEffect(() => {
+    const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const isReduced = mql.matches;
+
+    const isSmall = window.matchMedia('(max-width: 767px)').matches;
+    const cores = (navigator as any).hardwareConcurrency || 4;
+    const mem = (navigator as any).deviceMemory || 4;
+    const lowPower = cores <= 4 || mem <= 4;
+
+    // Network-aware gating: don't load 3D on Save-Data or very slow connections.
+    const conn = (navigator as any).connection as undefined | { saveData?: boolean; effectiveType?: string };
+    const saveData = Boolean(conn?.saveData);
+    const effective = String(conn?.effectiveType || '');
+    const isVerySlow = effective === 'slow-2g' || effective === '2g';
+    const isSlow = isVerySlow || effective === '3g';
+
+    // User override: allow opting in/out of 3D.
+    const prefRaw = localStorage.getItem('diosa_3d_enabled');
+    const pref = prefRaw === 'true' ? true : prefRaw === 'false' ? false : null;
+
+    // Default: enable on capable devices, but disable on 3g/2g/save-data unless user explicitly opts in.
+    if (pref === false) return;
+    if (isReduced || isSmall || lowPower || saveData) return;
+    if (isSlow && pref !== true) return;
+
+    const run = () => setShow3d(true);
+    // Prefer idle time; fall back to a short delay.
+    const ric = (window as any).requestIdleCallback as undefined | ((cb: () => void, opts?: any) => number);
+    if (ric) {
+      const id = ric(run, { timeout: 2000 });
+      return () => (window as any).cancelIdleCallback?.(id);
+    }
+
+    const t = window.setTimeout(run, 1200);
+    return () => window.clearTimeout(t);
+  }, []);
+
+  const nextTransformation = () => {
+    setActiveTransformation((prev) => (prev + 1) % transformations.length);
+  };
+
+  const prevTransformation = () => {
+    setActiveTransformation((prev) => (prev - 1 + transformations.length) % transformations.length);
+  };
+
+  const active = transformations[activeTransformation];
+  const beforeAsset = generatedImages.transformations[`${active.id}_before`];
+  const afterAsset = generatedImages.transformations[`${active.id}_after`];
+
   return (
     <div className="overflow-x-hidden">
       {/* Hero Section */}
-      <section
-        className="relative h-screen w-full flex items-center justify-center overflow-hidden"
-      >
-        {/* Simple hero image background */}
+      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <OptimizedImage
-            src={generatedImages.hero?.src || '/generated/hero/1000.webp'}
-            srcSet={generatedImages.hero?.srcSet}
+            src={generatedImages.hero.src}
+            srcSet={generatedImages.hero.srcSet}
             sizes="100vw"
-            alt="Luxury hair extensions by Diosa Studio"
+            alt="Luxury hair extensions in Yorkville"
             className="w-full h-full object-cover"
+            loading="eager"
+            fetchPriority="high"
           />
         </div>
 
-        <div className="absolute inset-0 bg-deep-charcoal/45 z-10" />
+        {/* Premium 3D accent layer (lazy + capability gated) */}
+        {show3d && (
+          <Suspense fallback={null}>
+            <HeroScene />
+          </Suspense>
+        )}
+
+        <div className="absolute inset-0 bg-deep-charcoal/40 z-10" />
 
         <div className="container relative z-20 mx-auto px-6 text-center">
           <AnimatedSection>
@@ -104,6 +153,21 @@ export const Home: React.FC = () => {
               </Link>
             </div>
 
+            <div className="mt-8 text-white/70 text-[10px] uppercase tracking-widest font-bold">
+              <button
+                type="button"
+                className="border border-white/20 px-3 py-2 hover:border-divine-gold hover:text-divine-gold transition-colors"
+                onClick={() => {
+                  const cur = localStorage.getItem('diosa_3d_enabled');
+                  const next = cur === 'true' ? 'false' : 'true';
+                  localStorage.setItem('diosa_3d_enabled', next);
+                  // Refresh state by reloading (simple + reliable for now)
+                  window.location.reload();
+                }}
+              >
+                Toggle 3D Hero
+              </button>
+            </div>
           </AnimatedSection>
         </div>
       </section>
@@ -130,7 +194,6 @@ export const Home: React.FC = () => {
             <h2 className="text-4xl md:text-5xl font-serif uppercase tracking-widest mb-6">Extensions & Colour</h2>
             <p className="text-gray-500 max-w-3xl mx-auto leading-relaxed">
               Method selection is about integrity and lifestyle. We match weight, placement, and maintenance cadence—so your result stays seamless.
-              <span className="block mt-2 text-gray-700">Comfort-first installs. Rooted blends. Daylight-proof results.</span>
             </p>
           </AnimatedSection>
 
@@ -187,62 +250,6 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Seasonal Value-Adds */}
-      <section className="py-24 bg-white">
-        <div className="container mx-auto px-6">
-          <AnimatedSection className="text-center mb-16">
-            <p className="font-accent text-3xl text-divine-gold mb-2">Value</p>
-            <h2 className="text-4xl md:text-5xl font-serif uppercase tracking-widest mb-6">Premium Extras</h2>
-            <p className="text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              We don’t discount quality. We add value—so your result stays luminous, comfortable, and long-lasting.
-            </p>
-          </AnimatedSection>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {seasonalOffers.map((o) => (
-              <AnimatedSection key={o.title} className="border border-gray-100 bg-goddess-white p-8">
-                <div className="text-[10px] uppercase tracking-widest font-bold text-gray-400">{o.title}</div>
-                <p className="text-gray-700 mt-4 leading-relaxed">{o.detail}</p>
-              </AnimatedSection>
-            ))}
-          </div>
-
-          <AnimatedSection className="text-center mt-12">
-            <Link to="/booking">
-              <Button size="lg" variant="primary">Book a Consultation</Button>
-            </Link>
-          </AnimatedSection>
-        </div>
-      </section>
-
-      {/* Proof */}
-      <section className="py-24 bg-goddess-white">
-        <div className="container mx-auto px-6">
-          <AnimatedSection className="text-center mb-16">
-            <p className="font-accent text-3xl text-divine-gold mb-2">Proof</p>
-            <h2 className="text-4xl md:text-5xl font-serif uppercase tracking-widest mb-6">Trusted Results</h2>
-            <p className="text-gray-600 max-w-3xl mx-auto leading-relaxed">Real transformations. Precision blending. A clear maintenance plan.</p>
-          </AnimatedSection>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {proofStats.map((s) => (
-              <AnimatedSection key={s.label} className="border border-gray-100 bg-white p-8">
-                <div className="text-[10px] uppercase tracking-widest font-bold text-gray-400">{s.label}</div>
-                <div className="mt-3 text-xl font-serif uppercase tracking-widest text-deep-charcoal">{s.value}</div>
-              </AnimatedSection>
-            ))}
-          </div>
-
-          <AnimatedSection className="text-center mt-12">
-            <a href={googleReviewUrl} target="_blank" rel="noreferrer">
-              <Button size="lg" variant="outline" className="border-deep-charcoal text-deep-charcoal hover:bg-deep-charcoal hover:text-white">
-                Write a Google Review
-              </Button>
-            </a>
-          </AnimatedSection>
-        </div>
-      </section>
-
       {/* Transformations */}
       <section className="py-24 bg-white">
         <div className="container mx-auto px-6">
@@ -251,27 +258,46 @@ export const Home: React.FC = () => {
             <h2 className="text-4xl md:text-5xl font-serif uppercase tracking-widest mb-6">Before & After</h2>
           </AnimatedSection>
 
-          {/* Simple grid of transformation results */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {transformations.map((t) => {
-              const afterImg = generatedImages.transformations[`${t.id}_after`];
-              return (
-                <AnimatedSection key={t.id} className="group relative aspect-[3/4] overflow-hidden bg-gray-100 border border-gray-200 hover:border-divine-gold transition-colors">
+          <div className="max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="border border-gray-100 bg-goddess-white p-6">
+                <div className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-3">Before</div>
+                <div className="aspect-[3/4] overflow-hidden bg-gray-100">
                   <OptimizedImage
-                    src={afterImg?.src || t.after}
-                    srcSet={afterImg?.srcSet}
-                    sizes="(min-width: 1024px) 20vw, (min-width: 768px) 33vw, 50vw"
-                    alt={t.method}
+                    src={beforeAsset?.src || active.before}
+                    srcSet={beforeAsset?.srcSet}
+                    sizes="(min-width: 768px) 45vw, 100vw"
+                    alt="Before"
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-deep-charcoal/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <p className="text-white text-xs font-sans uppercase tracking-wider">{t.method}</p>
-                    </div>
-                  </div>
-                </AnimatedSection>
-              );
-            })}
+                </div>
+              </div>
+
+              <div className="border border-gray-100 bg-goddess-white p-6">
+                <div className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-3">After</div>
+                <div className="aspect-[3/4] overflow-hidden bg-gray-100">
+                  <OptimizedImage
+                    src={afterAsset?.src || active.after}
+                    srcSet={afterAsset?.srcSet}
+                    sizes="(min-width: 768px) 45vw, 100vw"
+                    alt="After"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between mt-6">
+              <button onClick={prevTransformation} className="p-3 border border-gray-200 hover:border-divine-gold transition-colors" aria-label="Previous transformation">
+                <Icon icon="fluent:chevron-left-24-regular" size={22} tone="charcoal" />
+              </button>
+              <div className="text-center">
+                <div className="text-sm text-gray-700 font-serif uppercase tracking-widest">{active.method}</div>
+              </div>
+              <button onClick={nextTransformation} className="p-3 border border-gray-200 hover:border-divine-gold transition-colors" aria-label="Next transformation">
+                <Icon icon="fluent:chevron-right-24-regular" size={22} tone="charcoal" />
+              </button>
+            </div>
           </div>
         </div>
       </section>
