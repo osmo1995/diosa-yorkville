@@ -41,7 +41,7 @@ export const Services: React.FC = () => {
           <p className="font-accent text-3xl text-divine-gold mb-2">Methods</p>
           <h1 className="text-4xl md:text-5xl font-serif uppercase tracking-widest mb-6">Methods & Maintenance</h1>
           <p className="text-gray-500 max-w-3xl mx-auto leading-relaxed">
-            If youve ever worried extensions will look obvious or feel heavy, youre not alone. We match method, weight, and placement to your hair integritythen give you a maintenance cadence that keeps everything seamless.
+            If you’ve ever worried extensions will look obvious or feel heavy, you’re not alone. We match method, weight, and placement to your hair integrity—then give you a maintenance cadence that keeps everything seamless.
           </p>
         </AnimatedSection>
 
@@ -61,7 +61,7 @@ export const Services: React.FC = () => {
                 <div className="p-10">
                   <h2 className="text-2xl font-serif uppercase tracking-widest mb-3">{s.title}</h2>
                   <p className="text-gray-600 leading-relaxed mb-6">{s.longDescription}</p>
-                  <div className="grid grid-cols-2 gap-4 text-[11px] uppercase tracking-widest text-gray-500 mb-8">
+                  <div className="grid grid-cols-2 gap-4 text-[11px] uppercase tracking-widest text-gray-500 mb-6">
                     <div>
                       <div className="font-bold text-divine-gold">Price</div>
                       <div className="normal-case tracking-normal text-gray-700">{s.price}</div>
@@ -79,6 +79,43 @@ export const Services: React.FC = () => {
                       <div className="normal-case tracking-normal text-gray-700">Complimentary</div>
                     </div>
                   </div>
+                  {(s.bestFor?.length || s.moveUpCadence || s.wearTime || s.notes) && (
+                    <div className="border-t border-gray-100 pt-6 mt-6">
+                      {s.bestFor?.length ? (
+                        <div className="mb-4">
+                          <div className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Who it’s for</div>
+                          <ul className="mt-2 space-y-1 text-gray-700 text-sm">
+                            {s.bestFor.slice(0, 3).map((b) => (
+                              <li key={b} className="flex gap-2">
+                                <span className="text-divine-gold">•</span>
+                                <span>{b}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ) : null}
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {s.moveUpCadence ? (
+                          <div>
+                            <div className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Maintenance</div>
+                            <div className="mt-2 text-gray-700 text-sm">{s.moveUpCadence}</div>
+                          </div>
+                        ) : null}
+                        {s.wearTime ? (
+                          <div>
+                            <div className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Wear</div>
+                            <div className="mt-2 text-gray-700 text-sm">{s.wearTime}</div>
+                          </div>
+                        ) : null}
+                      </div>
+
+                      {s.notes ? (
+                        <div className="mt-4 text-gray-600 text-sm leading-relaxed">{s.notes}</div>
+                      ) : null}
+                    </div>
+                  )}
+
                   <Link to="/booking">
                     <Button variant="secondary" className="w-full">Book a Consultation</Button>
                   </Link>

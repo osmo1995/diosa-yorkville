@@ -12,41 +12,61 @@ export const services: Service[] = [
     id: 'tape-in',
     title: 'Tape-In Extensions',
     description: 'Seamless volume and length with a lightweight feel—ideal for fine to medium hair.',
-    longDescription: 'Tape-ins are ideal if you want a seamless boost in volume and length without a long appointment. We use ultra-flat, medical-grade adhesive tabs and match placement to your natural densityso the blend looks effortless and feels lightweight. Youll leave with a clear move-up cadence to keep everything tidy and comfortable.',
+    longDescription:
+      'Tape-ins are ideal if you want a seamless boost in volume and length without a long appointment. We use ultra-flat, medical-grade adhesive tabs and match placement to your natural density—so the blend looks effortless and feels lightweight. You’ll leave with a clear move-up cadence to keep everything tidy and comfortable.',
     price: 'From $400',
     duration: '1.5 - 2 Hours',
     longevity: '6-8 Weeks',
-    imageUrl: ''
+    imageUrl: '',
+    bestFor: ['Fine to medium hair', 'Fast installs', 'Seamless volume + length without bulk'],
+    moveUpCadence: 'Move-up every 6–8 weeks',
+    wearTime: 'Wear 6–8 weeks per install',
+    notes: 'Comfort-first placement with weight-balanced sections for a clean grow-out.',
   },
   {
     id: 'keratin-bond',
     title: 'Keratin Bond (K-Tips)',
     description: 'Long-wear, versatile, and discreet—made for styling freedom and extended wear.',
-    longDescription: 'K-Tips are the long-wear option when you want maximum styling freedom. Individual strands are bonded with low heat for discreet, 360 movementideal for updos and an active schedule. We prioritize hair integrity, bond sizing, and weight distribution so the result is comfortable, natural, and consistent from week one to removal.',
+    longDescription:
+      'K-Tips are the long-wear option when you want maximum styling freedom. Individual strands are bonded with low heat for discreet, 360° movement—ideal for updos and an active schedule. We prioritize hair integrity, bond sizing, and weight distribution so the result is comfortable, natural, and consistent from week one to removal.',
     price: 'From $600',
     duration: '3 - 5 Hours',
     longevity: '3-5 Months',
-    imageUrl: ''
+    imageUrl: '',
+    bestFor: ['Updos + styling freedom', 'Long wear', 'Discreet strand-by-strand movement'],
+    moveUpCadence: 'Removal + reinstall seasonally',
+    wearTime: 'Wear ~3–5 months',
+    notes: 'Bond sizing and weight distribution are customized to protect integrity.',
   },
   {
     id: 'hand-tied',
     title: 'Hand-Tied Wefts',
     description: 'High-density fullness with a comfort-first install and a clean blend.',
-    longDescription: 'Hand-tied wefts are our go-to for high-impact density with a comfort-first feel. We place silicone-lined beads thoughtfully and stitch in hand-tied wefts for a full, luxurious resultwithout harsh tension. Youll get maximum fullness with a maintenance cadence that keeps the grow-out clean and your natural hair protected.',
+    longDescription:
+      'Hand-tied wefts are our go-to for high-impact density with a comfort-first feel. We place silicone-lined beads thoughtfully and stitch in hand-tied wefts for a full, luxurious result—without harsh tension. You’ll get maximum fullness with a maintenance cadence that keeps the grow-out clean and your natural hair protected.',
     price: 'From $800',
     duration: '3 - 4 Hours',
     longevity: '8-12 Weeks (Maintenance)',
-    imageUrl: ''
+    imageUrl: '',
+    bestFor: ['High density + luxury fullness', 'Comfort-first installs', 'Clean blend + tidy grow-out'],
+    moveUpCadence: 'Move-up every 8–10 weeks',
+    wearTime: 'Wear 8–12 weeks between move-ups',
+    notes: 'Silicone-lined beads + thoughtful spacing to minimize tension.',
   },
   {
     id: 'sew-in',
     title: 'Invisible Sew-In',
     description: 'Glamour and density with even weight distribution and secure wear.',
-    longDescription: 'Our invisible sew-in is a refined classic: secure wear, even weight distribution, and a glamorous finish that still reads natural. We tailor the foundation to your density and lifestyle, then blend the perimeter so the result looks like your own haironly better.',
+    longDescription:
+      'Our invisible sew-in is a refined classic: secure wear, even weight distribution, and a glamorous finish that still reads natural. We tailor the foundation to your density and lifestyle, then blend the perimeter so the result looks like your own hair—only better.',
     price: 'From $500',
     duration: '2.5 - 4 Hours',
     longevity: '6-10 Weeks',
-    imageUrl: ''
+    imageUrl: '',
+    bestFor: ['Classic glamour + strong hold', 'Even weight distribution', 'Secure wear with a refined finish'],
+    moveUpCadence: 'Move-up every 6–10 weeks',
+    wearTime: 'Wear 6–10 weeks between move-ups',
+    notes: 'Foundation + perimeter blending tuned to your density and lifestyle.',
   }
 ];
 
@@ -79,6 +99,29 @@ export const galleryItems: GalleryItem[] = [
   { id: 'g8', url: pexelsGallery.Volume[2]?.src || '', asset: pexelsGallery.Volume[2], category: 'Volume', title: 'Editorial Volume Waves' },
   { id: 'g9', url: pexelsGallery.Length[2]?.src || '', asset: pexelsGallery.Length[2], category: 'Length', title: 'Signature Length Gloss' },
 ];
+
+export const googleReviewUrl = 'https://www.google.com/search?q=diosa+studio+yorkville+reviews';
+
+export const proofStats = [
+  { label: 'Transformations', value: '500+ (studio-proven)' },
+  { label: 'Signature methods', value: 'Tape • K-Tip • Weft • Sew-In' },
+  { label: 'Integrity-first', value: 'Weight-balanced + comfort checks' },
+] as const;
+
+export const seasonalOffers = [
+  {
+    title: 'Complimentary Clear Gloss',
+    detail: 'With any colour service — adds luminous shine and protects vibrancy.',
+  },
+  {
+    title: 'Extension-Safe Brush',
+    detail: 'With new install — the right brush makes the blend last longer.',
+  },
+  {
+    title: '7–10 Day Comfort Check',
+    detail: 'A quick follow-up to keep tension perfect and prevent matting early.',
+  },
+] as const;
 
 export const trustBadges: TrustBadge[] = [
   { title: 'Specialist Methods', subtitle: 'Tape-ins, K-tips, hand-tied & sew-in—done properly' },

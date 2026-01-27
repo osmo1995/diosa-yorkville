@@ -52,7 +52,21 @@ const FORCE = args.includes('--force');
 const CATEGORY = args.find((a) => a.startsWith('--category='))?.split('=')[1] || 'all';
 const LIMIT = Number(args.find((a) => a.startsWith('--limit='))?.split('=')[1] || '0');
 const PRESET = args.find((a) => a.startsWith('--preset='))?.split('=')[1] || '';
+const PRESETS = args.find((a) => a.startsWith('--presets='))?.split('=')[1] || '';
+const COLORS = args.find((a) => a.startsWith('--colors='))?.split('=')[1] || '';
+const LENGTHS = args.find((a) => a.startsWith('--lengths='))?.split('=')[1] || '';
 const DRY_RUN = args.includes('--dry-run');
+
+function parseCsvFlag(raw) {
+  return raw
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+const FILTER_PRESET_IDS = PRESETS ? new Set(parseCsvFlag(PRESETS)) : null;
+const FILTER_COLOR_IDS = COLORS ? new Set(parseCsvFlag(COLORS)) : null;
+const FILTER_LENGTH_IDS = LENGTHS ? new Set(parseCsvFlag(LENGTHS)) : null;
 
 // Save into public/ so Vite/Vercel can serve directly.
 const OUT_DIR = path.join(PROJECT_ROOT, 'public', 'generated', 'style-previews');
@@ -311,10 +325,19 @@ async function main() {
   if (CATEGORY === 'extensions') list = list.filter((p) => p.category === 'extensions');
   if (CATEGORY === 'color') list = list.filter((p) => p.category === 'color');
 
+  // Back-compat: --preset=<id> still supported.
   if (PRESET) {
     list = list.filter((p) => p.id === PRESET);
     if (list.length === 0) throw new Error(`Unknown preset id: ${PRESET}`);
-  } else if (LIMIT > 0) {
+  }
+
+  // New: --presets=<id1,id2,...>
+  if (FILTER_PRESET_IDS) {
+    list = list.filter((p) => FILTER_PRESET_IDS.has(p.id));
+    if (list.length === 0) {
+      throw new Error(`No presets matched --presets=${Array.from(FILTER_PRESET_IDS).join(',')}`);
+    }
+  } else if (!PRESET && LIMIT > 0) {
     list = list.slice(0, LIMIT);
   }
 
@@ -327,8 +350,18 @@ async function main() {
   for (const p of list) {
     // For extension presets, optionally generate colour×length variants under a dedicated subfolder.
     if (CATEGORY === 'extensions' && p.category === 'extensions') {
-      for (const colorId of EXT_PREVIEW_COLOR_IDS) {
-        for (const lenId of EXT_LENGTH_IDS) {
+      const colorIds = FILTER_COLOR_IDS ? EXT_PREVIEW_COLOR_IDS.filter((c) => FILTER_COLOR_IDS.has(c)) : EXT_PREVIEW_COLOR_IDS;
+      const lengthIds = FILTER_LENGTH_IDS ? EXT_LENGTH_IDS.filter((l) => FILTER_LENGTH_IDS.has(l)) : EXT_LENGTH_IDS;
+
+      if (FILTER_COLOR_IDS && colorIds.length === 0) {
+        throw new Error(`No extension colors matched --colors=${Array.from(FILTER_COLOR_IDS).join(',')}`);
+      }
+      if (FILTER_LENGTH_IDS && lengthIds.length === 0) {
+        throw new Error(`No extension lengths matched --lengths=${Array.from(FILTER_LENGTH_IDS).join(',')}`);
+      }
+
+      for (const colorId of colorIds) {
+        for (const lenId of lengthIds) {
           const variantKey = `extensions/${p.id}/${colorId}/${lenId}`;
           const prompt = buildPrompt(
             `High-end beauty editorial portrait. ${p.prompt} Colour match: ${colorId}. Target length: ${lenId} inches. Rooted blend / root shadow for realism. Ensure full hairstyle is visible and not cropped. Face centered, hair fully in frame.`,

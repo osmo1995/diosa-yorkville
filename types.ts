@@ -8,6 +8,15 @@ export interface Service {
   duration: string;
   longevity: string;
   imageUrl: string;
+
+  /** Who this method is best for (scannable bullets) */
+  bestFor?: string[];
+  /** Recommended maintenance/move-up cadence */
+  moveUpCadence?: string;
+  /** Expected wear time (client-friendly) */
+  wearTime?: string;
+  /** One-line integrity/comfort note */
+  notes?: string;
 }
 
 export type ImageAsset = {

@@ -1,10 +1,19 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Icon } from '../components/ui/Icon';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { AnimatedSection } from '../components/ui/AnimatedSection';
-import { services, transformations, testimonials, trustBadges, processSteps, aftercareTips } from '../data/salonContent';
+import {
+  services,
+  transformations,
+  testimonials,
+  trustBadges,
+  processSteps,
+  aftercareTips,
+  googleReviewUrl,
+  proofStats,
+  seasonalOffers,
+} from '../data/salonContent';
 import { generatedImages } from '../data/generatedImages';
 import { BeforeAfterSlider } from '../components/ui/BeforeAfterSlider';
 
@@ -204,6 +213,7 @@ export const Home: React.FC = () => {
             <h2 className="text-4xl md:text-5xl font-serif uppercase tracking-widest mb-6">Extensions & Colour</h2>
             <p className="text-gray-500 max-w-3xl mx-auto leading-relaxed">
               Method selection is about integrity and lifestyle. We match weight, placement, and maintenance cadence—so your result stays seamless.
+              <span className="block mt-2 text-gray-700">Comfort-first installs. Rooted blends. Daylight-proof results.</span>
             </p>
           </AnimatedSection>
 
@@ -257,6 +267,62 @@ export const Home: React.FC = () => {
               </AnimatedSection>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Seasonal Value-Adds */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-6">
+          <AnimatedSection className="text-center mb-16">
+            <p className="font-accent text-3xl text-divine-gold mb-2">Value</p>
+            <h2 className="text-4xl md:text-5xl font-serif uppercase tracking-widest mb-6">Premium Extras</h2>
+            <p className="text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              We don’t discount quality. We add value—so your result stays luminous, comfortable, and long-lasting.
+            </p>
+          </AnimatedSection>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {seasonalOffers.map((o) => (
+              <AnimatedSection key={o.title} className="border border-gray-100 bg-goddess-white p-8">
+                <div className="text-[10px] uppercase tracking-widest font-bold text-gray-400">{o.title}</div>
+                <p className="text-gray-700 mt-4 leading-relaxed">{o.detail}</p>
+              </AnimatedSection>
+            ))}
+          </div>
+
+          <AnimatedSection className="text-center mt-12">
+            <Link to="/booking">
+              <Button size="lg" variant="primary">Book a Consultation</Button>
+            </Link>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* Proof */}
+      <section className="py-24 bg-goddess-white">
+        <div className="container mx-auto px-6">
+          <AnimatedSection className="text-center mb-16">
+            <p className="font-accent text-3xl text-divine-gold mb-2">Proof</p>
+            <h2 className="text-4xl md:text-5xl font-serif uppercase tracking-widest mb-6">Trusted Results</h2>
+            <p className="text-gray-600 max-w-3xl mx-auto leading-relaxed">Real transformations. Precision blending. A clear maintenance plan.</p>
+          </AnimatedSection>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {proofStats.map((s) => (
+              <AnimatedSection key={s.label} className="border border-gray-100 bg-white p-8">
+                <div className="text-[10px] uppercase tracking-widest font-bold text-gray-400">{s.label}</div>
+                <div className="mt-3 text-xl font-serif uppercase tracking-widest text-deep-charcoal">{s.value}</div>
+              </AnimatedSection>
+            ))}
+          </div>
+
+          <AnimatedSection className="text-center mt-12">
+            <a href={googleReviewUrl} target="_blank" rel="noreferrer">
+              <Button size="lg" variant="outline" className="border-deep-charcoal text-deep-charcoal hover:bg-deep-charcoal hover:text-white">
+                Write a Google Review
+              </Button>
+            </a>
+          </AnimatedSection>
         </div>
       </section>
 

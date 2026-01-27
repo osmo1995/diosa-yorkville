@@ -144,5 +144,15 @@ Extension preview variants (8 styles × 12 colours × 4 lengths):
    `npm run gemini:models`
 
    **Security note:** Never commit real API keys. Keep `.env.local` local-only (this repo ignores `*.local`).
+
+## Content editing (non-code)
+
+Most homepage/service messaging is data-driven. Edit these in `data/salonContent.ts`:
+
+- `googleReviewUrl`: link used by the "Write a Google Review" CTA on Home.
+- `proofStats`: the 3-card proof strip on Home (labels + values).
+- `seasonalOffers`: the "Premium Extras" cards on Home.
+- `services[*].bestFor / moveUpCadence / wearTime / notes`: shown on the Services page (reduces booking friction).
+
 4. Run the app:
    `npm run dev`
