@@ -3,6 +3,7 @@ import { Icon } from '../components/ui/Icon';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { AnimatedSection } from '../components/ui/AnimatedSection';
+import { OptimizedImage } from '../components/ui/OptimizedImage';
 import {
   services,
   transformations,
