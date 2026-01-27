@@ -185,6 +185,9 @@ async function generateImage(prompt) {
 }
 
 function existingVariants(presetId) {
+  // If --force is set, always regenerate.
+  if (FORCE) return null;
+
   const baseDir = path.join(OUT_DIR, presetId);
   const files = SIZES.map((w) => path.join(baseDir, `${w}.webp`));
   const ok = files.every((f) => fs.existsSync(f));

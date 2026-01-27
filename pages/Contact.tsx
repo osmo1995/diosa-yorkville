@@ -307,10 +307,10 @@ export const Contact: React.FC = () => {
   const prevStep = () => setStep(prev => prev - 1);
 
   const steps = [
-    { title: 'Selection', icon: Scissors },
-    { title: 'Profile', icon: Sparkles },
-    { title: 'Date', icon: Calendar },
-    { title: 'Details', icon: User }
+    { title: 'Selection', icon: 'fluent-emoji:scissors' },
+    { title: 'Profile', icon: 'fluent-emoji:sparkles' },
+    { title: 'Date', icon: 'fluent:calendar-20-regular' },
+    { title: 'Details', icon: 'fluent:person-20-regular' }
   ];
 
   return (
@@ -320,7 +320,7 @@ export const Contact: React.FC = () => {
           {styleName && (
             <div className="mb-8 border border-divine-gold/20 bg-divine-gold/10 px-6 py-4 text-left">
               <div className="flex items-center gap-2 text-divine-gold font-bold text-[10px] uppercase tracking-widest mb-2">
-                <Sparkles size={14} />
+                <Icon icon="fluent-emoji:sparkles" size={14} />
                 Inspired by your AI preview
               </div>
               <div className="text-gray-700">
@@ -367,12 +367,11 @@ export const Contact: React.FC = () => {
           <div className="flex justify-between items-center mb-16 relative">
             <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gray-200 -z-10" />
             {steps.map((s, i) => {
-              const Icon = s.icon;
               const isActive = step >= i + 1;
               return (
                 <div key={i} className="flex flex-col items-center">
                   <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 border-2 ${isActive ? 'bg-divine-gold border-divine-gold text-white' : 'bg-white border-gray-200 text-gray-300'}`}>
-                    <Icon size={20} />
+                    <Icon icon={s.icon} size={20} />
                   </div>
                   <span className={`text-[10px] uppercase tracking-widest mt-3 font-bold ${isActive ? 'text-divine-gold' : 'text-gray-300'}`}>{s.title}</span>
                 </div>
@@ -495,7 +494,7 @@ export const Contact: React.FC = () => {
                   className="text-center py-20"
                 >
                   <div className="w-20 h-20 bg-divine-gold text-white rounded-full flex items-center justify-center mx-auto mb-8">
-                    <CheckCircle2 size={40} />
+                    <Icon icon="fluent-emoji:check-mark-button" size={40} />
                   </div>
                   <h2 className="text-3xl font-serif text-deep-charcoal mb-4 uppercase tracking-widest">Consultation Request Received</h2>
                   <p className="text-gray-500 max-w-sm mx-auto leading-relaxed">Thank you, {formData.name || 'Guest'}. Our booking concierge will contact you shortly to finalize your transformation appointment.</p>

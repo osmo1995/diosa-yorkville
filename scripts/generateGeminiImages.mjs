@@ -107,6 +107,9 @@ async function generateImage(prompt) {
 }
 
 function existingVariants(key) {
+  // If --force is set, always regenerate.
+  if (FORCE) return null;
+
   const baseDir = path.join(OUT_DIR, key);
   const files = SIZES.map((w) => path.join(baseDir, `${w}.webp`));
   const ok = files.every((f) => fs.existsSync(f));
@@ -193,8 +196,9 @@ async function main() {
   const wrap = (p, extras = '') => buildPrompt(p, extras);
 
   // For interiors, prefer a wider lens reference.
-  const interiorExtras = 'Interior shot: 24–35mm lens look, clean geometry, premium materials, realistic reflections.';
-  const portraitExtras = 'Portrait shot: 85mm lens look, flattering perspective, natural skin texture, hair fully visible.';
+  const interiorExtras = 'Interior shot: 24–35mm lens look, clean geometry, premium materials, realistic reflections. Real salon tools present (sectioning clips, combs, brushes) with subtle DIOSA branding only.';
+  const portraitExtras = 'Portrait shot: 85mm lens look, flattering perspective, natural skin texture, hair fully visible. Real salon accessories present (sectioning clips, tail comb) with subtle DIOSA branding only.';
+  const macroExtras = 'Macro shot: 90–105mm macro look, crisp detail, shallow depth of field. Real tools visible (tail comb, sectioning clips, extension pliers/heat tool as appropriate) with subtle DIOSA branding only.';
 
   const plan = {
     hero: {
@@ -212,19 +216,19 @@ async function main() {
     services: {
       'tape-in': {
         key: 'services/tape-in',
-        prompt: wrap('Close-up macro photo of tape-in hair extensions being applied by a professional stylist. Clean sectioning, realistic strands, premium salon background blur. No text.', 'Macro shot: 90–105mm macro look, crisp detail, shallow depth of field.'),
+        prompt: wrap('Close-up macro photo of tape-in hair extensions being applied by a professional stylist. Clean sectioning, realistic strands, premium salon background blur. Include real tape-in tabs, sectioning clips, tail comb, and a professional brush. Subtle DIOSA branding only on a tool bag or clip case.', macroExtras),
       },
       'keratin-bond': {
         key: 'services/keratin-bond',
-        prompt: wrap('Close-up macro photo of keratin bond (k-tip) hair extensions application. Precise sectioning, realistic bonds, premium salon background blur. No text.', 'Macro shot: 90–105mm macro look, crisp detail, shallow depth of field.'),
+        prompt: wrap('Close-up macro photo of keratin bond (k-tip) hair extensions application. Precise sectioning, realistic bonds, premium salon background blur. Include a keratin heat tool, sectioning clips, tail comb. Subtle DIOSA branding only on equipment.', macroExtras),
       },
       'hand-tied': {
         key: 'services/hand-tied',
-        prompt: wrap('Close-up macro photo of hand-tied weft hair extensions installation with beads. Clean parting, realistic strands, luxury salon background blur. No text.', 'Macro shot: 90–105mm macro look, crisp detail, shallow depth of field.'),
+        prompt: wrap('Close-up macro photo of hand-tied weft hair extensions installation with beads. Clean parting, realistic strands, luxury salon background blur. Include beads, thread/needle tools, sectioning clips, tail comb. Subtle DIOSA branding only on a tool bag or clip case.', macroExtras),
       },
       'sew-in': {
         key: 'services/sew-in',
-        prompt: wrap('Close-up macro photo of sew-in hair extension technique: stylist hands sewing weft with needle/thread. Clean parting, realistic strands, luxury salon background blur. No text.', 'Macro shot: 90–105mm macro look, crisp detail, shallow depth of field.'),
+        prompt: wrap('Close-up macro photo of sew-in hair extension technique: stylist hands sewing weft with needle/thread. Clean parting, realistic strands, luxury salon background blur. Include curved needle, thread, sectioning clips, tail comb. Subtle DIOSA branding only on equipment.', macroExtras),
       },
     },
     transformations: {
