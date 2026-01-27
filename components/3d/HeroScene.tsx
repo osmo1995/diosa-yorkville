@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
 function useIsLowPowerDevice() {
@@ -10,6 +10,7 @@ function useIsLowPowerDevice() {
 }
 
 function GoldenParticles({ count = 1400 }: { count?: number }) {
+  const { invalidate } = useThree();
   const pointsRef = useRef<THREE.Points>(null);
 
   const positions = useMemo(() => {
@@ -31,6 +32,10 @@ function GoldenParticles({ count = 1400 }: { count?: number }) {
     if (!pointsRef.current) return;
     pointsRef.current.rotation.y = t * 0.07;
     pointsRef.current.rotation.x = t * 0.03;
+
+    // Throttle redraws to reduce GPU usage while staying animated.
+    // With frameloop='demand', this schedules the next render.
+    if (Math.floor(t * 30) !== Math.floor((t - 1 / 30) * 30)) invalidate();
   });
 
   return (
@@ -51,6 +56,7 @@ function GoldenParticles({ count = 1400 }: { count?: number }) {
 }
 
 function SoftRibbons() {
+  const { invalidate } = useThree();
   const meshRef = useRef<THREE.Mesh>(null);
 
   useFrame(({ clock }) => {
@@ -58,11 +64,13 @@ function SoftRibbons() {
     if (!meshRef.current) return;
     meshRef.current.rotation.z = t * 0.05;
     meshRef.current.rotation.y = t * 0.03;
+
+    if (Math.floor(t * 30) !== Math.floor((t - 1 / 30) * 30)) invalidate();
   });
 
   return (
     <mesh ref={meshRef} position={[0, 0.1, -0.6]}>
-      <torusKnotGeometry args={[0.85, 0.18, 220, 24]} />
+      <torusKnotGeometry args={[0.85, 0.18, 160, 18]} />
       <meshStandardMaterial
         color="#B87954"
         emissive="#B87954"
@@ -86,7 +94,7 @@ export function HeroScene() {
         dpr={lowPower ? [1, 1.25] : [1, 2]}
         camera={{ position: [0, 0, 3.2], fov: 55 }}
         gl={{ alpha: true, antialias: !lowPower, powerPreference: 'high-performance' }}
-        // Render continuously (smooth) but keep scene minimal.
+        frameloop="demand"
       >
         <ambientLight intensity={0.7} />
         <directionalLight position={[4, 4, 3]} intensity={0.9} color="#fff2d0" />

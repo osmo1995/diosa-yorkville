@@ -1,0 +1,65 @@
+name: Generate Assets (Manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "What to generate"
+        required: true
+        default: "style-previews"
+        type: choice
+        options:
+          - style-previews
+          - images
+          - all
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Generate
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          if [ -z "$GEMINI_API_KEY" ]; then
+            echo "Missing GEMINI_API_KEY secret. Add it in GitHub repo settings." >&2
+            exit 1
+          fi
+
+          case "${{ inputs.mode }}" in
+            style-previews)
+              npm run gemini:style-previews:3pro:force
+              ;;
+            images)
+              npm run gemini:images:3pro:force
+              ;;
+            all)
+              npm run gemini:images:3pro:force
+              npm run gemini:style-previews:3pro:force
+              ;;
+          esac
+
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore: regenerate assets"
+          title: "chore: regenerate assets"
+          body: "Automated regeneration of assets via workflow_dispatch."
+          branch: "chore/regenerate-assets"
+          delete-branch: true

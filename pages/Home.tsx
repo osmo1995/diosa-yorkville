@@ -73,8 +73,16 @@ export const Home: React.FC = () => {
     const saveData = Boolean(conn?.saveData);
     const effective = String(conn?.effectiveType || '');
     const isVerySlow = effective === 'slow-2g' || effective === '2g';
+    const isSlow = isVerySlow || effective === '3g';
 
-    if (isReduced || isSmall || lowPower || saveData || isVerySlow) return;
+    // User override: allow opting in/out of 3D.
+    const prefRaw = localStorage.getItem('diosa_3d_enabled');
+    const pref = prefRaw === 'true' ? true : prefRaw === 'false' ? false : null;
+
+    // Default: enable on capable devices, but disable on 3g/2g/save-data unless user explicitly opts in.
+    if (pref === false) return;
+    if (isReduced || isSmall || lowPower || saveData) return;
+    if (isSlow && pref !== true) return;
 
     const run = () => setShow3d(true);
     // Prefer idle time; fall back to a short delay.
@@ -143,6 +151,22 @@ export const Home: React.FC = () => {
                   Try Virtual Preview
                 </Button>
               </Link>
+            </div>
+
+            <div className="mt-8 text-white/70 text-[10px] uppercase tracking-widest font-bold">
+              <button
+                type="button"
+                className="border border-white/20 px-3 py-2 hover:border-divine-gold hover:text-divine-gold transition-colors"
+                onClick={() => {
+                  const cur = localStorage.getItem('diosa_3d_enabled');
+                  const next = cur === 'true' ? 'false' : 'true';
+                  localStorage.setItem('diosa_3d_enabled', next);
+                  // Refresh state by reloading (simple + reliable for now)
+                  window.location.reload();
+                }}
+              >
+                Toggle 3D Hero
+              </button>
             </div>
           </AnimatedSection>
         </div>
