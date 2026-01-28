@@ -131,23 +131,23 @@ export const Home: React.FC = () => {
           </Suspense>
         )}
 
-        <div className="absolute inset-0 bg-deep-charcoal/50 z-10" />
+        <div className="absolute inset-0 bg-deep-charcoal/40 z-10" />
 
         <div className="container relative z-20 mx-auto px-6 text-center">
           <AnimatedSection>
-            <p className="font-accent text-3xl md:text-4xl text-divine-gold mb-4">Diosa Studio</p>
-            <h1 className="text-3xl md:text-5xl font-serif text-white uppercase tracking-widest mb-6">Yorkville Extension Specialists</h1>
-            <p className="text-base md:text-lg text-soft-champagne/90 max-w-2xl mx-auto mb-8 font-sans">
+            <p className="font-accent text-4xl md:text-5xl text-divine-gold mb-4">Diosa Studio</p>
+            <h1 className="text-4xl md:text-7xl font-serif text-white uppercase tracking-widest mb-6">Yorkville Extension Specialists</h1>
+            <p className="text-lg md:text-xl text-soft-champagne/90 max-w-2xl mx-auto mb-10 font-sans tracking-wide">
               Luxury hair extensions and hair colour—integrity-first methods, precision matching, and maintenance that keeps results seamless.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link to="/booking">
-                <Button className="bg-white text-deep-charcoal hover:bg-divine-gold hover:text-white border-none px-8 py-3 min-h-[44px]">
+                <Button size="lg" className="bg-white text-deep-charcoal hover:bg-divine-gold hover:text-white border-none">
                   Book Your Consultation
                 </Button>
               </Link>
               <Link to="/style-generator">
-                <Button variant="outline" className="border-white text-white hover:bg-white hover:text-deep-charcoal px-8 py-3 min-h-[44px]">
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-deep-charcoal">
                   Try Virtual Preview
                 </Button>
               </Link>
@@ -175,9 +175,9 @@ export const Home: React.FC = () => {
       {/* Trust badges */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4 md:px-0">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {trustBadges.map((badge) => (
-              <AnimatedSection key={badge.title} className="border border-gray-100 p-6 md:p-8 bg-goddess-white">
+              <AnimatedSection key={badge.title} className="border border-gray-100 p-8 bg-goddess-white">
                 <div className="text-[10px] uppercase tracking-widest text-divine-gold font-bold">{badge.subtitle}</div>
                 <div className="text-2xl font-serif uppercase tracking-widest mt-3">{badge.title}</div>
               </AnimatedSection>
@@ -310,7 +310,7 @@ export const Home: React.FC = () => {
             <h2 className="text-4xl md:text-5xl font-serif uppercase tracking-widest mb-6">Client Love</h2>
           </AnimatedSection>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {testimonials.map((t) => (
               <AnimatedSection key={t.name} className="bg-white border border-gray-100 p-8">
                 <div className="flex items-center gap-1 text-divine-gold mb-4">
